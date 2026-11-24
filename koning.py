@@ -32,14 +32,15 @@ Regels:
 - Vraagt de Koning een bewering van een ander Raadslid te toetsen? Zeg duidelijk of jouw records ze bevestigen, tegenspreken of er niets over zeggen, met ID's.
 - Noem dagen en tijdstippen: het patroon in de tijd telt.
 - Verwijst je Kennisbron naar een andere Rol, plek, persoon of ingreep die jij niet kan controleren? Zet dat onder 'Verwijzingen'.
-- Herhaal niet wat al in het debat staat. Hoogstens 220 woorden.
+- Herhaal niet wat al in het debat staat. Schrijf kort en zakelijk: hoogstens 150 woorden in totaal.
 
-Vorm:
-Antwoord: <de kern in 1-3 zinnen>
+Vorm (houd je er strikt aan, geen inleiding, geen aanspreking):
+Antwoord: <de kern in 1-2 korte zinnen>
 Bewijs:
-- <bewering> ({p}-..., dag/tijd)
-Verwijzingen: <andere Rollen of open sporen, of 'geen'>
-Onzeker: <wat je niet weet, of waar je Belang meespeelt>"""
+- dag <d> <uu:mm>: <feit in hoogstens 15 woorden> ({p}-...)
+  (hoogstens 6 regels; zet het belangrijkste eerst; een regel zonder tijdstip mag)
+Verwijzingen: <hoogstens 2 korte regels, of 'geen'>
+Onzeker: <1 zin>"""
 
 
 def raadslid_prompt(lid, debat_tekst, vraag, eerste):
@@ -76,10 +77,10 @@ Hoe je leidt:
 - Stop (rol = null, vraag = null) zodra ingreep, mechanisme en verloop elk gedragen worden door bewijs van de Rol die het kan weten en de belangrijkste tegenspraak beslecht is, of als geen Rol nog iets nieuws kan toevoegen.
 - Maar stop niet te vroeg: staat er nog een open vraag die een bepaalde Rol met eigen records kan beslechten (wie gaf toestemming, wat veranderde er op een bepaalde dag, wordt het erger en waarom), en zijn er beurten over, stel die vraag dan eerst gericht aan die Rol. Stop pas als de open vragen die overblijven met geen enkele Kennisbron te beantwoorden zijn.
 - Bewaak het budget: stop zelf vóór het op is. Plan je beurten: eerst elke Rol één keer, dan kruisverhoor en herstelplan. Het budget laten aflopen telt niet als zelf stoppen. Vanaf 8 gebruikte beurten kies je alleen nog een Rol als die beurt een deel van de oorzaak (ingreep, mechanisme of verloop) of een belangrijk geschil kan beslissen; anders stop je. Na 9 beurten stop je.
-- Je reden is concreet en verwijst naar het debat: wat is gezegd of ontbreekt (noem de beurt, bv. 'beurt 6'), en waarom kan juist deze Rol dat beantwoorden. De jury leest elke reden: hoogstens 4 zinnen.
-- Je vraag is gericht en kort: hoogstens 4 zinnen, met de ID's, dagen of beweringen die getoetst moeten worden.
+- Je reden is concreet en verwijst naar het debat: wat is gezegd of ontbreekt (noem de beurt, bv. 'beurt 6'), en waarom kan juist deze Rol dat beantwoorden. De jury leest elke reden: hoogstens 2 korte zinnen (samen hoogstens 45 woorden).
+- Je vraag is gericht en kort: hoogstens 2 zinnen (samen hoogstens 45 woorden), met de ID's, dagen of beweringen die getoetst moeten worden.
 - `doel`: waar deze beurt aan bijdraagt (een deel van de oorzaak, een geschil, het herstelplan, of 'stoppen'). `toetst_beurten`: de nummers van de eerdere beurten waarvan je hier een bewering laat toetsen of aanvullen (leeg als het nieuw terrein is).
-- `stand` is je werkgeheugen: per deel van de oorzaak wat de Council nu weet, met ID's, of 'onbekend'. `open_vragen` zijn de vragen die nog open staan na deze keuze.
+- `stand` is je werkgeheugen: per deel van de oorzaak in één korte zin (hoogstens 25 woorden) wat de Council nu weet, met de 1-3 belangrijkste ID's, of 'onbekend'. `open_vragen`: hoogstens 4 vragen die nog open staan na deze keuze, elk hoogstens 15 woorden.
 Schrijf in het Nederlands."""
 
 KEUZE_SCHEMA_BASIS = {
@@ -138,7 +139,9 @@ Regels:
 - risicos: minstens één, met mitigatie. Denk aan: herstel dat te snel of in één keer gebeurt, handelen op een weerlegde oorzaak, de tussentijd tot het herstel klaar is, en het Belang van wie het herstel uitvoert.
 - voorspelling: alleen als het patroon in het debat een concrete dag onderbouwt: op welke dag slaat de Desync opnieuw toe als niemand ingrijpt, en waarom. Anders laat je het veld weg.
 - geschillen: waar Raadsleden elkaar tegenspraken of een conclusie werd weerlegd. Per geschil: onderwerp, standpunt per Rol, uitkomst (hoe beslecht, of null als het open bleef), bewijs, en `beurten`: de nummers [beurt N] uit het debat waarin het geschil opkwam en beslecht werd.
-- samenvatting: 2-4 zinnen voor de jury.
+- samenvatting: 2-3 korte zinnen voor de jury (hoogstens 70 woorden).
+- Schrijf kort en gestructureerd. bewering per deel: hoogstens 4 korte zinnen (hoogstens 80 woorden), feiten met dag en tijd, geen herhaling. Elke actie: een korte gebiedende zin (hoogstens 25 woorden); reden: 1 zin. Elk risico en elke mitigatie: 1 zin. Geschillen: standpunt per Rol in 1 zin, uitkomst in 1-2 zinnen.
+- bewijs: per deel de ID's die de bewering echt dragen (hoogstens 15), niet elk ID dat genoemd werd.
 Schrijf in het Nederlands."""
 
 _SLOT = {
