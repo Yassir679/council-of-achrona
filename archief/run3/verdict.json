@@ -1,0 +1,188 @@
+{
+  "run_id": "2026-11-24T10:50:02+01:00_831f2f89",
+  "samenvatting": "De Desync begon in de nacht van dag 10, ruim twee uur nadat de Engineer de hulpslag had geactiveerd. Die hulpslag is een tweede pols naast de Kroonklok. De Archmage had er op dag 8 op eigen gezag en buiten de Raad om toestemming voor gegeven. Sindsdien keert de verstoring elke 4 dagen terug, rond 04:15–04:45. Dieren en visioenen tonen dat onafhankelijk van elkaar, en datanet, schilden en register bevestigen het voor dag 10 en dag 22. Indringers, kabels, de conjunctie en een terugkeer van de Stille Winter zijn weerlegd. De volgende nacht wordt verwacht op dag 46, dus vóór die datum moet er een afschrift van het register liggen. Daarna kunnen de polsen langzaam worden samengebracht.",
+  "oorzaak": {
+    "ingreep": {
+      "bewering": "De Engineer bouwde de hulpslag en activeerde die. De hulpslag is een eigen pols voor het datanet, los van de Kroonklok. De onderdelen kwamen binnen op dag 8 om 14:10, de proefopstelling stond op dag 9 om 16:45 en de activatie volgde op dag 10 om 02:40. Om 03:00 lag de doorvoer 38% hoger. Op dag 8 schreef de Archmage op eigen gezag en buiten de Raad om aan de toren dat het net 'mag doorgaan', 'niet ruchtbaar' moest blijven en 'niet in het register' hoefde. Er werd geen opdrachtgever genoemd. Op dag 9 noteerde de Engineer een 'goedkeuring van hogerhand' zonder naam. Waarschijnlijk is dat dezelfde toestemming, maar dat is niet bewezen. Op dag 24 om 11:00 verhoogde de Engineer de versterking met 5%, terwijl het tempo gelijk bleef. Vóór dag 10 was het rustig, ook na het dimmen van de lamp op dag 3.",
+      "bewijs": [
+        "ENG-008",
+        "ENG-010",
+        "ENG-011",
+        "ENG-012",
+        "ENG-103",
+        "ENG-106",
+        "ENG-105",
+        "ARC-106",
+        "ENG-029",
+        "ENG-062",
+        "ENG-114",
+        "ENG-061",
+        "ENG-071",
+        "BEA-102",
+        "ORA-101",
+        "ORA-109"
+      ],
+      "zekerheid": 0.85
+    },
+    "mechanisme": {
+      "bewering": "Volgens de bouwakte brengt een tweede pols naast de Kroonklok de maat in de war. Een record dat op een andere pols is geschreven, is alleen op die pols leesbaar. Dat verklaart waarom berichten half aankomen en waarom een kasboek even leeg was. Het verklaart ook waarom vastgelegd_op en gebeurd_op in het register uiteenlopen in de verstoorde nachten, terwijl die volgens de regels gelijk moeten zijn. Schilden gaan van binnenuit open voor verkeer dat tussen twee tikken van de Kroonklok valt. Dat gebeurde op dag 10 en dag 22, en de zegels bleven intact. Een indringer van buiten is daarmee uitgesloten. Waarom het precies elke 4 dagen gebeurt, is niet gemeten. Waarschijnlijk komt het door een tempoverschil tussen de twee polsen, maar geen bron noemt het tempo van een van beide.",
+      "bewijs": [
+        "HIS-109",
+        "HIS-110",
+        "HIS-103",
+        "ENG-107",
+        "HIS-035",
+        "HIS-036",
+        "HIS-053",
+        "HIS-054",
+        "GUA-104",
+        "GUA-019",
+        "GUA-043",
+        "GUA-044",
+        "GUA-105",
+        "GUA-115",
+        "ARC-104",
+        "HIS-102"
+      ],
+      "zekerheid": 0.6
+    },
+    "verloop": {
+      "bewering": "De verstoring begint op dag 10 en komt daarna elke 4 dagen terug, steeds 's nachts rond 04:15–04:45. Dat gebeurde op dag 10, 14, 18, 22, 26, 30, 34, 38 en 42. De dieren en de visioenen tonen dit onafhankelijk van elkaar. Datanet, schilden en register bevestigen dag 10 en dag 22. In de andere nachten liepen daar geen metingen, dus hun stilte bewijst niets. De onrust bij de dieren steeg vanaf dag 26 van 4 naar 5, kort na de versterking van dag 24. Het verband is alleen een samenval in de tijd: de leylijndips van dag 14 en dag 42 zijn even diep. Het 28-dagenritme en de conjunctie van dag 33 zijn weerlegd.",
+      "bewijs": [
+        "BEA-019",
+        "BEA-028",
+        "BEA-037",
+        "BEA-046",
+        "BEA-055",
+        "BEA-064",
+        "BEA-073",
+        "BEA-082",
+        "BEA-091",
+        "BEA-121",
+        "ORA-110",
+        "ORA-114",
+        "ORA-118",
+        "ORA-122",
+        "ORA-126",
+        "ORA-130",
+        "ORA-134",
+        "ORA-138",
+        "ORA-142",
+        "ENG-107",
+        "ENG-026",
+        "GUA-019",
+        "GUA-043",
+        "ARC-015",
+        "ARC-028",
+        "ARC-071",
+        "ARC-084",
+        "ORA-133",
+        "BEA-071"
+      ],
+      "zekerheid": 0.85
+    }
+  },
+  "acties": [
+    {
+      "actie": "Zet de hulpslag NIET abrupt uit. Laat de Historian direct, vóór de nacht van dag 46, een volledig afschrift van het register maken, inclusief de afwijkende records van dag 10 en dag 22.",
+      "reden": "De bouwakte schrijft voor dat er eerst een afschrift komt. Valt de tweede pols plots weg, dan gaan records die op die pols zijn geschreven verloren.",
+      "bewijs": [
+        "HIS-110",
+        "HIS-035",
+        "HIS-036",
+        "HIS-053",
+        "HIS-054"
+      ]
+    },
+    {
+      "actie": "Draai de versterking van dag 24 terug: de pols gaat 5% omlaag, het tempo blijft gelijk.",
+      "reden": "Meer kracht past bij heftigere effecten, en de onrust bij de dieren werd erger vanaf dag 26. Het terugdraaien verandert het tempo niet en haalt de pols niet weg, dus de schade blijft beperkt zonder dat er records verloren gaan.",
+      "bewijs": [
+        "ENG-029",
+        "ENG-062",
+        "ENG-114",
+        "BEA-055",
+        "BEA-121"
+      ]
+    },
+    {
+      "actie": "Zet in de nacht van dag 46 tussen 04:00 en 05:00 een gezamenlijke nachtwacht in. De Engineer meet datanet en doorvoer, de Guardian Keeper bemant de schilden van de benedenstad en poort oost, de Historian legt de tijdstempels vast en de Beast Master observeert de dieren.",
+      "reden": "Buiten dag 10 en dag 22 liepen er geen nachtmetingen. Zo'n meting is nodig om het ritme en het mechanisme te bevestigen.",
+      "bewijs": [
+        "ENG-026",
+        "GUA-106",
+        "ORA-142",
+        "BEA-091"
+      ]
+    },
+    {
+      "actie": "Vraag de klokkenmeester naar het tempo van de Kroonklok uit het Kroonklokboek. Laat de Engineer daarnaast het tempo van de hulpslag meten.",
+      "reden": "Geen enkel Raadslid kent een van beide tempo's. Zonder die getallen kun je de polsen niet gecontroleerd samenbrengen en blijft het vierdaagse ritme onverklaard.",
+      "bewijs": [
+        "ARC-104",
+        "HIS-102",
+        "HIS-109",
+        "ENG-011"
+      ]
+    },
+    {
+      "actie": "Breng de polsen langzaam samen nadat het afschrift klaar is. Stem de hulpslag stap voor stap af op de Kroonklok, of bouw hem geleidelijk af, en controleer na elke stap het register.",
+      "reden": "De bouwakte schrijft deze volgorde voor. Zo verdwijnt de oorzaak, een tweede pols naast de Kroonklok.",
+      "bewijs": [
+        "HIS-110",
+        "HIS-109"
+      ]
+    },
+    {
+      "actie": "Vergelijk het register met het afschrift en herstel daarna de afwijkende records en het kasboek van de benedenstad.",
+      "reden": "Records die op de andere pols zijn geschreven, moeten weer leesbaar en juist gedateerd worden.",
+      "bewijs": [
+        "HIS-103",
+        "ENG-107",
+        "HIS-036"
+      ]
+    },
+    {
+      "actie": "Voorkom herhaling. Geen pols of wijziging aan het net zonder besluit van de Raad en zonder vermelding in het register. Verbied toestemmingen die 'niet ruchtbaar' moeten blijven. Voer nachtelijke metingen in op het datanet, en leg klachten vast als klacht en niet als 'kinderziekte' of 'klerkenfout'.",
+      "reden": "De toestemming ging buiten de Raad en het register om. Klachten werden weggewuifd, en de nachtelijke gaten in de metingen maakten de verstoring onzichtbaar.",
+      "bewijs": [
+        "ARC-106",
+        "ENG-105",
+        "HIS-112",
+        "HIS-116",
+        "GUA-111"
+      ]
+    }
+  ],
+  "risicos": [
+    {
+      "risico": "Wordt de hulpslag abrupt uitgezet, bijvoorbeeld op advies van de Archmage, dan kunnen records die op de tweede pols zijn geschreven onherstelbaar verloren gaan.",
+      "mitigatie": "Maak eerst het volledige afschrift van het register en breng de polsen daarna langzaam samen, zoals HIS-110 voorschrijft."
+    },
+    {
+      "risico": "Het afschrift en het herstel zijn misschien niet klaar vóór de verwachte nacht van dag 46. HIS-110 noemt geen termijn.",
+      "mitigatie": "Geef het afschrift voorrang, draai de versterking terug en zet een nachtwacht in tussen 04:00 en 05:00. Waarschuw de benedenstad dat ze die nacht geen kasboeken of berichten verwerkt."
+    },
+    {
+      "risico": "De polsen worden samengebracht zonder dat hun tempo bekend is. Een verkeerde stap kan de fase-uitval verergeren.",
+      "mitigatie": "Haal eerst het tempo van de Kroonklok bij de klokkenmeester en meet het tempo van de hulpslag. Pas de polsen daarna in kleine stappen aan en controleer na elke stap."
+    },
+    {
+      "risico": "Schilden die van binnenuit opengaan, worden opnieuw als bres van een indringer gezien. Dan volgen verkeerde veiligheidsmaatregelen of beschuldigingen.",
+      "mitigatie": "Controleer eerst de zegels. Blijven die intact, dan wijst dat op een fout in de maat en niet op een indringer."
+    }
+  ],
+  "voorspelling": {
+    "dag": 46,
+    "bewering": "Als niemand ingrijpt, slaat de Desync opnieuw toe in de nacht van dag 46, rond 04:15–04:45. Waarschijnlijk is de onrust dan even heftig als in de laatste nachten (niveau 5). Dat volgt uit het vierdaagse ritme dat sinds dag 10 zonder uitzondering terugkeert: negen keer op rij, onafhankelijk geregistreerd door de dieren en de visioenen. Het is een extrapolatie, want het tempo van de polsen is niet gemeten.",
+    "bewijs": [
+      "BEA-019",
+      "BEA-091",
+      "BEA-121",
+      "ORA-110",
+      "ORA-142",
+      "ORA-138",
+      "BEA-082"
+    ]
+  }
+}

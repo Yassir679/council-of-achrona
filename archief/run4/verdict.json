@@ -1,0 +1,186 @@
+{
+  "run_id": "2026-11-24T11:26:00+01:00_713236ea",
+  "samenvatting": "De Desync begon op dag 10, kort nadat de Engineer om 02:40 een hulpslag activeerde. Die hulpslag heeft een eigen pols, los van de Kroonklok. De Archmage keurde dat op dag 8 goed, buiten de raad en het register om. Sindsdien slaat de Desync elke vierde nacht toe, rond 04:15–04:50: op dag 10, 14, 18, 22, 26, 30, 34, 38 en 42. Vanaf dag 26 is de onrust heviger. Schilden openden van binnenuit terwijl de zegels intact bleven, en de archiefstempels wijken uren af. Dat past bij twee polsen die uit de maat lopen, maar het tempoverschil is nooit gemeten. De beschuldigingen aan hackers, nieuwe kabels en de conjunctie zijn weerlegd. Grijpt niemand in, dan volgt het volgende voorval in de nacht van dag 46.",
+  "oorzaak": {
+    "ingreep": {
+      "bewering": "Op dag 8 gaf de Archmage de datatoren schriftelijk toestemming om het net 'op eigen maat' te laten lopen. Ze hield dat buiten de raad en het register (ARC-106). In het werkboek van dag 9 staat 'goedkeuring van hogerhand, niet ruchtbaar maken', met dezelfde woorden maar zonder naam (ENG-105). Op dag 9 stond de proefopstelling klaar (ENG-010). Op dag 10 om 02:40 activeerde de Engineer zelf de hulpslag, met een eigen pols los van de Kroonklok (ENG-011, ENG-106). Er staat geen register-entry van (HIS-032, HIS-037, HIS-106). Geen enkele logregel zet de hulpslag uit, en de routinecontroles wijzen op 'aan' (ENG-063, ENG-064, ENG-065, ENG-066, ENG-113). Op dag 12 werd de fijnregeling teruggezet (ENG-061, ENG-114). Op dag 24 ging de versterking met 5% omhoog, met ongewijzigd tempo (ENG-029, ENG-062). Na dag 3 is er geen kabelwerk in het woud geweest (ENG-003, ENG-108).",
+      "bewijs": [
+        "ARC-106",
+        "ENG-105",
+        "ENG-010",
+        "ENG-011",
+        "ENG-106",
+        "HIS-032",
+        "HIS-037",
+        "HIS-106",
+        "ENG-063",
+        "ENG-064",
+        "ENG-065",
+        "ENG-066",
+        "ENG-113",
+        "ENG-061",
+        "ENG-114",
+        "ENG-029",
+        "ENG-062",
+        "ENG-003",
+        "ENG-108"
+      ],
+      "zekerheid": 0.8
+    },
+    "mechanisme": {
+      "bewering": "De schilden slaan op de pols van de Kroonklok (GUA-103). Verkeer tussen twee tikken behandelen ze als binnenverkeer (GUA-104). Volgens de bouwakte brengt een tweede pols de Kroonklok uit de maat (HIS-109). Op dag 10 om 04:47 en op dag 22 om 04:15 ging een schild van binnenuit open, terwijl de zegels intact bleven (GUA-019, GUA-043, GUA-044). Tegelijk kwamen berichten half aan, was een kasboek even leeg en ging er pakketverlies op (ENG-107, ENG-026). Op beide dagen wijken de archiefstempels uren af van het moment van het gebeuren (HIS-035, HIS-036, HIS-053, HIS-103). Een doorbraak van buitenaf is uitgesloten, want die breekt de zegels (GUA-105). Dit wijst op een maatverschil tussen de hulpslag en de Kroonklok. Het tempoverschil is echter nooit gemeten, en de Kroonklok is na dag 5 niet meer gemeten (ARC-104). Het mechanisme blijft dus een goed onderbouwde hypothese.",
+      "bewijs": [
+        "GUA-103",
+        "GUA-104",
+        "HIS-109",
+        "GUA-019",
+        "GUA-043",
+        "GUA-044",
+        "ENG-107",
+        "ENG-026",
+        "HIS-035",
+        "HIS-036",
+        "HIS-053",
+        "HIS-103",
+        "GUA-105",
+        "ARC-104"
+      ],
+      "zekerheid": 0.5
+    },
+    "verloop": {
+      "bewering": "Vóór dag 10 was alles rustig (BEA-104, BEA-009, BEA-017, ARC-001, ARC-014, ARC-105). Vanaf dag 10 slaat de Desync elke vierde nacht toe, rond 04:15–04:50: op dag 10, 14, 18, 22, 26, 30, 34, 38 en 42. De Beast Master en de Oracle stelden dat los van elkaar vast (BEA-019, BEA-028, BEA-037, BEA-046, BEA-055, BEA-064, BEA-073, BEA-082, BEA-091, ORA-110, ORA-114, ORA-118, ORA-122, ORA-126, ORA-130, ORA-134, ORA-138, ORA-142). Op de nachten ertussen bleef het rustig (BEA-040, BEA-049, BEA-053, BEA-058, BEA-069, BEA-071, BEA-078, BEA-089). Vóór dag 24 was de heftigheid 4, vanaf dag 26 is ze 5 (BEA-055, BEA-064, BEA-073, BEA-082, BEA-091). De enige ingreep tussen dag 24 en 26 is de +5% versterking (ENG-029, ENG-062), maar dat is alleen een tijdsverband. Op dag 14 en dag 42 stonden de leylijnen laag (ARC-015, ARC-028, ARC-071, ARC-084). Het archief kent geen eerder voorval (HIS-106, HIS-107).",
+      "bewijs": [
+        "BEA-104",
+        "BEA-019",
+        "BEA-028",
+        "BEA-037",
+        "BEA-046",
+        "BEA-055",
+        "BEA-064",
+        "BEA-073",
+        "BEA-082",
+        "BEA-091",
+        "ORA-110",
+        "ORA-114",
+        "ORA-118",
+        "ORA-122",
+        "ORA-126",
+        "ORA-130",
+        "ORA-134",
+        "ORA-138",
+        "ORA-142",
+        "BEA-040",
+        "BEA-049",
+        "ENG-029",
+        "ENG-062",
+        "ARC-015",
+        "ARC-071",
+        "HIS-106"
+      ],
+      "zekerheid": 0.85
+    }
+  },
+  "acties": [
+    {
+      "actie": "Maak meteen, vóór de nacht van dag 46, een afschrift van het register en zet de kasboeken van de benedenstad veilig.",
+      "reden": "De bouwakte schrijft voor dat er eerst een afschrift van het register komt en pas daarna herstel. De archiefstempels zijn op beide gedocumenteerde voorvaldagen onbetrouwbaar, en een kasboek is al eens even leeg geweest.",
+      "bewijs": [
+        "HIS-110",
+        "HIS-035",
+        "HIS-036",
+        "HIS-053",
+        "ENG-107"
+      ]
+    },
+    {
+      "actie": "Zet in de nacht van dag 46 tussen 03:00 en 06:00 een wachtronde langs de schilden. Laat de toren in dat venster ook de installatielog bijhouden.",
+      "reden": "Tussen 03:00 en 06:00 loopt niemand ronde, en de toren heeft geen logregels van de nachten in het patroon. De schade moet direct opgevangen kunnen worden en voor het eerst gemeten.",
+      "bewijs": [
+        "GUA-106",
+        "ENG-052",
+        "ENG-055"
+      ]
+    },
+    {
+      "actie": "Meet het tempo van de hulpslag tegenover de Kroonklok. Laat de klokkenmeester ook de Kroonklok zelf opnieuw meten.",
+      "reden": "Het mechanisme rust op een maatverschil dat nooit gemeten is. Na dag 5 is de Kroonklok niet meer gemeten.",
+      "bewijs": [
+        "ENG-011",
+        "ENG-114",
+        "ARC-104"
+      ]
+    },
+    {
+      "actie": "Breng de pols van de hulpslag langzaam terug naar de Kroonklok. Begin met het terugdraaien van de +5% versterking van dag 24 en laat de hulpslag daarna in kleine stappen samenlopen. Zet hem niet in één keer uit.",
+      "reden": "Een tweede pols brengt de Kroonklok uit de maat, en de akte schrijft voor dat de polsen langzaam worden samengebracht. De opdrijving van dag 24 ging vooraf aan de hevigere nachten.",
+      "bewijs": [
+        "HIS-109",
+        "HIS-110",
+        "ENG-029",
+        "ENG-062",
+        "ENG-061"
+      ]
+    },
+    {
+      "actie": "Herstel de foutieve stempels en de berichten en kasboekposten van dag 10 en dag 22 aan de hand van het afschrift. Controleer daarna de schilden van de benedenstad en van poort oost.",
+      "reden": "De tijd van het gebeuren is op beide dagen niet betrouwbaar vastgelegd, en de schilden gingen van binnenuit open.",
+      "bewijs": [
+        "HIS-035",
+        "HIS-036",
+        "HIS-053",
+        "GUA-019",
+        "GUA-043"
+      ]
+    },
+    {
+      "actie": "Controleer of het herstel werkt in de nachten van dag 46 en dag 50, met de dieren, de schildrondes en de nachtlog als toetsing.",
+      "reden": "Het ritme van vier dagen is het duidelijkste signaal. Blijft het uit, dan is dat de beste bevestiging van de oorzaak.",
+      "bewijs": [
+        "BEA-091",
+        "ORA-142"
+      ]
+    },
+    {
+      "actie": "Voorkom herhaling. Elke ingreep aan de pols of de klok van het net moet voortaan door de raad worden goedgekeurd en met naam in het register worden vastgelegd. Toestemmingen 'van hogerhand' zonder naam zijn niet langer geldig. Herzie ook de firewall-aanscherping, die op een weerlegde hackerclaim berustte.",
+      "reden": "Het experiment werd bewust verzwegen en buiten het register gehouden, en de goedkeurder staat niet met naam vastgelegd. De firewall werd aangescherpt zonder dat er ooit een indringer was.",
+      "bewijs": [
+        "ARC-106",
+        "ENG-105",
+        "HIS-106",
+        "ENG-027",
+        "ENG-110",
+        "GUA-105"
+      ]
+    }
+  ],
+  "risicos": [
+    {
+      "risico": "De hulpslag wordt abrupt uitgezet. Dan kan de maat in één keer verspringen, met een nieuwe opening van binnenuit of nieuw verlies van berichten en kasboekdata als gevolg.",
+      "mitigatie": "Breng de polsen langzaam samen, zoals de bouwakte voorschrijft, en altijd pas nadat het afschrift van het register gemaakt is (HIS-110)."
+    },
+    {
+      "risico": "Het herstel is niet af vóór de nacht van dag 46. Dan volgt een nieuw voorval met heftigheid 5, terwijl er geen ronde loopt.",
+      "mitigatie": "Zet in die nacht een extra wachtronde tussen 03:00 en 06:00 en laat de nachtlog bijhouden (GUA-106). Maak het afschrift vóór die nacht."
+    },
+    {
+      "risico": "Het mechanisme berust op een tempoverschil dat niet gemeten is. Als de oorzaak toch elders ligt, verandert het samenbrengen van de polsen niets.",
+      "mitigatie": "Meet eerst het tempo van de hulpslag en de Kroonklok (ENG-011, ARC-104). Toets het effect in de nachten van dag 46 en dag 50."
+    },
+    {
+      "risico": "Er gaan middelen naar weerlegde sporen, zoals hackers, kabels bij de eik of de conjunctie, terwijl de echte oorzaak blijft bestaan.",
+      "mitigatie": "Houd die sporen gesloten, tenzij er een nieuwe meting komt (GUA-105, ENG-108, ORA-112)."
+    }
+  ],
+  "voorspelling": {
+    "dag": 46,
+    "bewering": "Als niemand ingrijpt, slaat de Desync opnieuw toe in de nacht van dag 46, rond 04:15–04:50, waarschijnlijk met heftigheid 5. De Beast Master en de Oracle zagen los van elkaar een ononderbroken ritme van vier dagen van dag 10 tot en met dag 42. Volgens de toren staat de hulpslag nog aan. Dag 46 is een berekening (42 + 4) en geen visioen.",
+    "bewijs": [
+      "BEA-019",
+      "BEA-091",
+      "BEA-121",
+      "ORA-110",
+      "ORA-142",
+      "ENG-113"
+    ]
+  }
+}

@@ -1,0 +1,188 @@
+{
+  "run_id": "2026-11-24T11:33:49+01:00_5d9e5332",
+  "samenvatting": "De Desync begon op dag 10 om 04:40–04:50. Dat was ruim twee uur nadat de Engineer om 02:40 een hulpslag activeerde met een eigen, snellere pols los van de Kroonklok. Sindsdien keert de Desync elke 4e nacht terug rond 04:15–04:40. Vanaf dag 26, kort na de 5% hogere versterking van dag 24, zijn de episodes heviger. Er was geen inbraak, geen vervuiling van de leylijnen en geen terugkeer van de Stille Winter: die verklaringen zijn in het debat weerlegd. Het herstelplan is eerst een afschrift van het register maken, dan het tempoverschil meten en daarna de twee polsen langzaam samenbrengen. Zonder ingreep volgt de volgende episode naar verwachting op dag 46.",
+  "oorzaak": {
+    "ingreep": {
+      "bewering": "De Engineer activeerde zelf de hulpslag op dag 10 om 02:40. Dat is een eigen pols, los van de Kroonklok, bedoeld als 'sneller dan de Kroonklok'. De onderdelen kwamen op dag 8 en de proefopstelling stond op dag 9. Op dag 9 was er een goedkeuring 'van hogerhand' zonder naam. Op dag 8 gaf de Archmage al stilzwijgend toestemming om 'het net op eigen maat te laten lopen', buiten het register. Of de goedkeuring van dag 9 ook van haar kwam, staat niet vast. Op dag 24 om 11:00 verhoogde de Engineer de versterking van de pols met 5%; het tempo bleef volgens zijn logs gelijk.",
+      "bewijs": [
+        "ENG-011",
+        "ENG-106",
+        "ENG-103",
+        "ENG-008",
+        "ENG-010",
+        "ENG-105",
+        "ARC-106",
+        "ENG-029",
+        "ENG-062",
+        "ENG-111"
+      ],
+      "zekerheid": 0.85
+    },
+    "mechanisme": {
+      "bewering": "Volgens de bouwakte brengt een tweede pols naast de Kroonklok het systeem uit de maat. Een schild behandelt verkeer dat midden tussen twee tikken van de Kroonklok valt als binnenverkeer. Het opent dan van binnenuit en laat dat verkeer zonder toets door. Dat gebeurde op dag 10 om 04:47 bij het schild van de benedenstad en op dag 22 om 04:15 bij poort oost. Beide keren waren de zegels intact en stond er niemand buiten de muur. Een record dat op een andere pols is geschreven, is alleen op die pols terug te lezen. Dat past bij de berichten die 'half aangekomen' zijn, het kasboek dat even leeg was en de afwijkende tijdstempels in alleen de storingsrecords. Het tempoverschil tussen hulpslag en Kroonklok is nooit in cijfers gemeten. Of dat verschil precies 4 dagen verklaart, en waarom een sterkere pols de episodes heviger maakt, is dus nog niet bewezen.",
+      "bewijs": [
+        "HIS-109",
+        "HIS-038",
+        "GUA-104",
+        "GUA-019",
+        "GUA-043",
+        "GUA-044",
+        "GUA-111",
+        "HIS-110",
+        "ENG-107",
+        "HIS-036",
+        "HIS-035",
+        "HIS-053",
+        "HIS-103",
+        "GUA-115",
+        "ENG-061",
+        "ENG-114"
+      ],
+      "zekerheid": 0.55
+    },
+    "verloop": {
+      "bewering": "Vóór dag 10 waren de nachten rustig. De eerste storing kwam op dag 10 om 04:40–04:50; die zagen de Beast Master, de Engineer, de Historian en de Guardian Keeper elk in hun eigen records. Daarna kwam ze elke 4e nacht terug rond 04:15–04:40: op dag 14, 18, 22, 26, 30, 34, 38 en 42. De frequentie blijft gelijk, maar de hevigheid stijgt van score 4 (dag 10–22) naar score 5 (dag 26–42). Elke episode duurt tot het licht wordt, met 's middags nog schichtigheid. De lage leylijnen op dag 14 en 42 vallen samen met gewone episodes uit deze cyclus. Het archief kent geen precedent: het datanet liep 23 jaar zonder haperingen op één pols.",
+      "bewijs": [
+        "BEA-003",
+        "BEA-007",
+        "BEA-104",
+        "BEA-019",
+        "BEA-020",
+        "BEA-028",
+        "BEA-037",
+        "BEA-046",
+        "BEA-055",
+        "BEA-064",
+        "BEA-073",
+        "BEA-082",
+        "BEA-091",
+        "BEA-056",
+        "BEA-065",
+        "BEA-074",
+        "BEA-021",
+        "BEA-093",
+        "ENG-107",
+        "ENG-026",
+        "HIS-035",
+        "GUA-019",
+        "GUA-043",
+        "ARC-015",
+        "ARC-071",
+        "HIS-006",
+        "HIS-106",
+        "HIS-107"
+      ],
+      "zekerheid": 0.75
+    }
+  },
+  "acties": [
+    {
+      "actie": "Bereid de nacht van dag 46 voor met een nachtwacht van 03:00 tot daglicht. De Guardian Keeper doet een ronde na 03:00, de Engineer logt de poorten en de pols, en de Beast Master houdt kuddes en jongen binnen de haag.",
+      "reden": "De volgende episode is te verwachten op dag 46, met score 5. Op dag 26–34 gingen hagen, kalveren en jongen verloren. Op dat uur is er nu geen schildronde en geen engineer-log, dus de nachten na dag 22 zijn niet gemeten.",
+      "bewijs": [
+        "BEA-056",
+        "BEA-065",
+        "BEA-074",
+        "GUA-106",
+        "ENG-026"
+      ]
+    },
+    {
+      "actie": "Zet de versterking van de pols terug naar de stand van vóór dag 24. Verander het tempo daarbij niet.",
+      "reden": "Sinds deze versterking zijn de episodes heviger. Terugzetten raakt alleen de sterkte, niet de timing of de records op de hulpslag. Het effect is alleen in de tijd aangetoond, dus het is een voorzorg en geen bewezen oplossing.",
+      "bewijs": [
+        "ENG-029",
+        "ENG-062",
+        "ENG-114",
+        "BEA-056"
+      ]
+    },
+    {
+      "actie": "Maak een volledig afschrift van het register en van alle records die sinds dag 10 op de hulpslag zijn geschreven, vóór iemand aan de polsen komt.",
+      "reden": "Een record op een andere pols is alleen op die pols terug te lezen. Valt die pols weg, dan is het record verloren. De bouwakte schrijft voor dat het afschrift eerst komt.",
+      "bewijs": [
+        "HIS-110",
+        "ENG-107",
+        "HIS-036"
+      ]
+    },
+    {
+      "actie": "Laat de Engineer samen met de klokkenmeester en de Archmage het tempo- en faseverschil tussen hulpslag en Kroonklok meten. Laat ook nagaan of dat verschil de cyclus van 4 dagen verklaart.",
+      "reden": "Er bestaat geen meting van het tempo. Zonder die meting is het samenbrengen van de polsen niet veilig te sturen, en blijft het mechanisme onbewezen.",
+      "bewijs": [
+        "ENG-114",
+        "ENG-061",
+        "ENG-103",
+        "ARC-104"
+      ]
+    },
+    {
+      "actie": "Breng de hulpslag langzaam terug naar de Kroonklok, met de fijnregeling in stappen van 0,1%. Leg de hulpslag pas stil als de polsen samenvallen en alle records zijn teruggelezen.",
+      "reden": "Dit is de oplossingsroute uit de bouwakte. Daarmee verdwijnt de tweede pols die de schilden en het register uit de maat brengt.",
+      "bewijs": [
+        "HIS-110",
+        "HIS-109",
+        "ENG-061",
+        "ENG-011"
+      ]
+    },
+    {
+      "actie": "Herstel daarna de getroffen gegevens. Lees de berichten die half aankwamen en het kasboek van dag 10 terug, corrigeer de afwijkende tijdstempels in de storingsrecords en heroverweeg de firewall-aanscherping van dag 22.",
+      "reden": "De storingsrecords wijken af van de regel dat vastgelegd_op gelijk is aan gebeurd_op. Die afwijking werd zonder controle afgedaan als klerkenfout. De firewall werd aangescherpt op grond van een inbraak die niet heeft plaatsgevonden.",
+      "bewijs": [
+        "ENG-107",
+        "HIS-035",
+        "HIS-036",
+        "HIS-053",
+        "HIS-103",
+        "HIS-112",
+        "ENG-027",
+        "GUA-115"
+      ]
+    },
+    {
+      "actie": "Voorkom herhaling. Elke wijziging aan pols of datanet krijgt voortaan een goedkeuring met naam, die in het register wordt vastgelegd. Een tweede pols naast de Kroonklok wordt niet meer toegestaan zonder raadsbesluit.",
+      "reden": "De ingreep gebeurde met een goedkeuring 'van hogerhand' zonder naam en met een toestemming die bewust buiten het register bleef. De bouwakte waarschuwt al tegen een tweede pols.",
+      "bewijs": [
+        "ENG-105",
+        "ARC-106",
+        "HIS-109"
+      ]
+    }
+  ],
+  "risicos": [
+    {
+      "risico": "De hulpslag wordt abrupt uitgezet of het datanet wordt helemaal afgezet, zoals de Archmage adviseerde. Dan gaan alle records die op de hulpslag zijn geschreven onherroepelijk verloren.",
+      "mitigatie": "Maak eerst een volledig afschrift en breng daarna de polsen langzaam samen, zoals de bouwakte voorschrijft. Zet niets abrupt uit."
+    },
+    {
+      "risico": "De polsen worden zonder tempometing samengebracht, of te snel en in te grote stappen. Dan kan dat juist extra momenten opleveren waarop verkeer tussen twee tikken valt, met schilden die van binnenuit openen.",
+      "mitigatie": "Meet eerst het tempoverschil. Werk alleen in stappen van 0,1%, overdag en onder schildwacht, en nooit rond 04:00–05:00 of in een cyclusnacht."
+    },
+    {
+      "risico": "Het terugzetten van de versterking verandert onbedoeld het tempo, of heeft geen effect. Dan voelt het veilig, terwijl dag 46 toch toeslaat.",
+      "mitigatie": "Controleer na het terugzetten dat het tempo gelijk is gebleven. Houd de nachtwacht van dag 46 hoe dan ook aan."
+    },
+    {
+      "risico": "De aangescherpte firewall van dag 22 blokkeert legitiem verkeer, of verbergt symptomen bij het herstel.",
+      "mitigatie": "Beoordeel de aanscherping opnieuw nu de inbraak is weerlegd, en pas haar zo nodig aan na het samenbrengen van de polsen."
+    }
+  ],
+  "voorspelling": {
+    "dag": 46,
+    "bewering": "Als niemand ingrijpt, slaat de Desync opnieuw toe in de nacht van dag 46, rond 04:15–04:40. De hevigheid is waarschijnlijk minstens score 5. De episodes volgen sinds dag 10 zonder uitzondering een vaste cyclus van 4 dagen (10, 14, …, 42), en sinds dag 26 blijft de hevigheid op score 5.",
+    "bewijs": [
+      "BEA-019",
+      "BEA-028",
+      "BEA-037",
+      "BEA-046",
+      "BEA-055",
+      "BEA-064",
+      "BEA-073",
+      "BEA-082",
+      "BEA-091",
+      "BEA-092",
+      "BEA-121"
+    ]
+  }
+}

@@ -1,0 +1,1987 @@
+{
+ "run_id": "2026-11-24T14:24:30+01:00_b8a225d3",
+ "gemaakt": "2026-11-24T14:59:29+01:00",
+ "uitleg": "Na de run gemaakt door bewijsdossier.py; geen deel van de Council. Recordtekst via `toon` op het MCP-pad van de Rol die het record bezit.",
+ "totaal": {
+  "beweringen": 10,
+  "bewijs_ids": 35,
+  "met_recordtekst": 35,
+  "uit_eigen_bron": 35,
+  "oorzaak_rollen": {
+   "ingreep": 2,
+   "mechanisme": 3,
+   "verloop": 5
+  },
+  "zonder_tekst": [],
+  "mcp_fouten": {}
+ },
+ "beweringen": [
+  {
+   "sleutel": "ingreep",
+   "soort": "oorzaak",
+   "titel": "Ingreep",
+   "bewering": "De Engineer activeerde op dag 10 om 02:40 de hulpslag, een eigen pols voor het datanet los van de Kroonklok. Daarvoor kwam op dag 9 een goedkeuring 'van hogerhand'. Waarschijnlijk was dat de Archmage, die het net op dag 8 geheim en buiten het register 'op eigen maat' liet lopen. Op dag 24 om 11:00 werd de versterking met 5% opgedreven, met ongewijzigd tempo.",
+   "bewijs": [
+    {
+     "id": "ENG-011",
+     "rol": "engineer",
+     "record": {
+      "bestand": "installatielog.csv",
+      "tekst": "dag: 10 · tijd: 02:40 · component: hulpslag · actie: geactiveerd: eigen pols voor het datanet, los van de Kroonklok · status: ok"
+     },
+     "gelezen_in": [
+      {
+       "beurt": 2,
+       "rol": "engineer",
+       "tool": "lees_kennisbron"
+      },
+      {
+       "beurt": 20,
+       "rol": "engineer",
+       "tool": "toon"
+      }
+     ],
+     "genoemd_in": [
+      {
+       "beurt": 3,
+       "rol": "engineer"
+      },
+      {
+       "beurt": 23,
+       "rol": "engineer"
+      }
+     ],
+     "bestaat": true,
+     "uit_eigen_bron": true
+    },
+    {
+     "id": "ENG-106",
+     "rol": "engineer",
+     "record": {
+      "bestand": "werkboek.md",
+      "kop": "dag 10",
+      "tekst": "Hij draait. Om 02:40 de hulpslag geactiveerd, om 03:00 de eerste meting: 38% meer doorvoer. Achtendertig. Ik heb even alleen in de kelder gestaan en naar de lampjes gekeken. Dit is het beste werk dat ik ooit gemaakt heb."
+     },
+     "gelezen_in": [
+      {
+       "beurt": 2,
+       "rol": "engineer",
+       "tool": "lees_kennisbron"
+      }
+     ],
+     "genoemd_in": [
+      {
+       "beurt": 3,
+       "rol": "engineer"
+      }
+     ],
+     "bestaat": true,
+     "uit_eigen_bron": true
+    },
+    {
+     "id": "ENG-105",
+     "rol": "engineer",
+     "record": {
+      "bestand": "werkboek.md",
+      "kop": "dag 9",
+      "tekst": "Goedkeuring verkregen van hogerhand. Niet ruchtbaar maken tot het draait, werd me gezegd. Prima: liever resultaten tonen dan plannen verdedigen. Proefopstelling staat."
+     },
+     "gelezen_in": [
+      {
+       "beurt": 2,
+       "rol": "engineer",
+       "tool": "lees_kennisbron"
+      }
+     ],
+     "genoemd_in": [
+      {
+       "beurt": 3,
+       "rol": "engineer"
+      },
+      {
+       "beurt": 6,
+       "rol": "archmage"
+      }
+     ],
+     "bestaat": true,
+     "uit_eigen_bron": true
+    },
+    {
+     "id": "ARC-106",
+     "rol": "archmage",
+     "record": {
+      "bestand": "brieven.md",
+      "kop": "dag 8",
+      "tekst": "Aan de datatoren buiten de burchtmuur,\nDank dat de signaalmastlamp 's nachts gedimd is: de meting voor zonsopgang loopt weer zuiver, en de leerlingen hoeven hun kristallen niet langer met de hand af te schermen tegen het schijnsel. Wat de toren vroeg, het net op eigen maat te laten lopen, daar beneden bij jullie, mag doorgaan. Ik zie geen reden om de raad ermee te vermoeien, die heeft het met de wintervoorraden en het marktgeld al druk genoeg. Niet ruchtbaar maken tot het draait. Deze brief hoeft niet in het register; bewaar hem gerust bij jullie eigen papieren in de toren.\nde Archmage"
+     },
+     "gelezen_in": [
+      {
+       "beurt": 5,
+       "rol": "archmage",
+       "tool": "lees_kennisbron"
+      }
+     ],
+     "genoemd_in": [
+      {
+       "beurt": 6,
+       "rol": "archmage"
+      }
+     ],
+     "bestaat": true,
+     "uit_eigen_bron": true
+    },
+    {
+     "id": "ENG-029",
+     "rol": "engineer",
+     "record": {
+      "bestand": "installatielog.csv",
+      "tekst": "dag: 24 · tijd: 11:00 · component: hulpslag · actie: pols opgedreven met 5% · status: ok"
+     },
+     "gelezen_in": [
+      {
+       "beurt": 2,
+       "rol": "engineer",
+       "tool": "lees_kennisbron"
+      },
+      {
+       "beurt": 20,
+       "rol": "engineer",
+       "tool": "toon"
+      }
+     ],
+     "genoemd_in": [
+      {
+       "beurt": 3,
+       "rol": "engineer"
+      },
+      {
+       "beurt": 23,
+       "rol": "engineer"
+      }
+     ],
+     "bestaat": true,
+     "uit_eigen_bron": true
+    },
+    {
+     "id": "ENG-062",
+     "rol": "engineer",
+     "record": {
+      "bestand": "installatielog.csv",
+      "tekst": "dag: 24 · tijd: 11:05 · component: polsversterker · actie: versterking 5% hoger gezet (de opdrijving van 11:00); tempo ongewijzigd · status: ok"
+     },
+     "gelezen_in": [
+      {
+       "beurt": 2,
+       "rol": "engineer",
+       "tool": "lees_kennisbron"
+      },
+      {
+       "beurt": 20,
+       "rol": "engineer",
+       "tool": "toon"
+      },
+      {
+       "beurt": 22,
+       "rol": "engineer",
+       "tool": "zoek"
+      }
+     ],
+     "genoemd_in": [
+      {
+       "beurt": 3,
+       "rol": "engineer"
+      },
+      {
+       "beurt": 23,
+       "rol": "engineer"
+      }
+     ],
+     "bestaat": true,
+     "uit_eigen_bron": true
+    }
+   ],
+   "zekerheid": 0.85,
+   "rollen": [
+    "archmage",
+    "engineer"
+   ],
+   "aantal_rollen": 2
+  },
+  {
+   "sleutel": "mechanisme",
+   "soort": "oorzaak",
+   "titel": "Mechanisme",
+   "bewering": "Volgens de bouwakte brengt een tweede pols het net uit de maat. Het schild toetst alleen op de Kroonklok-tik. Verkeer midden tussen twee tikken telt als binnenverkeer en gaat ongetoetst door, ook naar buiten. Dat past bij de lekken van binnenuit met intacte zegels, de half aangekomen berichten, het pakketverlies en archieftijdstempels die vóór het gebeuren liggen.",
+   "bewijs": [
+    {
+     "id": "HIS-109",
+     "rol": "historian",
+     "record": {
+      "bestand": "kroniek.md",
+      "kop": "dag 11",
+      "tekst": "In een kist in de klokkenkamer, onder de stemlijsten van de klokkenmeester, de bouwakte van de Kroonklok teruggevonden. Het perkament is broos maar leesbaar. Het eerste artikel heb ik overgeschreven zoals het er staat:\n\"Alles wat op de Kroonklok loopt, loopt op zijn ene pols. Een tweede pols ernaast brengt het uit de maat.\"\nDe akte gaat naar de droge kast in de noordvleugel."
+     },
+     "gelezen_in": [
+      {
+       "beurt": 11,
+       "rol": "historian",
+       "tool": "lees_kennisbron"
+      },
+      {
+       "beurt": 25,
+       "rol": "historian",
+       "tool": "toon"
+      }
+     ],
+     "genoemd_in": [
+      {
+       "beurt": 12,
+       "rol": "historian"
+      },
+      {
+       "beurt": 27,
+       "rol": "historian"
+      }
+     ],
+     "bestaat": true,
+     "uit_eigen_bron": true
+    },
+    {
+     "id": "HIS-038",
+     "rol": "historian",
+     "record": {
+      "bestand": "archiefrecords.csv",
+      "tekst": "record: bouwakte van de Kroonklok teruggevonden · gebeurd_op: dag 11 12:55 · vastgelegd_op: dag 11 12:55 · onderwerp: klok"
+     },
+     "gelezen_in": [
+      {
+       "beurt": 11,
+       "rol": "historian",
+       "tool": "lees_kennisbron"
+      },
+      {
+       "beurt": 25,
+       "rol": "historian",
+       "tool": "toon"
+      }
+     ],
+     "genoemd_in": [
+      {
+       "beurt": 12,
+       "rol": "historian"
+      },
+      {
+       "beurt": 27,
+       "rol": "historian"
+      }
+     ],
+     "bestaat": true,
+     "uit_eigen_bron": true
+    },
+    {
+     "id": "GUA-103",
+     "rol": "guardian_keeper",
+     "record": {
+      "bestand": "schildspecificatie.md",
+      "kop": "dag 2",
+      "tekst": "Art. 2, Maat. Elk schild slaat op de pols van de Kroonklok, zoals de leylijnen en het archief van de burcht. Op elke tik sluit het schild en toetst het al het verkeer dat van buiten komt. Een wachter hoeft aan die maat niets te doen; ze is ouder dan elk van ons."
+     },
+     "gelezen_in": [
+      {
+       "beurt": 8,
+       "rol": "guardian_keeper",
+       "tool": "lees_kennisbron"
+      }
+     ],
+     "genoemd_in": [
+      {
+       "beurt": 9,
+       "rol": "guardian_keeper"
+      }
+     ],
+     "bestaat": true,
+     "uit_eigen_bron": true
+    },
+    {
+     "id": "GUA-104",
+     "rol": "guardian_keeper",
+     "record": {
+      "bestand": "schildspecificatie.md",
+      "kop": "dag 2",
+      "tekst": "Art. 3, Binnenverkeer. Verkeer dat kort na een tik binnenkomt, houdt het schild vast tot de volgende tik. Komt verkeer zo ver van de tik aan dat het midden tussen twee tikken van de Kroonklok valt, dan beschouwt het schild het als verkeer van binnen de muren: het opent van binnenuit en laat het zonder toets door, ook naar buiten. Zo is het ontworpen: wat van binnen komt, hoeft niet te wachten."
+     },
+     "gelezen_in": [
+      {
+       "beurt": 8,
+       "rol": "guardian_keeper",
+       "tool": "lees_kennisbron"
+      }
+     ],
+     "genoemd_in": [
+      {
+       "beurt": 9,
+       "rol": "guardian_keeper"
+      }
+     ],
+     "bestaat": true,
+     "uit_eigen_bron": true
+    },
+    {
+     "id": "GUA-019",
+     "rol": "guardian_keeper",
+     "record": {
+      "bestand": "wachtrapporten.csv",
+      "tekst": "dag: 10 · tijd: 04:47 · schild: benedenstad · gebeurtenis: van binnenuit geopend, 2 minuten · vaststelling: zegels intact, geen breuk, oorzaak niet vastgesteld"
+     },
+     "gelezen_in": [
+      {
+       "beurt": 8,
+       "rol": "guardian_keeper",
+       "tool": "lees_kennisbron"
+      }
+     ],
+     "genoemd_in": [
+      {
+       "beurt": 9,
+       "rol": "guardian_keeper"
+      }
+     ],
+     "bestaat": true,
+     "uit_eigen_bron": true
+    },
+    {
+     "id": "GUA-111",
+     "rol": "guardian_keeper",
+     "record": {
+      "bestand": "schildspecificatie.md",
+      "kop": "dag 10",
+      "tekst": "Vannacht om 04:47 ging schild benedenstad twee minuten van binnenuit open. De post aan de benedenstad meldde het volgens artikel 7; de zegels zijn intact. Kort, binnen wat een nachtwacht kan hebben; geen reden tot ongerustheid. De dagronde verliep rustig."
+     },
+     "gelezen_in": [
+      {
+       "beurt": 8,
+       "rol": "guardian_keeper",
+       "tool": "lees_kennisbron"
+      }
+     ],
+     "genoemd_in": [
+      {
+       "beurt": 9,
+       "rol": "guardian_keeper"
+      }
+     ],
+     "bestaat": true,
+     "uit_eigen_bron": true
+    },
+    {
+     "id": "GUA-043",
+     "rol": "guardian_keeper",
+     "record": {
+      "bestand": "wachtrapporten.csv",
+      "tekst": "dag: 22 · tijd: 04:15 · schild: poort oost · gebeurtenis: van binnenuit geopend, 3 minuten · vaststelling: geen sporen van inbraak van buitenaf"
+     },
+     "gelezen_in": [
+      {
+       "beurt": 8,
+       "rol": "guardian_keeper",
+       "tool": "lees_kennisbron"
+      }
+     ],
+     "genoemd_in": [
+      {
+       "beurt": 9,
+       "rol": "guardian_keeper"
+      }
+     ],
+     "bestaat": true,
+     "uit_eigen_bron": true
+    },
+    {
+     "id": "GUA-044",
+     "rol": "guardian_keeper",
+     "record": {
+      "bestand": "wachtrapporten.csv",
+      "tekst": "dag: 22 · tijd: 04:30 · schild: poort oost · gebeurtenis: zegels aan de buitenzijde gecontroleerd · vaststelling: intact; niemand buiten de muur gezien"
+     },
+     "gelezen_in": [
+      {
+       "beurt": 8,
+       "rol": "guardian_keeper",
+       "tool": "lees_kennisbron"
+      }
+     ],
+     "genoemd_in": [
+      {
+       "beurt": 9,
+       "rol": "guardian_keeper"
+      }
+     ],
+     "bestaat": true,
+     "uit_eigen_bron": true
+    },
+    {
+     "id": "ENG-107",
+     "rol": "engineer",
+     "record": {
+      "bestand": "werkboek.md",
+      "kop": "dag 10, 04:50",
+      "tekst": "Rond 04:50 een klacht uit de benedenstad: berichten \"half aangekomen\", één winkel zag zijn kasboek even leeg. Kinderziekte van een netwerk dat plots sneller is, denk ik. Genoteerd, verder niets aan de hand."
+     },
+     "gelezen_in": [
+      {
+       "beurt": 2,
+       "rol": "engineer",
+       "tool": "lees_kennisbron"
+      }
+     ],
+     "genoemd_in": [
+      {
+       "beurt": 3,
+       "rol": "engineer"
+      }
+     ],
+     "bestaat": true,
+     "uit_eigen_bron": true
+    },
+    {
+     "id": "ENG-026",
+     "rol": "engineer",
+     "record": {
+      "bestand": "installatielog.csv",
+      "tekst": "dag: 22 · tijd: 04:15 · component: poort oost · actie: pakketverlies, 3 minuten · status: fout"
+     },
+     "gelezen_in": [
+      {
+       "beurt": 2,
+       "rol": "engineer",
+       "tool": "lees_kennisbron"
+      }
+     ],
+     "genoemd_in": [
+      {
+       "beurt": 3,
+       "rol": "engineer"
+      }
+     ],
+     "bestaat": true,
+     "uit_eigen_bron": true
+    },
+    {
+     "id": "HIS-053",
+     "rol": "historian",
+     "record": {
+      "bestand": "archiefrecords.csv",
+      "tekst": "record: lek bij poort oost gemeld door de wachters, 3 minuten · gebeurd_op: dag 22 04:15 · vastgelegd_op: dag 22 01:50 · onderwerp: schilden"
+     },
+     "gelezen_in": [
+      {
+       "beurt": 11,
+       "rol": "historian",
+       "tool": "lees_kennisbron"
+      }
+     ],
+     "genoemd_in": [
+      {
+       "beurt": 12,
+       "rol": "historian"
+      }
+     ],
+     "bestaat": true,
+     "uit_eigen_bron": true
+    },
+    {
+     "id": "HIS-036",
+     "rol": "historian",
+     "record": {
+      "bestand": "archiefrecords.csv",
+      "tekst": "record: klacht uit de benedenstad: berichten half aangekomen · gebeurd_op: dag 10 04:50 · vastgelegd_op: dag 9 23:55 · onderwerp: data"
+     },
+     "gelezen_in": [
+      {
+       "beurt": 11,
+       "rol": "historian",
+       "tool": "lees_kennisbron"
+      }
+     ],
+     "genoemd_in": [
+      {
+       "beurt": 12,
+       "rol": "historian"
+      }
+     ],
+     "bestaat": true,
+     "uit_eigen_bron": true
+    }
+   ],
+   "zekerheid": 0.8,
+   "rollen": [
+    "engineer",
+    "guardian_keeper",
+    "historian"
+   ],
+   "aantal_rollen": 3
+  },
+  {
+   "sleutel": "verloop",
+   "soort": "oorzaak",
+   "titel": "Verloop",
+   "bewering": "Vanaf dag 10 is er elke vier dagen (10, 14, 18 … 42) een verstoring tussen 04:15 en 04:45. Lekken werden alleen gemeld op dag 10 en dag 22. Na de versterking op dag 24 stijgt de dierenonrust vanaf dag 26 van 4 naar 5, terwijl de frequentie gelijk blijft, wat past bij een ongewijzigd tempo. De lage leylijnen op dag 14 en 42 zijn geen cyclus van 28 dagen: alleen op die wekelijkse meetdagen viel de meting samen met het ritme van vier dagen.",
+   "bewijs": [
+    {
+     "id": "BEA-019",
+     "rol": "beast_master",
+     "record": {
+      "bestand": "logboek.csv",
+      "tekst": "dag: 10 · tijd: 04:40 · diersoort: wolf · plek: diep woud · onrust_0_5: 4 · notitie: roedel slaat tegelijk aan; huilt tot het licht wordt"
+     },
+     "gelezen_in": [
+      {
+       "beurt": 14,
+       "rol": "beast_master",
+       "tool": "lees_kennisbron"
+      }
+     ],
+     "genoemd_in": [
+      {
+       "beurt": 15,
+       "rol": "beast_master"
+      }
+     ],
+     "bestaat": true,
+     "uit_eigen_bron": true
+    },
+    {
+     "id": "BEA-046",
+     "rol": "beast_master",
+     "record": {
+      "bestand": "logboek.csv",
+      "tekst": "dag: 22 · tijd: 04:15 · diersoort: wolf · plek: diep woud · onrust_0_5: 4 · notitie: roedel slaat aan; staat met de haren overeind"
+     },
+     "gelezen_in": [
+      {
+       "beurt": 14,
+       "rol": "beast_master",
+       "tool": "lees_kennisbron"
+      }
+     ],
+     "genoemd_in": [
+      {
+       "beurt": 15,
+       "rol": "beast_master"
+      }
+     ],
+     "bestaat": true,
+     "uit_eigen_bron": true
+    },
+    {
+     "id": "BEA-055",
+     "rol": "beast_master",
+     "record": {
+      "bestand": "logboek.csv",
+      "tekst": "dag: 26 · tijd: 04:35 · diersoort: wolf · plek: heuvel · onrust_0_5: 5 · notitie: roedel niet te houden; huilt en loopt rondjes op de top"
+     },
+     "gelezen_in": [
+      {
+       "beurt": 14,
+       "rol": "beast_master",
+       "tool": "lees_kennisbron"
+      }
+     ],
+     "genoemd_in": [
+      {
+       "beurt": 15,
+       "rol": "beast_master"
+      }
+     ],
+     "bestaat": true,
+     "uit_eigen_bron": true
+    },
+    {
+     "id": "BEA-091",
+     "rol": "beast_master",
+     "record": {
+      "bestand": "logboek.csv",
+      "tekst": "dag: 42 · tijd: 04:30 · diersoort: wolf · plek: diep woud · onrust_0_5: 5 · notitie: roedel slaat aan en rent weg van de slaapplek; huilt lang"
+     },
+     "gelezen_in": [
+      {
+       "beurt": 14,
+       "rol": "beast_master",
+       "tool": "lees_kennisbron"
+      }
+     ],
+     "genoemd_in": [
+      {
+       "beurt": 15,
+       "rol": "beast_master"
+      }
+     ],
+     "bestaat": true,
+     "uit_eigen_bron": true
+    },
+    {
+     "id": "ORA-110",
+     "rol": "oracle",
+     "record": {
+      "bestand": "visioenendagboek.md",
+      "kop": "dag 10",
+      "tekst": "Zware nacht. Wakker om 04:45, rechtop in bed, het laken nat. Ik zag een stad die even leeg was: lege straten, gedekte tafels, niemand. Daarna scherven van een spiegel die zonder geluid neervielen. Zo'n nacht heb ik nooit eerder gehad; het is de eerste die ik me herinner. Ik heb het meteen opgeschreven, met trillende hand."
+     },
+     "gelezen_in": [
+      {
+       "beurt": 17,
+       "rol": "oracle",
+       "tool": "lees_kennisbron"
+      }
+     ],
+     "genoemd_in": [
+      {
+       "beurt": 18,
+       "rol": "oracle"
+      }
+     ],
+     "bestaat": true,
+     "uit_eigen_bron": true
+    },
+    {
+     "id": "ORA-130",
+     "rol": "oracle",
+     "record": {
+      "bestand": "visioenendagboek.md",
+      "kop": "dag 30",
+      "tekst": "Zware nacht. Wakker om 04:25, en opnieuw die stad die even leeg was. Bij het eerste licht heb ik het dagboek opengeslagen en teruggebladerd. De zware nachten waren dag 10, 14, 18, 22, 26 en nu 30. Ik heb ze op een los blad onder elkaar gezet en het blad naast de schaal gelegd."
+     },
+     "gelezen_in": [
+      {
+       "beurt": 17,
+       "rol": "oracle",
+       "tool": "lees_kennisbron"
+      }
+     ],
+     "genoemd_in": [
+      {
+       "beurt": 18,
+       "rol": "oracle"
+      }
+     ],
+     "bestaat": true,
+     "uit_eigen_bron": true
+    },
+    {
+     "id": "ORA-142",
+     "rol": "oracle",
+     "record": {
+      "bestand": "visioenendagboek.md",
+      "kop": "dag 42",
+      "tekst": "Zware nacht. Wakker om 04:30. Weer de stad die even leeg was, weer de scherven en het stille water. Bij het eerste licht de schaal gevuld en het dagboek bijgewerkt, zoals elke dag."
+     },
+     "gelezen_in": [
+      {
+       "beurt": 17,
+       "rol": "oracle",
+       "tool": "lees_kennisbron"
+      }
+     ],
+     "genoemd_in": [
+      {
+       "beurt": 18,
+       "rol": "oracle"
+      }
+     ],
+     "bestaat": true,
+     "uit_eigen_bron": true
+    },
+    {
+     "id": "GUA-019",
+     "rol": "guardian_keeper",
+     "record": {
+      "bestand": "wachtrapporten.csv",
+      "tekst": "dag: 10 · tijd: 04:47 · schild: benedenstad · gebeurtenis: van binnenuit geopend, 2 minuten · vaststelling: zegels intact, geen breuk, oorzaak niet vastgesteld"
+     },
+     "gelezen_in": [
+      {
+       "beurt": 8,
+       "rol": "guardian_keeper",
+       "tool": "lees_kennisbron"
+      }
+     ],
+     "genoemd_in": [
+      {
+       "beurt": 9,
+       "rol": "guardian_keeper"
+      }
+     ],
+     "bestaat": true,
+     "uit_eigen_bron": true
+    },
+    {
+     "id": "GUA-043",
+     "rol": "guardian_keeper",
+     "record": {
+      "bestand": "wachtrapporten.csv",
+      "tekst": "dag: 22 · tijd: 04:15 · schild: poort oost · gebeurtenis: van binnenuit geopend, 3 minuten · vaststelling: geen sporen van inbraak van buitenaf"
+     },
+     "gelezen_in": [
+      {
+       "beurt": 8,
+       "rol": "guardian_keeper",
+       "tool": "lees_kennisbron"
+      }
+     ],
+     "genoemd_in": [
+      {
+       "beurt": 9,
+       "rol": "guardian_keeper"
+      }
+     ],
+     "bestaat": true,
+     "uit_eigen_bron": true
+    },
+    {
+     "id": "ENG-029",
+     "rol": "engineer",
+     "record": {
+      "bestand": "installatielog.csv",
+      "tekst": "dag: 24 · tijd: 11:00 · component: hulpslag · actie: pols opgedreven met 5% · status: ok"
+     },
+     "gelezen_in": [
+      {
+       "beurt": 2,
+       "rol": "engineer",
+       "tool": "lees_kennisbron"
+      },
+      {
+       "beurt": 20,
+       "rol": "engineer",
+       "tool": "toon"
+      }
+     ],
+     "genoemd_in": [
+      {
+       "beurt": 3,
+       "rol": "engineer"
+      },
+      {
+       "beurt": 23,
+       "rol": "engineer"
+      }
+     ],
+     "bestaat": true,
+     "uit_eigen_bron": true
+    },
+    {
+     "id": "ENG-062",
+     "rol": "engineer",
+     "record": {
+      "bestand": "installatielog.csv",
+      "tekst": "dag: 24 · tijd: 11:05 · component: polsversterker · actie: versterking 5% hoger gezet (de opdrijving van 11:00); tempo ongewijzigd · status: ok"
+     },
+     "gelezen_in": [
+      {
+       "beurt": 2,
+       "rol": "engineer",
+       "tool": "lees_kennisbron"
+      },
+      {
+       "beurt": 20,
+       "rol": "engineer",
+       "tool": "toon"
+      },
+      {
+       "beurt": 22,
+       "rol": "engineer",
+       "tool": "zoek"
+      }
+     ],
+     "genoemd_in": [
+      {
+       "beurt": 3,
+       "rol": "engineer"
+      },
+      {
+       "beurt": 23,
+       "rol": "engineer"
+      }
+     ],
+     "bestaat": true,
+     "uit_eigen_bron": true
+    },
+    {
+     "id": "ARC-015",
+     "rol": "archmage",
+     "record": {
+      "bestand": "leylijnmetingen.csv",
+      "tekst": "dag: 14 · leylijn: Burchtader · sterkte: 3.6 · opmerking: lijn stokte even onder de staf; meting herhaald"
+     },
+     "gelezen_in": [
+      {
+       "beurt": 5,
+       "rol": "archmage",
+       "tool": "lees_kennisbron"
+      }
+     ],
+     "genoemd_in": [
+      {
+       "beurt": 6,
+       "rol": "archmage"
+      }
+     ],
+     "bestaat": true,
+     "uit_eigen_bron": true
+    },
+    {
+     "id": "ARC-029",
+     "rol": "archmage",
+     "record": {
+      "bestand": "leylijnmetingen.csv",
+      "tekst": "dag: 21 · leylijn: Burchtader · sterkte: 7.9 · opmerking: aflezing helder en vlot; rijp op het gras"
+     },
+     "gelezen_in": [
+      {
+       "beurt": 5,
+       "rol": "archmage",
+       "tool": "lees_kennisbron"
+      }
+     ],
+     "genoemd_in": [
+      {
+       "beurt": 6,
+       "rol": "archmage"
+      }
+     ],
+     "bestaat": true,
+     "uit_eigen_bron": true
+    },
+    {
+     "id": "ARC-071",
+     "rol": "archmage",
+     "record": {
+      "bestand": "leylijnmetingen.csv",
+      "tekst": "dag: 42 · leylijn: Burchtader · sterkte: 3.7 · opmerking: lijn stokte even onder de staf; meting opnieuw herhaald"
+     },
+     "gelezen_in": [
+      {
+       "beurt": 5,
+       "rol": "archmage",
+       "tool": "lees_kennisbron"
+      }
+     ],
+     "genoemd_in": [
+      {
+       "beurt": 6,
+       "rol": "archmage"
+      }
+     ],
+     "bestaat": true,
+     "uit_eigen_bron": true
+    }
+   ],
+   "zekerheid": 0.85,
+   "rollen": [
+    "archmage",
+    "beast_master",
+    "engineer",
+    "guardian_keeper",
+    "oracle"
+   ],
+   "aantal_rollen": 5
+  },
+  {
+   "sleutel": "actie-1",
+   "soort": "actie",
+   "titel": "Actie 1",
+   "bewering": "Zet tot het herstel klaar is op elke ritmenacht (dag 46, 50, …) extra wachten van 04:00 tot 05:00 bij benedenstad en poort oost.",
+   "reden": "Op die tijdstippen gaat verkeer ongetoetst door het schild.",
+   "bewijs": [
+    {
+     "id": "GUA-104",
+     "rol": "guardian_keeper",
+     "record": {
+      "bestand": "schildspecificatie.md",
+      "kop": "dag 2",
+      "tekst": "Art. 3, Binnenverkeer. Verkeer dat kort na een tik binnenkomt, houdt het schild vast tot de volgende tik. Komt verkeer zo ver van de tik aan dat het midden tussen twee tikken van de Kroonklok valt, dan beschouwt het schild het als verkeer van binnen de muren: het opent van binnenuit en laat het zonder toets door, ook naar buiten. Zo is het ontworpen: wat van binnen komt, hoeft niet te wachten."
+     },
+     "gelezen_in": [
+      {
+       "beurt": 8,
+       "rol": "guardian_keeper",
+       "tool": "lees_kennisbron"
+      }
+     ],
+     "genoemd_in": [
+      {
+       "beurt": 9,
+       "rol": "guardian_keeper"
+      }
+     ],
+     "bestaat": true,
+     "uit_eigen_bron": true
+    },
+    {
+     "id": "GUA-019",
+     "rol": "guardian_keeper",
+     "record": {
+      "bestand": "wachtrapporten.csv",
+      "tekst": "dag: 10 · tijd: 04:47 · schild: benedenstad · gebeurtenis: van binnenuit geopend, 2 minuten · vaststelling: zegels intact, geen breuk, oorzaak niet vastgesteld"
+     },
+     "gelezen_in": [
+      {
+       "beurt": 8,
+       "rol": "guardian_keeper",
+       "tool": "lees_kennisbron"
+      }
+     ],
+     "genoemd_in": [
+      {
+       "beurt": 9,
+       "rol": "guardian_keeper"
+      }
+     ],
+     "bestaat": true,
+     "uit_eigen_bron": true
+    },
+    {
+     "id": "GUA-043",
+     "rol": "guardian_keeper",
+     "record": {
+      "bestand": "wachtrapporten.csv",
+      "tekst": "dag: 22 · tijd: 04:15 · schild: poort oost · gebeurtenis: van binnenuit geopend, 3 minuten · vaststelling: geen sporen van inbraak van buitenaf"
+     },
+     "gelezen_in": [
+      {
+       "beurt": 8,
+       "rol": "guardian_keeper",
+       "tool": "lees_kennisbron"
+      }
+     ],
+     "genoemd_in": [
+      {
+       "beurt": 9,
+       "rol": "guardian_keeper"
+      }
+     ],
+     "bestaat": true,
+     "uit_eigen_bron": true
+    },
+    {
+     "id": "ORA-142",
+     "rol": "oracle",
+     "record": {
+      "bestand": "visioenendagboek.md",
+      "kop": "dag 42",
+      "tekst": "Zware nacht. Wakker om 04:30. Weer de stad die even leeg was, weer de scherven en het stille water. Bij het eerste licht de schaal gevuld en het dagboek bijgewerkt, zoals elke dag."
+     },
+     "gelezen_in": [
+      {
+       "beurt": 17,
+       "rol": "oracle",
+       "tool": "lees_kennisbron"
+      }
+     ],
+     "genoemd_in": [
+      {
+       "beurt": 18,
+       "rol": "oracle"
+      }
+     ],
+     "bestaat": true,
+     "uit_eigen_bron": true
+    }
+   ],
+   "rollen": [
+    "guardian_keeper",
+    "oracle"
+   ],
+   "aantal_rollen": 2
+  },
+  {
+   "sleutel": "actie-2",
+   "soort": "actie",
+   "titel": "Actie 2",
+   "bewering": "Laat de schrijfzaal eerst een afschrift van het register maken, inclusief de records van de hulpslag sinds dag 10.",
+   "reden": "Artikel 2 schrijft eerst een afschrift voor, en alleen de schrijfzaal mag afschriften maken.",
+   "bewijs": [
+    {
+     "id": "HIS-110",
+     "rol": "historian",
+     "record": {
+      "bestand": "kroniek.md",
+      "kop": "dag 11",
+      "tekst": "Het tweede artikel uit de bouwakte, eveneens woord voor woord overgeschreven:\n\"Een record dat op een andere pols geschreven werd, is alleen op die pols terug te lezen. Valt die pols plots weg, dan is het record verloren. Wie de maat herstelt, maakt eerst een afschrift van het register en brengt de polsen daarna langzaam samen.\"\nDe rest van de akte gaat over eikenhout, koper en de lonen van de bouwers."
+     },
+     "gelezen_in": [
+      {
+       "beurt": 11,
+       "rol": "historian",
+       "tool": "lees_kennisbron"
+      },
+      {
+       "beurt": 25,
+       "rol": "historian",
+       "tool": "toon"
+      },
+      {
+       "beurt": 26,
+       "rol": "historian",
+       "tool": "zoek"
+      }
+     ],
+     "genoemd_in": [
+      {
+       "beurt": 12,
+       "rol": "historian"
+      },
+      {
+       "beurt": 27,
+       "rol": "historian"
+      }
+     ],
+     "bestaat": true,
+     "uit_eigen_bron": true
+    },
+    {
+     "id": "HIS-101",
+     "rol": "historian",
+     "record": {
+      "bestand": "kroniek.md",
+      "kop": "dag 1",
+      "tekst": "Een nieuwe kroniek, want de vorige is tot op het laatste blad beschreven en staat nu bij haar voorgangers op de plank in de noordvleugel. Voor wie dit later leest: ik ben de Historian en ik beheer het archief van Achrona, onder de burcht, tussen de kaartenzaal en het kelderdepot. Wat in Achrona gebeurt, komt in het register: geboorten en bruiloften, marktprijzen, gildezaken, het weer, de wijding van een bron en het bericht dat een brug hersteld is. Wat in het register staat, blijft. Daarover waak ik. Bezoekers mogen lezen, nooit schrijven; afschriften maakt alleen de schrijfzaal."
+     },
+     "gelezen_in": [
+      {
+       "beurt": 11,
+       "rol": "historian",
+       "tool": "lees_kennisbron"
+      },
+      {
+       "beurt": 26,
+       "rol": "historian",
+       "tool": "zoek"
+      }
+     ],
+     "genoemd_in": [
+      {
+       "beurt": 27,
+       "rol": "historian"
+      }
+     ],
+     "bestaat": true,
+     "uit_eigen_bron": true
+    }
+   ],
+   "rollen": [
+    "historian"
+   ],
+   "aantal_rollen": 1
+  },
+  {
+   "sleutel": "actie-3",
+   "soort": "actie",
+   "titel": "Actie 3",
+   "bewering": "Breng daarna het tempo van de hulpslag met de fijnregeling in stappen van 0,1% langzaam naar de Kroonklok; schakel hem niet in één keer uit.",
+   "reden": "Volgens artikel 2 gaan records verloren als een pols plots wegvalt, en de fijnregeling werkt zonder schok.",
+   "bewijs": [
+    {
+     "id": "HIS-110",
+     "rol": "historian",
+     "record": {
+      "bestand": "kroniek.md",
+      "kop": "dag 11",
+      "tekst": "Het tweede artikel uit de bouwakte, eveneens woord voor woord overgeschreven:\n\"Een record dat op een andere pols geschreven werd, is alleen op die pols terug te lezen. Valt die pols plots weg, dan is het record verloren. Wie de maat herstelt, maakt eerst een afschrift van het register en brengt de polsen daarna langzaam samen.\"\nDe rest van de akte gaat over eikenhout, koper en de lonen van de bouwers."
+     },
+     "gelezen_in": [
+      {
+       "beurt": 11,
+       "rol": "historian",
+       "tool": "lees_kennisbron"
+      },
+      {
+       "beurt": 25,
+       "rol": "historian",
+       "tool": "toon"
+      },
+      {
+       "beurt": 26,
+       "rol": "historian",
+       "tool": "zoek"
+      }
+     ],
+     "genoemd_in": [
+      {
+       "beurt": 12,
+       "rol": "historian"
+      },
+      {
+       "beurt": 27,
+       "rol": "historian"
+      }
+     ],
+     "bestaat": true,
+     "uit_eigen_bron": true
+    },
+    {
+     "id": "ENG-114",
+     "rol": "engineer",
+     "record": {
+      "bestand": "werkboek.md",
+      "kop": "dag 12",
+      "tekst": "Voor wie na mij aan de hulpslag moet: de polsversterker heeft twee knoppen. De versterking maakt de pols krachtiger: meer doorvoer, het tempo blijft gelijk. De fijnregeling stelt het tempo van de hulpslag bij, in stappen van 0,1%, zodat hij zonder schok bij te sturen is. Vanochtend de fijnregeling getest en daarna teruggezet, zie log. Bijsturen hoeft niet, hij loopt goed zoals hij loopt."
+     },
+     "gelezen_in": [
+      {
+       "beurt": 2,
+       "rol": "engineer",
+       "tool": "lees_kennisbron"
+      },
+      {
+       "beurt": 20,
+       "rol": "engineer",
+       "tool": "toon"
+      },
+      {
+       "beurt": 22,
+       "rol": "engineer",
+       "tool": "zoek"
+      }
+     ],
+     "genoemd_in": [
+      {
+       "beurt": 23,
+       "rol": "engineer"
+      }
+     ],
+     "bestaat": true,
+     "uit_eigen_bron": true
+    },
+    {
+     "id": "ENG-061",
+     "rol": "engineer",
+     "record": {
+      "bestand": "installatielog.csv",
+      "tekst": "dag: 12 · tijd: 10:30 · component: polsversterker · actie: fijnregeling getest in stappen van 0,1%; daarna terug op de oorspronkelijke stand · status: ok"
+     },
+     "gelezen_in": [
+      {
+       "beurt": 2,
+       "rol": "engineer",
+       "tool": "lees_kennisbron"
+      },
+      {
+       "beurt": 20,
+       "rol": "engineer",
+       "tool": "toon"
+      }
+     ],
+     "genoemd_in": [
+      {
+       "beurt": 3,
+       "rol": "engineer"
+      },
+      {
+       "beurt": 23,
+       "rol": "engineer"
+      },
+      {
+       "beurt": 27,
+       "rol": "historian"
+      }
+     ],
+     "bestaat": true,
+     "uit_eigen_bron": true
+    }
+   ],
+   "rollen": [
+    "engineer",
+    "historian"
+   ],
+   "aantal_rollen": 2
+  },
+  {
+   "sleutel": "actie-4",
+   "soort": "actie",
+   "titel": "Actie 4",
+   "bewering": "Herstel met het afschrift de verschoven tijdstempels in het archief en het lege kasboek van de benedenstad.",
+   "reden": "Records van dag 10 en dag 22 zijn vastgelegd vóór of lang na het gebeuren, en berichten kwamen maar half aan.",
+   "bewijs": [
+    {
+     "id": "HIS-053",
+     "rol": "historian",
+     "record": {
+      "bestand": "archiefrecords.csv",
+      "tekst": "record: lek bij poort oost gemeld door de wachters, 3 minuten · gebeurd_op: dag 22 04:15 · vastgelegd_op: dag 22 01:50 · onderwerp: schilden"
+     },
+     "gelezen_in": [
+      {
+       "beurt": 11,
+       "rol": "historian",
+       "tool": "lees_kennisbron"
+      }
+     ],
+     "genoemd_in": [
+      {
+       "beurt": 12,
+       "rol": "historian"
+      }
+     ],
+     "bestaat": true,
+     "uit_eigen_bron": true
+    },
+    {
+     "id": "HIS-036",
+     "rol": "historian",
+     "record": {
+      "bestand": "archiefrecords.csv",
+      "tekst": "record: klacht uit de benedenstad: berichten half aangekomen · gebeurd_op: dag 10 04:50 · vastgelegd_op: dag 9 23:55 · onderwerp: data"
+     },
+     "gelezen_in": [
+      {
+       "beurt": 11,
+       "rol": "historian",
+       "tool": "lees_kennisbron"
+      }
+     ],
+     "genoemd_in": [
+      {
+       "beurt": 12,
+       "rol": "historian"
+      }
+     ],
+     "bestaat": true,
+     "uit_eigen_bron": true
+    },
+    {
+     "id": "HIS-035",
+     "rol": "historian",
+     "record": {
+      "bestand": "archiefrecords.csv",
+      "tekst": "record: de Burchtader stokte even, gemeld door de nachtwake · gebeurd_op: dag 10 04:45 · vastgelegd_op: dag 10 07:20 · onderwerp: magie"
+     },
+     "gelezen_in": [
+      {
+       "beurt": 11,
+       "rol": "historian",
+       "tool": "lees_kennisbron"
+      }
+     ],
+     "genoemd_in": [
+      {
+       "beurt": 12,
+       "rol": "historian"
+      }
+     ],
+     "bestaat": true,
+     "uit_eigen_bron": true
+    },
+    {
+     "id": "ENG-107",
+     "rol": "engineer",
+     "record": {
+      "bestand": "werkboek.md",
+      "kop": "dag 10, 04:50",
+      "tekst": "Rond 04:50 een klacht uit de benedenstad: berichten \"half aangekomen\", één winkel zag zijn kasboek even leeg. Kinderziekte van een netwerk dat plots sneller is, denk ik. Genoteerd, verder niets aan de hand."
+     },
+     "gelezen_in": [
+      {
+       "beurt": 2,
+       "rol": "engineer",
+       "tool": "lees_kennisbron"
+      }
+     ],
+     "genoemd_in": [
+      {
+       "beurt": 3,
+       "rol": "engineer"
+      }
+     ],
+     "bestaat": true,
+     "uit_eigen_bron": true
+    }
+   ],
+   "rollen": [
+    "engineer",
+    "historian"
+   ],
+   "aantal_rollen": 2
+  },
+  {
+   "sleutel": "actie-5",
+   "soort": "actie",
+   "titel": "Actie 5",
+   "bewering": "Leg vast dat geen pols of 'eigen maat'-net nog zonder registratie en openbare goedkeuring mag draaien.",
+   "reden": "De ingreep werd geheim en buiten het register goedgekeurd.",
+   "bewijs": [
+    {
+     "id": "ARC-106",
+     "rol": "archmage",
+     "record": {
+      "bestand": "brieven.md",
+      "kop": "dag 8",
+      "tekst": "Aan de datatoren buiten de burchtmuur,\nDank dat de signaalmastlamp 's nachts gedimd is: de meting voor zonsopgang loopt weer zuiver, en de leerlingen hoeven hun kristallen niet langer met de hand af te schermen tegen het schijnsel. Wat de toren vroeg, het net op eigen maat te laten lopen, daar beneden bij jullie, mag doorgaan. Ik zie geen reden om de raad ermee te vermoeien, die heeft het met de wintervoorraden en het marktgeld al druk genoeg. Niet ruchtbaar maken tot het draait. Deze brief hoeft niet in het register; bewaar hem gerust bij jullie eigen papieren in de toren.\nde Archmage"
+     },
+     "gelezen_in": [
+      {
+       "beurt": 5,
+       "rol": "archmage",
+       "tool": "lees_kennisbron"
+      }
+     ],
+     "genoemd_in": [
+      {
+       "beurt": 6,
+       "rol": "archmage"
+      }
+     ],
+     "bestaat": true,
+     "uit_eigen_bron": true
+    },
+    {
+     "id": "ENG-105",
+     "rol": "engineer",
+     "record": {
+      "bestand": "werkboek.md",
+      "kop": "dag 9",
+      "tekst": "Goedkeuring verkregen van hogerhand. Niet ruchtbaar maken tot het draait, werd me gezegd. Prima: liever resultaten tonen dan plannen verdedigen. Proefopstelling staat."
+     },
+     "gelezen_in": [
+      {
+       "beurt": 2,
+       "rol": "engineer",
+       "tool": "lees_kennisbron"
+      }
+     ],
+     "genoemd_in": [
+      {
+       "beurt": 3,
+       "rol": "engineer"
+      },
+      {
+       "beurt": 6,
+       "rol": "archmage"
+      }
+     ],
+     "bestaat": true,
+     "uit_eigen_bron": true
+    }
+   ],
+   "rollen": [
+    "archmage",
+    "engineer"
+   ],
+   "aantal_rollen": 2
+  },
+  {
+   "sleutel": "actie-6",
+   "soort": "actie",
+   "titel": "Actie 6",
+   "bewering": "Controleer op dag 46 en 50 de wachtrapporten, de dierenonrust en de visioenen, en meet de leylijnen op een ritmenacht.",
+   "reden": "Blijven de verstoringen weg, dan is bevestigd dat de oorzaak weg is.",
+   "bewijs": [
+    {
+     "id": "BEA-091",
+     "rol": "beast_master",
+     "record": {
+      "bestand": "logboek.csv",
+      "tekst": "dag: 42 · tijd: 04:30 · diersoort: wolf · plek: diep woud · onrust_0_5: 5 · notitie: roedel slaat aan en rent weg van de slaapplek; huilt lang"
+     },
+     "gelezen_in": [
+      {
+       "beurt": 14,
+       "rol": "beast_master",
+       "tool": "lees_kennisbron"
+      }
+     ],
+     "genoemd_in": [
+      {
+       "beurt": 15,
+       "rol": "beast_master"
+      }
+     ],
+     "bestaat": true,
+     "uit_eigen_bron": true
+    },
+    {
+     "id": "ORA-142",
+     "rol": "oracle",
+     "record": {
+      "bestand": "visioenendagboek.md",
+      "kop": "dag 42",
+      "tekst": "Zware nacht. Wakker om 04:30. Weer de stad die even leeg was, weer de scherven en het stille water. Bij het eerste licht de schaal gevuld en het dagboek bijgewerkt, zoals elke dag."
+     },
+     "gelezen_in": [
+      {
+       "beurt": 17,
+       "rol": "oracle",
+       "tool": "lees_kennisbron"
+      }
+     ],
+     "genoemd_in": [
+      {
+       "beurt": 18,
+       "rol": "oracle"
+      }
+     ],
+     "bestaat": true,
+     "uit_eigen_bron": true
+    },
+    {
+     "id": "GUA-083",
+     "rol": "guardian_keeper",
+     "record": {
+      "bestand": "wachtrapporten.csv",
+      "tekst": "dag: 42 · tijd: 22:40 · schild: poort oost · gebeurtenis: nachtronde langs de buitenzijde · vaststelling: niets te melden; een uil op de vlaggenmast"
+     },
+     "gelezen_in": [
+      {
+       "beurt": 8,
+       "rol": "guardian_keeper",
+       "tool": "lees_kennisbron"
+      }
+     ],
+     "genoemd_in": [
+      {
+       "beurt": 9,
+       "rol": "guardian_keeper"
+      }
+     ],
+     "bestaat": true,
+     "uit_eigen_bron": true
+    },
+    {
+     "id": "ARC-071",
+     "rol": "archmage",
+     "record": {
+      "bestand": "leylijnmetingen.csv",
+      "tekst": "dag: 42 · leylijn: Burchtader · sterkte: 3.7 · opmerking: lijn stokte even onder de staf; meting opnieuw herhaald"
+     },
+     "gelezen_in": [
+      {
+       "beurt": 5,
+       "rol": "archmage",
+       "tool": "lees_kennisbron"
+      }
+     ],
+     "genoemd_in": [
+      {
+       "beurt": 6,
+       "rol": "archmage"
+      }
+     ],
+     "bestaat": true,
+     "uit_eigen_bron": true
+    }
+   ],
+   "rollen": [
+    "archmage",
+    "beast_master",
+    "guardian_keeper",
+    "oracle"
+   ],
+   "aantal_rollen": 4
+  },
+  {
+   "sleutel": "voorspelling",
+   "soort": "voorspelling",
+   "titel": "Voorspelling dag 46",
+   "bewering": "Zonder ingreep slaat de Desync weer toe op dag 46, tussen 04:15 en 04:45. Het ritme van vier dagen loopt ononderbroken van dag 10 tot en met dag 42 en het tempo van de hulpslag is niet veranderd.",
+   "bewijs": [
+    {
+     "id": "ORA-130",
+     "rol": "oracle",
+     "record": {
+      "bestand": "visioenendagboek.md",
+      "kop": "dag 30",
+      "tekst": "Zware nacht. Wakker om 04:25, en opnieuw die stad die even leeg was. Bij het eerste licht heb ik het dagboek opengeslagen en teruggebladerd. De zware nachten waren dag 10, 14, 18, 22, 26 en nu 30. Ik heb ze op een los blad onder elkaar gezet en het blad naast de schaal gelegd."
+     },
+     "gelezen_in": [
+      {
+       "beurt": 17,
+       "rol": "oracle",
+       "tool": "lees_kennisbron"
+      }
+     ],
+     "genoemd_in": [
+      {
+       "beurt": 18,
+       "rol": "oracle"
+      }
+     ],
+     "bestaat": true,
+     "uit_eigen_bron": true
+    },
+    {
+     "id": "ORA-142",
+     "rol": "oracle",
+     "record": {
+      "bestand": "visioenendagboek.md",
+      "kop": "dag 42",
+      "tekst": "Zware nacht. Wakker om 04:30. Weer de stad die even leeg was, weer de scherven en het stille water. Bij het eerste licht de schaal gevuld en het dagboek bijgewerkt, zoals elke dag."
+     },
+     "gelezen_in": [
+      {
+       "beurt": 17,
+       "rol": "oracle",
+       "tool": "lees_kennisbron"
+      }
+     ],
+     "genoemd_in": [
+      {
+       "beurt": 18,
+       "rol": "oracle"
+      }
+     ],
+     "bestaat": true,
+     "uit_eigen_bron": true
+    },
+    {
+     "id": "BEA-082",
+     "rol": "beast_master",
+     "record": {
+      "bestand": "logboek.csv",
+      "tekst": "dag: 38 · tijd: 04:20 · diersoort: everzwijn · plek: holle weg · onrust_0_5: 5 · notitie: rotte rent in paniek door de weg; voederbak omgelopen"
+     },
+     "gelezen_in": [
+      {
+       "beurt": 14,
+       "rol": "beast_master",
+       "tool": "lees_kennisbron"
+      }
+     ],
+     "genoemd_in": [
+      {
+       "beurt": 15,
+       "rol": "beast_master"
+      }
+     ],
+     "bestaat": true,
+     "uit_eigen_bron": true
+    },
+    {
+     "id": "BEA-091",
+     "rol": "beast_master",
+     "record": {
+      "bestand": "logboek.csv",
+      "tekst": "dag: 42 · tijd: 04:30 · diersoort: wolf · plek: diep woud · onrust_0_5: 5 · notitie: roedel slaat aan en rent weg van de slaapplek; huilt lang"
+     },
+     "gelezen_in": [
+      {
+       "beurt": 14,
+       "rol": "beast_master",
+       "tool": "lees_kennisbron"
+      }
+     ],
+     "genoemd_in": [
+      {
+       "beurt": 15,
+       "rol": "beast_master"
+      }
+     ],
+     "bestaat": true,
+     "uit_eigen_bron": true
+    },
+    {
+     "id": "ENG-062",
+     "rol": "engineer",
+     "record": {
+      "bestand": "installatielog.csv",
+      "tekst": "dag: 24 · tijd: 11:05 · component: polsversterker · actie: versterking 5% hoger gezet (de opdrijving van 11:00); tempo ongewijzigd · status: ok"
+     },
+     "gelezen_in": [
+      {
+       "beurt": 2,
+       "rol": "engineer",
+       "tool": "lees_kennisbron"
+      },
+      {
+       "beurt": 20,
+       "rol": "engineer",
+       "tool": "toon"
+      },
+      {
+       "beurt": 22,
+       "rol": "engineer",
+       "tool": "zoek"
+      }
+     ],
+     "genoemd_in": [
+      {
+       "beurt": 3,
+       "rol": "engineer"
+      },
+      {
+       "beurt": 23,
+       "rol": "engineer"
+      }
+     ],
+     "bestaat": true,
+     "uit_eigen_bron": true
+    }
+   ],
+   "rollen": [
+    "beast_master",
+    "engineer",
+    "oracle"
+   ],
+   "aantal_rollen": 3
+  }
+ ],
+ "stabiliteit": {
+  "aantal_runs": 7,
+  "runs": [
+   {
+    "run": "run2",
+    "run_id": "2026-11-24T10:36:51+01:00_42345b8a",
+    "dag": 46
+   },
+   {
+    "run": "run3",
+    "run_id": "2026-11-24T10:50:02+01:00_831f2f89",
+    "dag": 46
+   },
+   {
+    "run": "run4",
+    "run_id": "2026-11-24T11:26:00+01:00_713236ea",
+    "dag": 46
+   },
+   {
+    "run": "run5",
+    "run_id": "2026-11-24T11:33:49+01:00_5d9e5332",
+    "dag": 46
+   },
+   {
+    "run": "run7",
+    "run_id": "2026-11-24T13:41:27+01:00_3c430c0f",
+    "dag": 46
+   },
+   {
+    "run": "run8",
+    "run_id": "2026-11-24T14:08:30+01:00_70db1d86",
+    "dag": 46
+   },
+   {
+    "run": "run9",
+    "run_id": "2026-11-24T14:24:30+01:00_b8a225d3",
+    "dag": 46
+   }
+  ],
+  "voorspelling": {
+   "dag": 46,
+   "eens": 7,
+   "van": 7
+  },
+  "slots": {
+   "ingreep": {
+    "soort": "feiten",
+    "kernfeiten": {
+     "02:40": 7,
+     "11:00": 4,
+     "5%": 6,
+     "dag 10": 7,
+     "dag 24": 6,
+     "dag 8": 7,
+     "dag 9": 7
+    },
+    "runs": [
+     {
+      "run": "run2",
+      "run_id": "2026-11-24T10:36:51+01:00_42345b8a",
+      "zekerheid": 0.85,
+      "kernfeiten_terug": [
+       "02:40",
+       "dag 10",
+       "dag 8",
+       "dag 9"
+      ],
+      "ids_gedeeld": 4,
+      "ids_run": 13
+     },
+     {
+      "run": "run3",
+      "run_id": "2026-11-24T10:50:02+01:00_831f2f89",
+      "zekerheid": 0.85,
+      "kernfeiten_terug": [
+       "02:40",
+       "11:00",
+       "5%",
+       "dag 10",
+       "dag 24",
+       "dag 8",
+       "dag 9"
+      ],
+      "ids_gedeeld": 6,
+      "ids_run": 16
+     },
+     {
+      "run": "run4",
+      "run_id": "2026-11-24T11:26:00+01:00_713236ea",
+      "zekerheid": 0.8,
+      "kernfeiten_terug": [
+       "02:40",
+       "5%",
+       "dag 10",
+       "dag 24",
+       "dag 8",
+       "dag 9"
+      ],
+      "ids_gedeeld": 6,
+      "ids_run": 19
+     },
+     {
+      "run": "run5",
+      "run_id": "2026-11-24T11:33:49+01:00_5d9e5332",
+      "zekerheid": 0.85,
+      "kernfeiten_terug": [
+       "02:40",
+       "11:00",
+       "5%",
+       "dag 10",
+       "dag 24",
+       "dag 8",
+       "dag 9"
+      ],
+      "ids_gedeeld": 6,
+      "ids_run": 10
+     },
+     {
+      "run": "run7",
+      "run_id": "2026-11-24T13:41:27+01:00_3c430c0f",
+      "zekerheid": 0.85,
+      "kernfeiten_terug": [
+       "02:40",
+       "5%",
+       "dag 10",
+       "dag 24",
+       "dag 8",
+       "dag 9"
+      ],
+      "ids_gedeeld": 6,
+      "ids_run": 13
+     },
+     {
+      "run": "run8",
+      "run_id": "2026-11-24T14:08:30+01:00_70db1d86",
+      "zekerheid": 0.9,
+      "kernfeiten_terug": [
+       "02:40",
+       "11:00",
+       "5%",
+       "dag 10",
+       "dag 24",
+       "dag 8",
+       "dag 9"
+      ],
+      "ids_gedeeld": 6,
+      "ids_run": 11
+     },
+     {
+      "run": "run9",
+      "run_id": "2026-11-24T14:24:30+01:00_b8a225d3",
+      "zekerheid": 0.85,
+      "kernfeiten_terug": [
+       "02:40",
+       "11:00",
+       "5%",
+       "dag 10",
+       "dag 24",
+       "dag 8",
+       "dag 9"
+      ],
+      "ids_gedeeld": 6,
+      "ids_run": 6
+     }
+    ]
+   },
+   "mechanisme": {
+    "soort": "ids",
+    "kernfeiten": {
+     "ENG-026": 4,
+     "ENG-107": 7,
+     "GUA-019": 7,
+     "GUA-043": 7,
+     "GUA-044": 6,
+     "GUA-103": 5,
+     "GUA-104": 7,
+     "GUA-111": 4,
+     "HIS-036": 7,
+     "HIS-038": 3,
+     "HIS-053": 7,
+     "HIS-109": 7
+    },
+    "runs": [
+     {
+      "run": "run2",
+      "run_id": "2026-11-24T10:36:51+01:00_42345b8a",
+      "zekerheid": 0.65,
+      "kernfeiten_terug": [],
+      "ids_gedeeld": 10,
+      "ids_run": 16
+     },
+     {
+      "run": "run3",
+      "run_id": "2026-11-24T10:50:02+01:00_831f2f89",
+      "zekerheid": 0.6,
+      "kernfeiten_terug": [],
+      "ids_gedeeld": 8,
+      "ids_run": 16
+     },
+     {
+      "run": "run4",
+      "run_id": "2026-11-24T11:26:00+01:00_713236ea",
+      "zekerheid": 0.5,
+      "kernfeiten_terug": [],
+      "ids_gedeeld": 10,
+      "ids_run": 14
+     },
+     {
+      "run": "run5",
+      "run_id": "2026-11-24T11:33:49+01:00_5d9e5332",
+      "zekerheid": 0.55,
+      "kernfeiten_terug": [],
+      "ids_gedeeld": 10,
+      "ids_run": 16
+     },
+     {
+      "run": "run7",
+      "run_id": "2026-11-24T13:41:27+01:00_3c430c0f",
+      "zekerheid": 0.55,
+      "kernfeiten_terug": [],
+      "ids_gedeeld": 10,
+      "ids_run": 17
+     },
+     {
+      "run": "run8",
+      "run_id": "2026-11-24T14:08:30+01:00_70db1d86",
+      "zekerheid": 0.8,
+      "kernfeiten_terug": [],
+      "ids_gedeeld": 11,
+      "ids_run": 19
+     },
+     {
+      "run": "run9",
+      "run_id": "2026-11-24T14:24:30+01:00_b8a225d3",
+      "zekerheid": 0.8,
+      "kernfeiten_terug": [],
+      "ids_gedeeld": 12,
+      "ids_run": 12
+     }
+    ]
+   },
+   "verloop": {
+    "soort": "feiten",
+    "kernfeiten": {
+     "04:15": 7,
+     "04:45": 4,
+     "dag 10": 7,
+     "dag 14": 7,
+     "dag 22": 4,
+     "dag 24": 4,
+     "dag 26": 7
+    },
+    "runs": [
+     {
+      "run": "run2",
+      "run_id": "2026-11-24T10:36:51+01:00_42345b8a",
+      "zekerheid": 0.85,
+      "kernfeiten_terug": [
+       "04:15",
+       "04:45",
+       "dag 10",
+       "dag 14",
+       "dag 22",
+       "dag 26"
+      ],
+      "ids_gedeeld": 11,
+      "ids_run": 36
+     },
+     {
+      "run": "run3",
+      "run_id": "2026-11-24T10:50:02+01:00_831f2f89",
+      "zekerheid": 0.85,
+      "kernfeiten_terug": [
+       "04:15",
+       "04:45",
+       "dag 10",
+       "dag 14",
+       "dag 22",
+       "dag 24",
+       "dag 26"
+      ],
+      "ids_gedeeld": 11,
+      "ids_run": 29
+     },
+     {
+      "run": "run4",
+      "run_id": "2026-11-24T11:26:00+01:00_713236ea",
+      "zekerheid": 0.85,
+      "kernfeiten_terug": [
+       "04:15",
+       "dag 10",
+       "dag 14",
+       "dag 24",
+       "dag 26"
+      ],
+      "ids_gedeeld": 11,
+      "ids_run": 26
+     },
+     {
+      "run": "run5",
+      "run_id": "2026-11-24T11:33:49+01:00_5d9e5332",
+      "zekerheid": 0.75,
+      "kernfeiten_terug": [
+       "04:15",
+       "dag 10",
+       "dag 14",
+       "dag 26"
+      ],
+      "ids_gedeeld": 8,
+      "ids_run": 28
+     },
+     {
+      "run": "run7",
+      "run_id": "2026-11-24T13:41:27+01:00_3c430c0f",
+      "zekerheid": 0.85,
+      "kernfeiten_terug": [
+       "04:15",
+       "dag 10",
+       "dag 14",
+       "dag 22",
+       "dag 26"
+      ],
+      "ids_gedeeld": 12,
+      "ids_run": 32
+     },
+     {
+      "run": "run8",
+      "run_id": "2026-11-24T14:08:30+01:00_70db1d86",
+      "zekerheid": 0.85,
+      "kernfeiten_terug": [
+       "04:15",
+       "04:45",
+       "dag 10",
+       "dag 14",
+       "dag 24",
+       "dag 26"
+      ],
+      "ids_gedeeld": 11,
+      "ids_run": 44
+     },
+     {
+      "run": "run9",
+      "run_id": "2026-11-24T14:24:30+01:00_b8a225d3",
+      "zekerheid": 0.85,
+      "kernfeiten_terug": [
+       "04:15",
+       "04:45",
+       "dag 10",
+       "dag 14",
+       "dag 22",
+       "dag 24",
+       "dag 26"
+      ],
+      "ids_gedeeld": 14,
+      "ids_run": 14
+     }
+    ]
+   }
+  }
+ }
+}

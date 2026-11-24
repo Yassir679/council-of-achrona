@@ -1,0 +1,146 @@
+{
+  "run_id": "2026-11-24T14:24:30+01:00_b8a225d3",
+  "samenvatting": "De Desync begon toen de Engineer op dag 10 om 02:40 de hulpslag inschakelde. Dat is een tweede pols los van de Kroonklok, waarschijnlijk geheim goedgekeurd door de Archmage. Volgens bouwakte en schildspecificatie gaat verkeer tussen de Kroonklok-tikken dan ongetoetst door het schild. Sindsdien keert de verstoring elke vier dagen terug tussen 04:15 en 04:45. Herstel: eerst een afschrift van het register maken, daarna de polsen langzaam samenbrengen.",
+  "oorzaak": {
+    "ingreep": {
+      "bewering": "De Engineer activeerde op dag 10 om 02:40 de hulpslag, een eigen pols voor het datanet los van de Kroonklok. Daarvoor kwam op dag 9 een goedkeuring 'van hogerhand'. Waarschijnlijk was dat de Archmage, die het net op dag 8 geheim en buiten het register 'op eigen maat' liet lopen. Op dag 24 om 11:00 werd de versterking met 5% opgedreven, met ongewijzigd tempo.",
+      "bewijs": [
+        "ENG-011",
+        "ENG-106",
+        "ENG-105",
+        "ARC-106",
+        "ENG-029",
+        "ENG-062"
+      ],
+      "zekerheid": 0.85
+    },
+    "mechanisme": {
+      "bewering": "Volgens de bouwakte brengt een tweede pols het net uit de maat. Het schild toetst alleen op de Kroonklok-tik. Verkeer midden tussen twee tikken telt als binnenverkeer en gaat ongetoetst door, ook naar buiten. Dat past bij de lekken van binnenuit met intacte zegels, de half aangekomen berichten, het pakketverlies en archieftijdstempels die vóór het gebeuren liggen.",
+      "bewijs": [
+        "HIS-109",
+        "HIS-038",
+        "GUA-103",
+        "GUA-104",
+        "GUA-019",
+        "GUA-111",
+        "GUA-043",
+        "GUA-044",
+        "ENG-107",
+        "ENG-026",
+        "HIS-053",
+        "HIS-036"
+      ],
+      "zekerheid": 0.8
+    },
+    "verloop": {
+      "bewering": "Vanaf dag 10 is er elke vier dagen (10, 14, 18 … 42) een verstoring tussen 04:15 en 04:45. Lekken werden alleen gemeld op dag 10 en dag 22. Na de versterking op dag 24 stijgt de dierenonrust vanaf dag 26 van 4 naar 5, terwijl de frequentie gelijk blijft, wat past bij een ongewijzigd tempo. De lage leylijnen op dag 14 en 42 zijn geen cyclus van 28 dagen: alleen op die wekelijkse meetdagen viel de meting samen met het ritme van vier dagen.",
+      "bewijs": [
+        "BEA-019",
+        "BEA-046",
+        "BEA-055",
+        "BEA-091",
+        "ORA-110",
+        "ORA-130",
+        "ORA-142",
+        "GUA-019",
+        "GUA-043",
+        "ENG-029",
+        "ENG-062",
+        "ARC-015",
+        "ARC-029",
+        "ARC-071"
+      ],
+      "zekerheid": 0.85
+    }
+  },
+  "acties": [
+    {
+      "actie": "Zet tot het herstel klaar is op elke ritmenacht (dag 46, 50, …) extra wachten van 04:00 tot 05:00 bij benedenstad en poort oost.",
+      "reden": "Op die tijdstippen gaat verkeer ongetoetst door het schild.",
+      "bewijs": [
+        "GUA-104",
+        "GUA-019",
+        "GUA-043",
+        "ORA-142"
+      ]
+    },
+    {
+      "actie": "Laat de schrijfzaal eerst een afschrift van het register maken, inclusief de records van de hulpslag sinds dag 10.",
+      "reden": "Artikel 2 schrijft eerst een afschrift voor, en alleen de schrijfzaal mag afschriften maken.",
+      "bewijs": [
+        "HIS-110",
+        "HIS-101"
+      ]
+    },
+    {
+      "actie": "Breng daarna het tempo van de hulpslag met de fijnregeling in stappen van 0,1% langzaam naar de Kroonklok; schakel hem niet in één keer uit.",
+      "reden": "Volgens artikel 2 gaan records verloren als een pols plots wegvalt, en de fijnregeling werkt zonder schok.",
+      "bewijs": [
+        "HIS-110",
+        "ENG-114",
+        "ENG-061"
+      ]
+    },
+    {
+      "actie": "Herstel met het afschrift de verschoven tijdstempels in het archief en het lege kasboek van de benedenstad.",
+      "reden": "Records van dag 10 en dag 22 zijn vastgelegd vóór of lang na het gebeuren, en berichten kwamen maar half aan.",
+      "bewijs": [
+        "HIS-053",
+        "HIS-036",
+        "HIS-035",
+        "ENG-107"
+      ]
+    },
+    {
+      "actie": "Leg vast dat geen pols of 'eigen maat'-net nog zonder registratie en openbare goedkeuring mag draaien.",
+      "reden": "De ingreep werd geheim en buiten het register goedgekeurd.",
+      "bewijs": [
+        "ARC-106",
+        "ENG-105"
+      ]
+    },
+    {
+      "actie": "Controleer op dag 46 en 50 de wachtrapporten, de dierenonrust en de visioenen, en meet de leylijnen op een ritmenacht.",
+      "reden": "Blijven de verstoringen weg, dan is bevestigd dat de oorzaak weg is.",
+      "bewijs": [
+        "BEA-091",
+        "ORA-142",
+        "GUA-083",
+        "ARC-071"
+      ]
+    }
+  ],
+  "risicos": [
+    {
+      "risico": "Als de hulpslag in één keer wordt uitgeschakeld of te snel wordt teruggebracht, gaan de records van de tweede pols verloren.",
+      "mitigatie": "Eerst een afschrift laten maken, dan alleen in stappen van 0,1% bijstellen en na elke stap controleren."
+    },
+    {
+      "risico": "De akte zegt niet hoe langzaam 'langzaam' is, dus het tempo van terugbrengen is onzeker.",
+      "mitigatie": "Kleine stappen spreiden over meerdere dagen en na elke ritmenacht de schilden en het archief controleren."
+    },
+    {
+      "risico": "Tot het herstel klaar is, kan op dag 46 opnieuw een lek ontstaan.",
+      "mitigatie": "Extra wachten zetten en tussen 04:15 en 04:45 geen gevoelig verkeer over het net sturen."
+    },
+    {
+      "risico": "Wie handelt op weerlegde oorzaken (hackers, infiltrant, conjunctie, kabels, leylijnvervuiling), verspilt middelen en laat de hulpslag draaien.",
+      "mitigatie": "Het herstel uitsluitend richten op het terugbrengen van de tweede pols."
+    },
+    {
+      "risico": "Het Belang van de Engineer (vooruitgang van het datanet) en de geheimhouding van de Archmage kunnen het herstel vertragen of verhullen.",
+      "mitigatie": "Elke stap van de fijnregeling laten loggen en door de Historian in het register laten vastleggen."
+    }
+  ],
+  "voorspelling": {
+    "dag": 46,
+    "bewering": "Zonder ingreep slaat de Desync weer toe op dag 46, tussen 04:15 en 04:45. Het ritme van vier dagen loopt ononderbroken van dag 10 tot en met dag 42 en het tempo van de hulpslag is niet veranderd.",
+    "bewijs": [
+      "ORA-130",
+      "ORA-142",
+      "BEA-082",
+      "BEA-091",
+      "ENG-062"
+    ]
+  }
+}

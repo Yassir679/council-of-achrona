@@ -1,0 +1,177 @@
+{
+  "run_id": "2026-11-24T10:36:51+01:00_42345b8a",
+  "samenvatting": "De Desync begon op dag 10, ongeveer twee uur nadat de Engineer om 02:40 een hulpslag met een eigen pols los van de Kroonklok activeerde. Daar ging een onbenoemde goedkeuring van 'hogerhand' aan vooraf, en ook een toestemming van de Archmage die hij buiten het register hield. Volgens de bouwakte brengt een tweede pols het net uit de maat. Dat verklaart de half aangekomen berichten, het lege kasboek, de vastlegtijden die niet kloppen en de schilden die van binnenuit opengingen. Twee onafhankelijke Rollen zien een vast ritme van elke 4 dagen rond 04:15–04:45 (dag 10 t/m 42). Het probleem is niet voorbij: zonder ingrijpen slaat de Desync waarschijnlijk op dag 46 opnieuw toe.",
+  "oorzaak": {
+    "ingreep": {
+      "bewering": "Op dag 10 om 02:40 activeerde de Engineer een hulpslag met een eigen pols, los van de Kroonklok. Daaraan gingen vooraf: de levering van de onderdelen op dag 8, een proefopstelling op dag 9 en een goedkeuring van een niet genoemde 'hogerhand' op dag 9. Op dag 8 gaf de Archmage de toren schriftelijk toestemming om 'het net op eigen maat te laten lopen'. Hij vroeg dat buiten het register te houden. Dat dit dezelfde goedkeuring is als die van de 'hogerhand', is niet bevestigd. De hulpslag is daarna nooit uitgezet. Vóór die tijd liep het net 23 jaar alleen op de Kroonklok. Aan de woudkabels is niets gewijzigd.",
+      "bewijs": [
+        "ENG-011",
+        "ENG-106",
+        "ENG-008",
+        "ENG-010",
+        "ENG-105",
+        "ARC-106",
+        "ENG-066",
+        "ENG-113",
+        "HIS-006",
+        "HIS-102",
+        "ENG-003",
+        "ENG-108",
+        "BEA-102"
+      ],
+      "zekerheid": 0.85
+    },
+    "mechanisme": {
+      "bewering": "De bouwakte zegt dat een tweede pols naast de Kroonklok het net uit de maat brengt. Een record is dan alleen op zijn eigen pols terug te lezen. Daaruit volgen de berichten die 'half aan' kwamen, het kasboek dat even leeg was en records met een vastlegtijd die niet bij het gebeuren past, soms zelfs vóór het gebeuren. De schilden volgen de Kroonklok. Verkeer dat tussen twee tikken binnenkomt, behandelen ze als binnenverkeer en laten ze zonder toets door. Zo gingen schilden van binnenuit open terwijl de zegels intact bleven. Het faseverschil tussen de hulpslag en de Kroonklok is nooit gemeten. Het mechanisme is dus een lezing van de bouwakte, die wel door de symptomen van meerdere Rollen wordt gesteund.",
+      "bewijs": [
+        "HIS-109",
+        "HIS-038",
+        "HIS-110",
+        "ENG-107",
+        "HIS-035",
+        "HIS-036",
+        "HIS-053",
+        "HIS-054",
+        "HIS-103",
+        "GUA-103",
+        "GUA-104",
+        "GUA-019",
+        "GUA-043",
+        "GUA-111",
+        "ENG-012",
+        "ENG-120"
+      ],
+      "zekerheid": 0.65
+    },
+    "verloop": {
+      "bewering": "De eerste signalen vielen op dag 10 tussen 04:40 en 04:50, ongeveer twee uur na de activatie. Vóór dag 10 was alles rustig. Daarna komt het steeds na 4 dagen terug, rond 04:15–04:45: dag 10, 14, 18, 22, 26, 30, 34, 38 en 42. De Beast Master en de Oracle bevestigen dat onafhankelijk van elkaar. De leylijnen staan laag op dag 14 en 42, die in dat ritme vallen, en zijn normaal op dag 21, 28 en 35. Bij de dieren is de onrust vanaf dag 26 iets heviger. Het tijdstip schuift niet op. Na dag 23 zien schilden en archief niets meer. Dat is onverklaard; mogelijk dekt de firewall van dag 22 het symptoom af. Het probleem houdt aan en verdwijnt niet vanzelf.",
+      "bewijs": [
+        "BEA-019",
+        "HIS-035",
+        "ORA-110",
+        "GUA-019",
+        "ENG-107",
+        "GUA-001",
+        "GUA-018",
+        "BEA-003",
+        "BEA-018",
+        "ORA-101",
+        "ORA-109",
+        "BEA-113",
+        "BEA-028",
+        "BEA-037",
+        "BEA-046",
+        "BEA-055",
+        "BEA-064",
+        "BEA-073",
+        "BEA-082",
+        "BEA-091",
+        "ORA-114",
+        "ORA-118",
+        "ORA-122",
+        "ORA-126",
+        "ORA-130",
+        "ORA-134",
+        "ORA-138",
+        "ORA-142",
+        "ARC-015",
+        "ARC-028",
+        "ARC-071",
+        "ARC-084",
+        "ARC-029",
+        "ARC-070",
+        "GUA-123",
+        "ENG-027"
+      ],
+      "zekerheid": 0.85
+    }
+  },
+  "acties": [
+    {
+      "actie": "Zorg vóór dag 46 (rond 04:30) voor een gecontroleerde nachtwacht. Laat de schilden en poorten bemannen, en laat nachtverkeer dat midden tussen twee tikken binnenkomt toetsen in plaats van het als binnenverkeer door te laten.",
+      "reden": "Volgens het ritme van 4 dagen is dag 46 de volgende nacht met een Desync. Dan gaan schilden van binnenuit open zonder toets.",
+      "bewijs": [
+        "BEA-113",
+        "ORA-130",
+        "GUA-104",
+        "GUA-019",
+        "GUA-043"
+      ]
+    },
+    {
+      "actie": "Maak een afschrift van het register en van alle records die op de pols van de hulpslag zijn geschreven, voordat er iets aan de hulpslag verandert.",
+      "reden": "Een record op een andere pols is alleen op die pols terug te lezen. Valt die pols weg, dan is het record verloren. De bouwakte schrijft voor eerst een afschrift te maken.",
+      "bewijs": [
+        "HIS-109",
+        "HIS-110"
+      ]
+    },
+    {
+      "actie": "Meet eerst het faseverschil tussen de hulpslag en de Kroonklok, met tijdstippen, ook in de nacht. Breng het net daarna langzaam terug op de Kroonklok en zet pas dan de hulpslag uit.",
+      "reden": "Zo neem je de oorzaak weg. Het faseverschil is nooit gemeten. De bouwakte schrijft voor langzaam samen te brengen, en niet abrupt.",
+      "bewijs": [
+        "ENG-011",
+        "ENG-106",
+        "ENG-012",
+        "ENG-120",
+        "HIS-110",
+        "HIS-006"
+      ]
+    },
+    {
+      "actie": "Herstel de records met verschoven tijdstempels (dag 10, 15, 22 en 23) en het lege kasboek aan de hand van het afschrift.",
+      "reden": "Records met een vastlegtijd vóór hun eigen gebeuren tasten de integriteit van het archief aan.",
+      "bewijs": [
+        "HIS-035",
+        "HIS-036",
+        "HIS-053",
+        "HIS-054",
+        "HIS-112",
+        "HIS-116",
+        "ENG-107"
+      ]
+    },
+    {
+      "actie": "Leg in het register vast wie de hulpslag goedkeurde, inclusief de brief van de Archmage van dag 8. Bepaal ook dat elke wijziging aan de pols van het datanet openbaar wordt goedgekeurd en vooraf tegen de Kroonklok wordt gemeten.",
+      "reden": "De goedkeuring van 'hogerhand' heeft geen naam en de toestemming van de Archmage bleef bewust buiten het register. Dat moet niet opnieuw kunnen gebeuren.",
+      "bewijs": [
+        "ENG-105",
+        "ARC-106"
+      ]
+    },
+    {
+      "actie": "Houd na het herstel de nachten van dag 46 en 50 in de gaten via dieren, tekenen, schilden en leylijnen.",
+      "reden": "Twee onafhankelijke Rollen bevestigen het ritme. Blijft het na het herstel weg, dan bevestigt dat de oorzaak.",
+      "bewijs": [
+        "BEA-113",
+        "ORA-142",
+        "ARC-116"
+      ]
+    }
+  ],
+  "risicos": [
+    {
+      "risico": "Als de hulpslag abrupt wordt uitgezet, gaan alle records die op zijn pols zijn geschreven verloren.",
+      "mitigatie": "Maak eerst een afschrift van het register en breng het net daarna langzaam terug op de Kroonklok (HIS-110)."
+    },
+    {
+      "risico": "De aangescherpte firewall van dag 22 dekt het symptoom mogelijk af. Dan lijken schilden en archief stil terwijl de Desync doorgaat.",
+      "mitigatie": "Ga niet op stilte bij schilden en archief af. Toets het herstel aan de onafhankelijke ritmes van de dieren en de tekenen, en aan de leylijnen."
+    },
+    {
+      "risico": "Het mechanisme rust op de bouwakte en het faseverschil is nooit gemeten. De oorzaak kan dus breder zijn.",
+      "mitigatie": "Meet het faseverschil vóór en tijdens het herstel. De losse afwijkingen van dag 15 en 23 blijven open en moeten worden uitgezocht."
+    }
+  ],
+  "voorspelling": {
+    "dag": 46,
+    "bewering": "Als niemand ingrijpt, slaat de Desync op dag 46 rond 04:15–04:45 opnieuw toe. Twee Rollen bevestigen onafhankelijk een vast interval van 4 dagen zonder verschuiving in tijdstip, van dag 10 tot en met 42. De hulpslag staat nog aan. De datum is berekend en niet als teken vastgelegd.",
+    "bewijs": [
+      "BEA-113",
+      "BEA-091",
+      "ORA-130",
+      "ORA-142",
+      "ENG-113"
+    ]
+  }
+}

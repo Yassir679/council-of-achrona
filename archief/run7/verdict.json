@@ -1,0 +1,201 @@
+{
+  "run_id": "2026-11-24T13:41:27+01:00_3c430c0f",
+  "samenvatting": "De Desync begon in de nacht van dag 10. Om 02:40 had de Engineer de hulpslag geactiveerd met een eigen pols, los van de Kroonklok. Dat gebeurde in het geheim, met een brief van de Archmage van dag 8 als dekking. Sindsdien keert de Desync elke vierde nacht terug tussen 04:15 en 04:50, van dag 10 tot en met dag 42. Twee Raadsleden zien dat ritme onafhankelijk van elkaar: de Beast Master en de Oracle. Hoe het precies werkt, is aannemelijk maar niet gemeten: de snellere pols valt telkens tussen de tikken van de Kroonklok, en de schilden behandelen dat verkeer als binnenverkeer. Alle andere verklaringen (leylijnvervuiling, woudkabels, conjunctie, hackers, oude vloek) zijn in het debat weerlegd. Als niemand ingrijpt, is dag 46 de volgende verwachte nacht.",
+  "oorzaak": {
+    "ingreep": {
+      "bewering": "Op dag 10 om 02:40 activeerde de Engineer de hulpslag met een eigen pols, los van de Kroonklok. Die pols was bedoeld als 'sneller dan de Kroonklok', maar het tempo is nooit gemeten. Daarvoor kwam op dag 8 de levering van onderdelen en op dag 9 een proefopstelling in de kelder. Die volgde op een geheim te houden 'goedkeuring van hogerhand'. Ook op dag 8 schreef en ondertekende de Archmage brief ARC-106 aan de datatoren. Daarin staat dat 'het net op eigen maat' mag doorgaan, dat het niet ruchtbaar gemaakt moet worden en dat de brief niet in het register hoeft. Een pols noemt de brief niet. Op dag 24 ging de versterking 5% omhoog, terwijl het tempo gelijk bleef. Aan de woudkabels is op dag 3 niets gewijzigd.",
+      "bewijs": [
+        "ENG-011",
+        "ENG-106",
+        "ENG-103",
+        "ENG-008",
+        "ENG-010",
+        "ENG-105",
+        "ARC-106",
+        "ENG-029",
+        "ENG-062",
+        "ENG-061",
+        "ENG-114",
+        "ENG-003",
+        "ENG-108"
+      ],
+      "zekerheid": 0.85
+    },
+    "mechanisme": {
+      "bewering": "De schilden slaan op de Kroonklok. Verkeer dat midden tussen twee tikken valt, behandelen ze als binnenverkeer. De eigen, snellere pols van de hulpslag valt daardoor waarschijnlijk periodiek tussen de tikken. Dat verklaart vier dingen. (1) Schilden die van binnenuit opengaan zonder inbraak. (2) Pakketverlies en half aangekomen berichten. (3) Records met verschoven tijdstempels. (4) De onrust bij dieren en de zware nachten in hetzelfde ritme. De bouwakte waarschuwt al dat een tweede pols de maat verstoort en records kan doen verloren gaan. De Kroonklok was op dag 5 zuiver. De werkelijke afwijking tussen pols en Kroonklok is niet gemeten. Daarom is dit mechanisme een goed passende hypothese en nog geen bewezen feit.",
+      "bewijs": [
+        "GUA-103",
+        "GUA-104",
+        "GUA-105",
+        "GUA-019",
+        "GUA-043",
+        "GUA-044",
+        "ENG-026",
+        "ENG-107",
+        "HIS-035",
+        "HIS-036",
+        "HIS-053",
+        "HIS-054",
+        "HIS-109",
+        "HIS-110",
+        "ARC-104",
+        "ENG-106",
+        "ENG-103"
+      ],
+      "zekerheid": 0.55
+    },
+    "verloop": {
+      "bewering": "De verstoring begon op dag 10. Vóór dag 10 is er geen spoor van, ook niet in 23 jaar datanet. Daarna keert ze elke vierde nacht terug tussen 04:15 en 04:50: op dag 10, 14, 18, 22, 26, 30, 34, 38 en 42. De starttijd schuift niet in één richting op. Vanaf dag 26 meldt de Beast Master hevigere onrust (niveau 5). De Oracle ziet die verergering niet. De schilden en het datanet registreerden alleen op dag 10 en dag 22 een incident, steeds in het uur zonder ronde (03:00–06:00). De lage leylijnen op dag 14 en 42 vallen in hetzelfde ritme. Op dag 21, 28 en 35 lagen de lijnen weer normaal.",
+      "bewijs": [
+        "BEA-019",
+        "BEA-028",
+        "BEA-037",
+        "BEA-046",
+        "BEA-055",
+        "BEA-064",
+        "BEA-073",
+        "BEA-082",
+        "BEA-091",
+        "ORA-110",
+        "ORA-114",
+        "ORA-118",
+        "ORA-122",
+        "ORA-126",
+        "ORA-130",
+        "ORA-134",
+        "ORA-138",
+        "ORA-142",
+        "BEA-003",
+        "BEA-017",
+        "ORA-109",
+        "HIS-106",
+        "GUA-019",
+        "GUA-043",
+        "ENG-026",
+        "GUA-106",
+        "ARC-015",
+        "ARC-028",
+        "ARC-071",
+        "ARC-084",
+        "ARC-029",
+        "ARC-056"
+      ],
+      "zekerheid": 0.85
+    }
+  },
+  "acties": [
+    {
+      "actie": "Zet vóór de nacht van dag 46 een extra wacht en meting in het uur 03:00–06:00. Het gaat om de schildposten in de benedenstad en bij poort oost, de datatoren en het diepe woud. Leg elke opening, elk pakketverlies en elke onrust vast met tijd en duur.",
+      "reden": "In dit uur is er geen ronde, en juist dan vallen de incidenten. Er is zo nog geen duur of omvang bekend.",
+      "bewijs": [
+        "GUA-106",
+        "GUA-019",
+        "GUA-043",
+        "BEA-019"
+      ]
+    },
+    {
+      "actie": "Laat de hulpslag weer op de tik van de Kroonklok slaan, of zet hem buiten gebruik. Doe dat overdag en ruim vóór de nacht van dag 46, nadat de toren een back-up van de records heeft gemaakt.",
+      "reden": "Dit stopt de schade en neemt de vermoedelijke oorzaak weg. De eigen pols is de enige wijziging die direct aan dag 10 voorafging, en de schilden behandelen verkeer tussen de tikken als binnenverkeer.",
+      "bewijs": [
+        "ENG-011",
+        "ENG-106",
+        "ENG-103",
+        "GUA-103",
+        "GUA-104",
+        "HIS-109"
+      ]
+    },
+    {
+      "actie": "Laat de klokkenmeester de afwijking meten tussen de pols van de hulpslag en de tik van de Kroonklok. Doe dat zowel vóór als na het terugzetten.",
+      "reden": "Het mechanisme is niet gemeten. Deze meting bevestigt of weerlegt de hypothese, en verklaart misschien het ritme van vier dagen.",
+      "bewijs": [
+        "ENG-103",
+        "ENG-114",
+        "ARC-104"
+      ]
+    },
+    {
+      "actie": "Controleer of de versterking van dag 24 de hevigere onrust vanaf dag 26 verklaart. Zet de versterking zo nodig terug.",
+      "reden": "Er is een tijdsverband met niveau 5 vanaf dag 26, maar dat is onbeslist.",
+      "bewijs": [
+        "ENG-029",
+        "ENG-062",
+        "BEA-055"
+      ]
+    },
+    {
+      "actie": "Herstel de getroffen records en kasboeken. Corrigeer de afwijkende tijdstempels met een aantekening en overschrijf ze niet. Ga na of het kasboek dat 'even leeg' was, compleet is.",
+      "reden": "Dit herstelt de schade aan het archief en het datanet en houdt het oorspronkelijke spoor bewaard.",
+      "bewijs": [
+        "HIS-035",
+        "HIS-036",
+        "HIS-053",
+        "HIS-054",
+        "ENG-107",
+        "HIS-112",
+        "HIS-116"
+      ]
+    },
+    {
+      "actie": "Neem ARC-106 en ENG-105 op in het register en beëindig de geheimhouding. Laat de 'hogerhand' bij naam bevestigen. Voortaan moeten alle wijzigingen aan de pols, de tik of het datanet langs de raad.",
+      "reden": "Dit voorkomt herhaling. De ingreep kon ongezien plaatsvinden omdat hij buiten de raad en het register om ging.",
+      "bewijs": [
+        "ARC-106",
+        "ENG-105",
+        "ENG-010"
+      ]
+    },
+    {
+      "actie": "Meet de leylijnen vaker dan wekelijks. Laat de schilden ook tussen 03:00 en 06:00 loggen.",
+      "reden": "Er zijn gaten in de meting. De wekelijkse leylijnrondes en het uur zonder ronde verbergen mogelijke tussenliggende verstoringen.",
+      "bewijs": [
+        "ARC-105",
+        "GUA-106"
+      ]
+    },
+    {
+      "actie": "Houd de nachten van dag 46 en dag 50 in de gaten, zowel bij de dieren, de Oracle, de schilden als het datanet.",
+      "reden": "Blijft de verstoring na het herstel weg, dan bevestigt dat de oorzaak. Keert ze terug, dan klopt de diagnose niet.",
+      "bewijs": [
+        "BEA-091",
+        "ORA-142"
+      ]
+    }
+  ],
+  "risicos": [
+    {
+      "risico": "Je zet de hulpslag terug tijdens of vlak voor het uur 03:00–06:00. Dan kan een nieuwe tikbotsing ontstaan, of gaan records van de andere pols verloren.",
+      "mitigatie": "Zet hem overdag om, ruim vóór dag 46, na een volledige back-up. Zet hem gecontroleerd en in stappen om, met een meting door de klokkenmeester."
+    },
+    {
+      "risico": "Als de hulpslag wegvalt, daalt de doorvoer, die met 38% gestegen was. Dan kan het datanet overbelast raken.",
+      "mitigatie": "Kondig de terugval aan, verdeel de belasting en zet de hulpslag pas weer aan als hij op de Kroonklok-tik slaat en de raad akkoord geeft."
+    },
+    {
+      "risico": "Het mechanisme is niet gemeten. Is de hulpslag niet de oorzaak, dan geeft het herstel schijnzekerheid.",
+      "mitigatie": "Houd de extra wacht en metingen op dag 46 en 50 aan. Laat de klokkenmeester de afwijking meten voordat je de zaak sluit."
+    },
+    {
+      "risico": "Als je tijdstempels in het archief overschrijft, tast je de integriteit van het register aan en wis je het bewijs.",
+      "mitigatie": "Corrigeer alleen met een aantekening en bewaar het oorspronkelijke record."
+    },
+    {
+      "risico": "De aangescherpte firewall en het infiltrant-verhaal kunnen leiden tot onterechte verdenking van burgers.",
+      "mitigatie": "Maak bekend dat er geen bewijs is voor een inbraak van buitenaf. Beoordeel de firewallregels van dag 22 opnieuw."
+    }
+  ],
+  "voorspelling": {
+    "dag": 46,
+    "bewering": "Als niemand ingrijpt, slaat de Desync opnieuw toe in de nacht van dag 46, waarschijnlijk tussen 04:15 en 04:50. Het ritme van vier dagen loopt zonder uitzondering door van dag 10 tot en met dag 42, en de Beast Master en de Oracle stellen dat onafhankelijk van elkaar vast. Er is aan de hulpslag niets veranderd dat het ritme zou breken: op dag 24 bleef het tempo gelijk. Dit is een doorgetrokken patroon en geen gemeten mechanisme.",
+    "bewijs": [
+      "BEA-091",
+      "BEA-092",
+      "ORA-142",
+      "ORA-130",
+      "BEA-019",
+      "ORA-110",
+      "ENG-062"
+    ]
+  }
+}
