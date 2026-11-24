@@ -59,6 +59,24 @@ Liever het Roboest-endpoint? Zet blok 1 van `.env.example` aan (`BACKEND=openai`
 | Geen verzonnen bewijs | ID-controle: een ID telt alleen als het Raadslid het in zijn eigen toolresultaat las. Ongeldige ID's staan in de trace (`id_controle`) en worden uit het Verdict gefilterd (`verdict_controle`). Een bewering zonder geldig bewijs wordt `null`. |
 | Geen menselijke tussenkomst | Er is geen `mens` in de trace; `trace.json` is de ongewijzigde uitvoer van de run. |
 
+### De trace: het volledige verslag van de run
+`trace.json` volgt het schema en is de ongewijzigde uitvoer van de run. Bovenop de verplichte velden legt hij vast:
+
+| Beurt | Extra velden | Wat de jury eraan ziet |
+|---|---|---|
+| `routering` | `doel` (ingreep, mechanisme, verloop, geschil, herstelplan, stoppen), `toetst_beurten` (nummers van eerdere beurten), `beslist_door` (`koning-agent`, of `regel (vangnet)`/`spelregel`), `stand`, `open_vragen` | Waarom deze Rol, welke eerdere bewering hier getoetst wordt, en wat de Koning op dat moment weet. |
+| `toolcall` | `resultaat {records, ids}` | Welke records de call echt teruggaf. Eerste beurt van een Raadslid: `lees_kennisbron`. Volgende beurten: gericht `toon`/`zoek`, omdat het Raadslid zijn eigen sessie hervat. |
+| `bericht` | `id_controle {geldig, ongeldig, toolcalls}`, `duur_s`, `tokens` | Welke genoemde ID's het Raadslid zelf las, en wat de beurt kostte. |
+| elke beurt | `tijd` | Volgorde en duur van het debat. |
+| top-niveau | `opzet` (modellen, Kennisbron per Raadslid, `tools_koning: []`), `geschillen` met `beurten`, `verdict_controle` | Isolatie per Rol, waar elk geschil opkwam, en welke ID's het Verdict mocht gebruiken. |
+
+**Controle:** `uv run controleer` (of `uv run controleer <map>`) toetst de trace strenger dan `uv run validate`:
+- een routering naar precies die Rol vóór elke Raadslid-beurt;
+- een toolcall vóór elk bericht, steeds op het eigen MCP-pad;
+- de Koning doet geen toolcalls, en er is geen `mens`;
+- elk ID in het Verdict en in de berichten zit in een toolresultaat van de juiste Rol;
+- verwijzingen naar beurten kloppen, tijd en nummering lopen op, en `run_id` is in beide bestanden gelijk.
+
 ### Extra uitdagingen
 - **Verdict**: `zekerheid` per deel van de oorzaak en een `voorspelling` (dag + bewijs).
 - **Council**: de Koning stopt zelf vóór het budget op is, en houdt `open_vragen` bij in elke routering.
