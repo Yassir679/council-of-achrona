@@ -69,13 +69,21 @@ Liever het Roboest-endpoint? Zet blok 1 van `.env.example` aan (`BACKEND=openai`
 | `bericht` | `id_controle {geldig, ongeldig, toolcalls}`, `duur_s`, `tokens` | Welke genoemde ID's het Raadslid zelf las, en wat de beurt kostte. |
 | elke beurt | `tijd` | Volgorde en duur van het debat. |
 | top-niveau | `opzet` (modellen, Kennisbron per Raadslid, `tools_koning: []`), `geschillen` met `beurten`, `verdict_controle` | Isolatie per Rol, waar elk geschil opkwam, en welke ID's het Verdict mocht gebruiken. |
+| top-niveau | `zelfcontrole {fouten, let_op, samenvatting}` | De run toetst zijn eigen trace (zelfde controle als `uv run controleer`) en schrijft het resultaat erin. |
+| top-niveau, alleen bij een fout | `status: "afgebroken"`, `fout {soort, melding, tijd}` | Een run die stopte (bv. abonnementslimiet) zegt dat eerlijk en laat geen `verdict.json` achter. |
+
+**Eerlijk afbreken.** Faalt een Raadslid of stuit de Koning op een limiet, dan stopt de run. Er komt dan geen "bericht" van een Raadslid dat zijn Kennisbron niet las, en geen reeks vangnet-routeringen die op een Koning lijken. Een limiet wordt niet opnieuw geprobeerd.
 
 **Controle:** `uv run controleer` (of `uv run controleer <map>`) toetst de trace strenger dan `uv run validate`:
 - een routering naar precies die Rol vóór elke Raadslid-beurt;
-- een toolcall vóór elk bericht, steeds op het eigen MCP-pad;
+- een toolcall vóór elk bericht, steeds op het eigen MCP-pad, met een vastgelegd `resultaat`;
 - de Koning doet geen toolcalls, en er is geen `mens`;
-- elk ID in het Verdict en in de berichten zit in een toolresultaat van de juiste Rol;
-- verwijzingen naar beurten kloppen, tijd en nummering lopen op, en `run_id` is in beide bestanden gelijk.
+- elk ID in een bericht zit in een toolresultaat van dat Raadslid (of werd door de ID-controle van de run zelf afgekeurd);
+- elk ID in het Verdict zit in een toolresultaat van de juiste Rol **én** werd in het debat genoemd: de Koning kent alleen het debat;
+- geschillen bevatten alleen standpunten van Rollen die spraken;
+- verwijzingen naar beurten kloppen, tijd en nummering lopen op, `run_id` is in beide bestanden gelijk, en de status is `klaar`.
+
+**Tests:** `uv run python tests/test_trace.py` speelt een volledige run met een nep-backend (geen LLM, geen abonnement) en een run waarin de limiet halverwege toeslaat, en toetst de trace van beide.
 
 ### Extra uitdagingen
 - **Verdict**: `zekerheid` per deel van de oorzaak en een `voorspelling` (dag + bewijs).
