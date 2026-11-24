@@ -11,6 +11,8 @@ Controleert wat de jury in de trace naleest:
   8. Elk ID dat een Raadslid als eigen bewijs noemt, zat in zijn eigen toolresultaten.
   9. Verwijzingen kloppen: toetst_beurten en geschillen.beurten wijzen naar eerdere Raadslid-berichten.
  10. Tijdstippen lopen op; nummering is 1..n zonder gaten; run_id van trace en Verdict is gelijk; status klaar.
+ 11. Elk ID in het Verdict werd in het debat door een Raadslid genoemd (de Koning kent alleen het debat).
+ 12. Elke toolcall legt vast wat hij teruggaf (`resultaat`); een afgebroken run wordt als fout gemeld met de reden.
 """
 import json
 import re
@@ -46,11 +48,13 @@ def controleer(trace, verdict):
     if verdict and verdict.get("run_id") != trace.get("run_id"):
         fout.append("run_id van trace.json en verdict.json verschilt")
     if trace.get("status") != "klaar":
-        fout.append(f"trace-status is {trace.get('status')!r}, niet 'klaar': de run is niet afgerond")
+        reden = f" ({trace['fout'].get('soort')}: {trace['fout'].get('melding', '')[:120]})" if trace.get("fout") else ""
+        fout.append(f"trace-status is {trace.get('status')!r}, niet 'klaar': de run is niet afgerond{reden}")
 
     toegewezen, raadslid_berichten, gesproken = None, [], set()
     bron_ids = {r: set() for r in ROLLEN}  # wat elk Raadslid via zijn tools terugkreeg
     calls_sinds_routering = 0
+    genoemd_in_debat = set()  # ID's die Raadsleden in hun berichten noemden: het enige dat de Koning kent
     for b in beurten:
         s, soort = b.get("spreker"), b.get("soort")
         if s == "mens":
@@ -71,6 +75,8 @@ def controleer(trace, verdict):
                 fout.append(f"beurt {b['nr']}: {s} gebruikt het pad {b.get('pad')} van een andere Rol")
             elif soort == "bestand" and not str(b.get("bestand", "")).startswith(f"{s}/"):
                 fout.append(f"beurt {b['nr']}: {s} leest het bestand {b.get('bestand')} van een andere Rol")
+            if soort == "toolcall" and met_resultaat and "resultaat" not in b:
+                fout.append(f"beurt {b['nr']}: toolcall zonder vastgelegd resultaat")
             if s in bron_ids:
                 bron_ids[s] |= set((b.get("resultaat") or {}).get("ids") or [])
             calls_sinds_routering += 1
@@ -79,8 +85,13 @@ def controleer(trace, verdict):
                 fout.append(f"beurt {b['nr']}: bericht van {s} zonder routering naar {s} ervoor")
             if calls_sinds_routering == 0:
                 fout.append(f"beurt {b['nr']}: {s} sprak zonder eerst zijn Kennisbron te raadplegen")
+            genoemd_in_debat |= ids(b.get("tekst", ""))
+            if (b.get("id_controle") or {}).get("ongeldig"):
+                let.append(f"beurt {b['nr']}: {s} noemde ID's die de ID-controle afkeurde: {', '.join(b['id_controle']['ongeldig'])}")
             eigen = {i for i in ids(b.get("tekst", "")) if PREFIX[i[:3]] == s}
-            niet_gelezen = sorted(eigen - bron_ids[s])
+            # Al afgekeurd door de ID-controle van de run (en dus uit het Verdict geweerd)? Dan is het een LET OP
+            # hierboven; een FOUT is het alleen als de run het niet zelf opmerkte.
+            niet_gelezen = sorted(eigen - bron_ids[s] - set((b.get("id_controle") or {}).get("ongeldig") or []))
             if niet_gelezen and met_resultaat:
                 fout.append(f"beurt {b['nr']}: {s} noemt ID's die niet in zijn eigen toolresultaten zaten: {', '.join(niet_gelezen)}")
             toegewezen = None
@@ -103,6 +114,8 @@ def controleer(trace, verdict):
         for i in sorted(ids(verdict)):
             if i not in bron_ids[PREFIX[i[:3]]]:
                 fout.append(f"verdict.json: {i} komt in geen enkel toolresultaat van {PREFIX[i[:3]]} voor")
+            elif i not in genoemd_in_debat:
+                fout.append(f"verdict.json: {i} werd in het debat door geen Raadslid genoemd (de Koning kan het niet kennen)")
 
     # 9. geschillen
     for g in trace.get("geschillen") or []:
