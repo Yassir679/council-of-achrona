@@ -210,6 +210,41 @@
   @keyframes binnen { from { opacity: 0; transform: translateY(6px); } }
   @media (prefers-reduced-motion: reduce) { *, *::before { animation: none !important; transition: none !important; } html { scroll-behavior: auto; } }
   :focus-visible { outline: 2px solid var(--goud); outline-offset: 2px; }
+
+  /* ---------- compact lezen ---------- */
+  .klem { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: var(--regels, 3); overflow: hidden; }
+  .klem.open { display: block; -webkit-line-clamp: unset; overflow: visible; }
+  .meer { border: 0; background: none; padding: 0; margin-top: 2px; color: var(--goud); font-size: 12.5px; font-weight: 600; cursor: pointer; }
+  .meer:hover { text-decoration: underline; }
+  .bewijs-lijst { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+  .bewijs-lijst li { display: grid; grid-template-columns: 92px 1fr; gap: 10px; align-items: baseline; font-size: 14px; }
+  .bewijs-lijst li.zonder-tijd { grid-template-columns: 1fr; }
+  .wanneer { font: 600 11.5px var(--mono); color: var(--zacht); background: var(--paneel-2); border: 1px solid var(--lijn); border-radius: 6px; padding: 0 6px; text-align: center; white-space: nowrap; }
+  .bewijs-lijst li.verborgen { display: none; }
+  .bewijs-lijst.open li.verborgen { display: grid; }
+  details.extra { margin-top: 10px; font-size: 13.5px; }
+  details.extra > summary { cursor: pointer; color: var(--zacht); font-size: 12.5px; font-weight: 600; list-style: none; }
+  details.extra > summary::-webkit-details-marker { display: none; }
+  details.extra > summary::before { content: "▸ "; }
+  details.extra[open] > summary::before { content: "▾ "; }
+  details.ids-uit > summary { cursor: pointer; list-style: none; font-size: 12px; color: var(--zacht); font-weight: 600; }
+  details.ids-uit > summary::-webkit-details-marker { display: none; }
+  details.ids-uit > summary::before { content: "▸ "; }
+  details.ids-uit[open] > summary::before { content: "▾ "; }
+  details.ids-uit .ids { margin-top: 6px; }
+  .schakel { display: inline-flex; border: 1px solid var(--lijn); border-radius: 9px; overflow: hidden; background: var(--paneel); }
+  .schakel button { border: 0; background: none; padding: 6px 10px; font-size: 12.5px; cursor: pointer; color: var(--zacht); }
+  .schakel button[aria-pressed="true"] { background: var(--goud-zacht); color: var(--tekst); font-weight: 600; }
+
+  /* ---------- overzicht van het debat ---------- */
+  .verloop { display: flex; align-items: center; gap: 4px; overflow-x: auto; padding: 12px 14px; margin-bottom: 18px; scrollbar-width: thin; }
+  .verloop-label { font: 600 11px var(--sans); letter-spacing: .08em; text-transform: uppercase; color: var(--zacht); margin-right: 8px; white-space: nowrap; }
+  .stap { flex: none; display: flex; flex-direction: column; align-items: center; gap: 3px; text-decoration: none; color: inherit; padding: 2px 4px; border-radius: 10px; }
+  .stap:hover { background: var(--paneel-2); }
+  .stap .avatar { width: 30px; height: 30px; font-size: 15px; }
+  .stap small { font-size: 10px; text-transform: uppercase; letter-spacing: .04em; color: var(--zacht); max-width: 76px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .pijl { flex: none; color: var(--lijn); font-size: 14px; margin-bottom: 14px; }
+  .stap.einde .avatar { border-style: dashed; }
 </style>
 </head>
 <body>
@@ -224,6 +259,7 @@
       <div class="pips" id="pips"></div>
     </div>
     <div class="rechts">
+      <span class="schakel" role="group" aria-label="Leesweergave"><button data-dicht="kort" aria-pressed="true" title="Lange tekst ingekort, details uitklapbaar">Kort</button><button data-dicht="vol" aria-pressed="false" title="Alle tekst volledig">Volledig</button></span>
       <span id="status" class="status">wachten</span>
       <button class="icoonknop" id="thema" title="Licht / donker" aria-label="Licht of donker thema">◐</button>
     </div>
@@ -240,6 +276,7 @@
 <main>
   <section class="paneel-tab" id="tab-debat">
     <div class="raad" id="raad"></div>
+    <div class="kaart verloop" id="verloop" hidden></div>
     <div class="filterinfo" id="filterinfo" hidden></div>
     <div class="debat-grid">
       <div class="tijdlijn" id="debat"><p class="melding"><span class="groot">🕯️</span>Nog geen <code>trace.json</code>. Start de Council met <code>uv run council</code>; het debat verschijnt hier live.</p></div>
@@ -271,6 +308,16 @@ const ref = n => `<a class="ref" href="#b${n}" data-ga="${n}">#${n}</a>`;
 const $ = id => document.getElementById(id);
 
 let vorige = "", filter = null, laatste = null, verdictGezien = false, tab = "debat";
+let dicht = localStorage.getItem("achrona-dicht") || "kort";
+const kort = () => dicht === "kort";
+/* Lange tekst: in de Kort-weergave ingeklemd op n regels, met 'lees meer' (alleen als het echt overloopt). */
+const klem = (html, n = 3) => kort() ? `<div class="klem" style="--regels:${n}">${html}</div>` : `<div>${html}</div>`;
+/* "beurt 12" in vrije tekst wordt een link naar die beurt. */
+const beurtLinks = html => html.replace(/\b(beurten?|beurt)\s+(\d+(?:\s*(?:,|en)\s*\d+)*)/gi,
+  (m, w, ns) => `${w} ` + ns.replace(/\d+/g, n => `<a class="ref" href="#b${n}" data-ga="${n}">${n}</a>`));
+/* ID's: in de Kort-weergave ingeklapt achter een teller. */
+const idBlok = (lijst, label = "bewijs") => !(lijst || []).length ? "" : kort()
+  ? `<details class="ids-uit"><summary>${lijst.length} ${label}-ID's</summary>${idChips(lijst)}</details>` : idChips(lijst);
 
 function opmaak(tekst) {
   return esc(tekst)
@@ -290,7 +337,7 @@ const ids = tekst => [...String(tekst ?? "").matchAll(ID_RE)].map(m => ({ id: `$
 function structuur(tekst) {
   const t = String(tekst || "");
   const delen = [...t.matchAll(/^\s*\**(Antwoord|Bewijs|Verwijzingen|Onzeker)\**\s*:\s*/gim)];
-  if (delen.length < 2) return `<div>${opmaak(t)}</div>`;
+  if (delen.length < 2) return klem(opmaak(t), 8);
   const stukken = {};
   delen.forEach((m, i) => { stukken[m[1].toLowerCase()] = t.slice(m.index + m[0].length, i + 1 < delen.length ? delen[i + 1].index : undefined).trim(); });
   const voor = t.slice(0, delen[0].index).trim();
@@ -298,11 +345,22 @@ function structuur(tekst) {
     const regels = s.split(/\n+/).map(x => x.replace(/^\s*[-*•]\s*/, "").trim()).filter(Boolean);
     return regels.length > 1 ? `<ul>${regels.map(r => `<li>${opmaak(r)}</li>`).join("")}</ul>` : opmaak(s);
   };
+  const bewijsRijen = s => {
+    const regels = s.split(/\n+/).map(x => x.replace(/^\s*[-*•]\s*/, "").trim()).filter(Boolean);
+    const max = kort() ? 4 : 99;
+    const rijen = regels.map((r, i) => {
+      const m = r.match(/^\**\s*((?:dag\s*\d+(?:\s*[-–]\s*\d+)?)(?:[ ,]+(?:om\s+)?\d{1,2}[:.]\d{2}(?:\s*[-–]\s*\d{1,2}[:.]\d{2})?)?)\s*\**\s*[:,–-]\s*(.+)$/i);
+      const cls = (m ? "" : "zonder-tijd") + (i >= max ? " verborgen" : "");
+      return m ? `<li class="${cls}"><span class="wanneer">${esc(m[1].replace(/\s+/g, " "))}</span><span>${opmaak(m[2])}</span></li>` : `<li class="${cls}"><span>${opmaak(r)}</span></li>`;
+    }).join("");
+    return `<ul class="bewijs-lijst">${rijen}</ul>${regels.length > max ? `<button class="meer" data-meer-lijst>+ ${regels.length - max} meer</button>` : ""}`;
+  };
   let h = voor ? `<div>${opmaak(voor)}</div>` : "";
   if (stukken.antwoord) h += `<p class="kern">${opmaak(stukken.antwoord)}</p>`;
-  if (stukken.bewijs) h += `<div class="deel"><div class="deel-label">Bewijs</div>${lijst(stukken.bewijs)}</div>`;
-  if (stukken.verwijzingen && !/^geen\.?$/i.test(stukken.verwijzingen)) h += `<div class="deel"><div class="deel-label">Verwijzingen</div>${lijst(stukken.verwijzingen)}</div>`;
-  if (stukken.onzeker) h += `<div class="deel onzeker"><div class="deel-label">Onzeker</div>${lijst(stukken.onzeker)}</div>`;
+  if (stukken.bewijs) h += `<div class="deel"><div class="deel-label">Bewijs</div>${bewijsRijen(stukken.bewijs)}</div>`;
+  const verw = stukken.verwijzingen && !/^geen\.?$/i.test(stukken.verwijzingen) ? `<div class="deel"><div class="deel-label">Verwijzingen</div>${lijst(stukken.verwijzingen)}</div>` : "";
+  const onz = stukken.onzeker ? `<div class="deel onzeker"><div class="deel-label">Onzeker</div>${lijst(stukken.onzeker)}</div>` : "";
+  if (verw || onz) h += kort() ? `<details class="extra"><summary>Verwijzingen en twijfel</summary>${verw}${onz}</details>` : verw + onz;
   return h;
 }
 
@@ -333,9 +391,9 @@ function render(trace, verdict) {
       const toetst = (b.toetst_beurten || []).length ? `<span class="chip">toetst ${b.toetst_beurten.map(ref).join(" ")}</span>` : "";
       const doel = b.doel ? `<span class="chip doel">${esc(b.doel)}</span>` : "";
       const open = (b.open_vragen || []).length ? `<div style="margin-top:8px"><b>Open vragen</b><ol class="open-lijst">${b.open_vragen.map(v => `<li>${opmaak(v)}</li>`).join("")}</ol></div>` : "";
-      const waarom = `<details class="waarom"${b.aan ? "" : " open"}><summary>Waarom</summary><div class="inhoud">${opmaak(b.reden)}${open}</div></details>`;
+      const waarom = `<details class="waarom"${b.aan ? "" : " open"}><summary>Waarom</summary><div class="inhoud">${beurtLinks(opmaak(b.reden))}${open}</div></details>`;
       html += b.aan
-        ? `<div class="ronde-kop">Beurt ${esc(b.ronde)}</div><div class="decreet" id="b${b.nr}">${av("koning")}<div class="lijf"><div class="regel1"><span class="naar">Koning → <span style="color:${kleur(b.aan)}">${AVATAR[b.aan] || ""} ${esc(naam(b.aan))}</span></span>${doel}${toetst}${vlag}<a class="ref" href="#b${b.nr}" style="margin-left:auto">#${b.nr}</a></div><p class="vraag">${opmaak(b.vraag)}</p>${waarom}</div></div>`
+        ? `<div class="ronde-kop">Beurt ${esc(b.ronde)}</div><div class="decreet" id="b${b.nr}">${av("koning")}<div class="lijf"><div class="regel1"><span class="naar">Koning → <span style="color:${kleur(b.aan)}">${AVATAR[b.aan] || ""} ${esc(naam(b.aan))}</span></span>${doel}${toetst}${vlag}<a class="ref" href="#b${b.nr}" style="margin-left:auto">#${b.nr}</a></div><div class="vraag">${klem(beurtLinks(opmaak(b.vraag)), 2)}</div>${waarom}</div></div>`
         : `<div class="ronde-kop">Einde debat</div><div class="decreet stop" id="b${b.nr}">${av("koning")}<div class="lijf"><div class="regel1"><span class="naar">De Koning sluit het debat</span>${doel}${vlag}<a class="ref" href="#b${b.nr}" style="margin-left:auto">#${b.nr}</a></div>${waarom}</div></div>`;
       continue;
     }
@@ -356,7 +414,7 @@ function render(trace, verdict) {
       const isKoning = b.spreker === "koning";
       const bronRegel = bronnen.length ? `<div class="bronnen">${bronnen.join("")}</div>` : (isKoning ? "" : `<div class="bronnen"><span class="chip let">geen toolcall: Kennisbron niet gelezen</span></div>`);
       if (isKoning) html += `<div class="ronde-kop">Verdict van de Koning</div>`;
-      html += `<div class="bericht${isKoning ? " koning" : ""}" id="b${b.nr}" style="--kleur:${kleur(b.spreker)}">${av(b.spreker, "groot")}<div class="lijf"><div class="kopregel"><span class="wie">${esc(naam(b.spreker))}</span>${badge}${meta}</div><div class="tekst">${isKoning ? opmaak(b.tekst) : structuur(b.tekst)}</div>${bronRegel}</div></div>`;
+      html += `<div class="bericht${isKoning ? " koning" : ""}" id="b${b.nr}" style="--kleur:${kleur(b.spreker)}">${av(b.spreker, "groot")}<div class="lijf"><div class="kopregel"><span class="wie">${esc(naam(b.spreker))}</span>${badge}${meta}</div><div class="tekst">${isKoning ? klem(opmaak(b.tekst), 6) : structuur(b.tekst)}</div>${bronRegel}</div></div>`;
     } else {
       t.tools++;
       let vlag = "";
@@ -381,6 +439,14 @@ function render(trace, verdict) {
   if (bezig && onderaan && tab === "debat") window.scrollTo(0, document.body.scrollHeight);
   $("tel-debat").textContent = raadslidBeurten;
 
+  // Overzicht: wie sprak in welke volgorde, met het doel van de Koning; klik om te springen
+  const stappen = [];
+  for (const b of beurten) if (b.soort === "routering") stappen.push(b.aan
+    ? `<a class="stap" href="#b${b.nr}" data-ga="${b.nr}" title="Beurt ${esc(b.ronde)}: ${esc(naam(b.aan))}${b.doel ? " · " + esc(b.doel) : ""}">${av(b.aan)}<small>${esc(b.doel || naam(b.aan))}</small></a>`
+    : `<a class="stap einde" href="#b${b.nr}" data-ga="${b.nr}" title="De Koning sluit het debat">${av("koning")}<small>einde</small></a>`);
+  $("verloop").hidden = !stappen.length;
+  $("verloop").innerHTML = `<span class="verloop-label">Verloop</span>` + stappen.join('<span class="pijl">→</span>');
+
   // Beurtenbudget: één pip per Raadslid-beurt, in de kleur van de spreker
   $("pips").innerHTML = Array.from({ length: BEURTENBUDGET }, (_, i) =>
     i < pipKleuren.length ? `<span class="pip vol" style="--kleur:${pipKleuren[i]}"></span>`
@@ -402,7 +468,7 @@ function render(trace, verdict) {
   $("stand").innerHTML = laatsteStand
     ? Object.keys(SLOTS).map(k => {
         const w = laatsteStand.stand[k] || "onbekend", bekend = !/^onbekend/i.test(w);
-        return `<div class="slot"><div class="slot-kop"><span><span class="lamp${bekend ? " aan" : ""}"></span>${SLOTS[k][0]}</span></div>${opmaak(w)}</div>`;
+        return `<div class="slot"><div class="slot-kop"><span><span class="lamp${bekend ? " aan" : ""}"></span>${SLOTS[k][0]}</span></div>${klem(opmaak(w), 3)}</div>`;
       }).join("")
       + `<div class="slot"><div class="slot-kop"><span>Open vragen</span><span>na ${ref(laatsteStand.nr)}</span></div>${laatsteStand.open.length ? `<ol class="vragen">${laatsteStand.open.map(v => `<li>${opmaak(v)}</li>`).join("")}</ol>` : '<span class="leeg">geen</span>'}</div>`
     : '<span class="leeg">nog geen routering</span>';
@@ -451,8 +517,8 @@ function render(trace, verdict) {
   $("geschillen").innerHTML = gs.length ? `<div class="geschillen">${gs.map(g => {
     const beslecht = !!g.uitkomst;
     return `<div class="kaart geschil"><h3><span>${esc(g.onderwerp)}</span><span class="chip ${beslecht ? "ok" : "let"}">${beslecht ? "beslecht" : "open"}</span></h3>
-      ${Object.entries(g.standpunten || {}).map(([r, s]) => `<div class="standpunt">${av(r)}<div><b style="color:${kleur(r)}">${esc(naam(r))}</b><br>${opmaak(s)}</div></div>`).join("")}
-      <div class="uitkomst${beslecht ? "" : " open"}"><b>${beslecht ? "Uitkomst" : "Niet beslecht"}</b>${beslecht ? ": " + opmaak(g.uitkomst) : ""}${(g.bewijs || []).length ? `<div style="margin-top:6px">${idChips(g.bewijs)}</div>` : ""}${(g.beurten || []).length ? `<div style="margin-top:6px;font-size:12px;color:var(--zacht)">in beurt ${g.beurten.map(n => ref(n)).join(" ")}</div>` : ""}</div></div>`;
+      ${Object.entries(g.standpunten || {}).map(([r, s]) => `<div class="standpunt">${av(r)}<div><b style="color:${kleur(r)}">${esc(naam(r))}</b>${klem(opmaak(s), 3)}</div></div>`).join("")}
+      <div class="uitkomst${beslecht ? "" : " open"}"><b>${beslecht ? "Uitkomst" : "Niet beslecht"}</b>${beslecht ? ": " + opmaak(g.uitkomst) : ""}${(g.bewijs || []).length ? `<div style="margin-top:6px">${idBlok(g.bewijs)}</div>` : ""}${(g.beurten || []).length ? `<div style="margin-top:6px;font-size:12px;color:var(--zacht)">in beurt ${g.beurten.map(n => ref(n)).join(" ")}</div>` : ""}</div></div>`;
   }).join("")}</div>` : `<p class="melding"><span class="groot">🤝</span>${bezig ? "De geschillen verschijnen zodra de Koning het Verdict opstelt." : "Geen geschillen vastgelegd."}</p>`;
 
   // Verdict
@@ -467,14 +533,14 @@ function render(trace, verdict) {
     const kaartSlot = k => {
       const s = oz[k] || {}, [titel, wat, ic] = SLOTS[k];
       const z = typeof s.zekerheid === "number" ? `<div class="meter"><span>zekerheid</span><span class="balk"><i style="width:${Math.round(s.zekerheid * 100)}%"></i></span><b>${Math.round(s.zekerheid * 100)}%</b></div>` : "";
-      return `<div class="kaart"><h3>${ic} ${titel}</h3><div class="wat">${wat}</div>${z}<div>${s.bewering ? opmaak(s.bewering) : '<span class="leeg">onbekend (null)</span>'}</div>${idChips(s.bewijs)}</div>`;
+      return `<div class="kaart"><h3>${ic} ${titel}</h3><div class="wat">${wat}</div>${z}<div>${s.bewering ? klem(opmaak(s.bewering), 6) : '<span class="leeg">onbekend (null)</span>'}</div>${idBlok(s.bewijs)}</div>`;
     };
     const vs = verdict.voorspelling;
     vd.innerHTML = `<div class="kaart samenvatting">${verdict.samenvatting === "TODO" ? '<span class="leeg">TODO</span>' : opmaak(verdict.samenvatting)}</div>
       <div class="sectiekop">Oorzaak</div>
       <div class="oorzaak">${Object.keys(SLOTS).map(kaartSlot).join("")}</div>
       <div class="verdict-grid">
-        <div class="kaart"><h2>Herstelplan · in volgorde</h2><div class="kaart-body"><ol class="stappen">${(verdict.acties || []).map(a => `<li><div><div class="actie">${opmaak(a.actie)}</div><div class="reden">${opmaak(a.reden)}</div>${idChips(a.bewijs)}</div></li>`).join("")}</ol></div></div>
+        <div class="kaart"><h2>Herstelplan · in volgorde</h2><div class="kaart-body"><ol class="stappen">${(verdict.acties || []).map(a => `<li><div><div class="actie">${opmaak(a.actie)}</div><div class="reden">${opmaak(a.reden)}</div>${idBlok(a.bewijs)}</div></li>`).join("")}</ol></div></div>
         <div style="display:flex;flex-direction:column;gap:16px">
           ${vs ? `<div class="kaart voorspelling"><div class="sectiekop">Volgende Desync als niemand ingrijpt</div><div class="dag">dag ${esc(vs.dag)}</div><p>${opmaak(vs.bewering)}</p>${idChips(vs.bewijs)}</div>` : ""}
           <div class="kaart"><h2>Risico's</h2><div class="kaart-body">${(verdict.risicos || []).map(r => `<div class="risico"><b>${opmaak(r.risico)}</b><div class="mit">${opmaak(r.mitigatie)}</div></div>`).join("")}</div></div>
@@ -482,6 +548,17 @@ function render(trace, verdict) {
       </div>`;
   }
 }
+
+function meerKnoppen() {
+  document.querySelectorAll(".klem:not(.open)").forEach(el => {
+    const knop = el.nextElementSibling?.matches?.(".meer[data-meer-klem]") ? el.nextElementSibling : null;
+    const loopt = el.scrollHeight > el.clientHeight + 2;
+    if (loopt && !knop) el.insertAdjacentHTML("afterend", '<button class="meer" data-meer-klem>lees meer</button>');
+    if (!loopt && knop) knop.remove();
+  });
+}
+const renderOrig = render;
+render = (...a) => { renderOrig(...a); requestAnimationFrame(meerKnoppen); };
 
 /* ---------- interactie ---------- */
 function kiesTab(naamTab) {
@@ -491,6 +568,7 @@ function kiesTab(naamTab) {
   if (naamTab === "verdict") { verdictGezien = true; $("tel-verdict").classList.remove("nieuw"); }
   history.replaceState(null, "", "#" + naamTab);
   window.scrollTo(0, 0);
+  requestAnimationFrame(meerKnoppen);  // ingeklemde tekst meten zodra de tab zichtbaar is
 }
 document.querySelectorAll(".tab").forEach(b => b.addEventListener("click", () => kiesTab(b.dataset.tab)));
 document.addEventListener("keydown", e => {
@@ -500,6 +578,12 @@ document.addEventListener("keydown", e => {
   if (e.key === "Escape" && filter) { filter = null; laatste && render(...laatste); }
 });
 document.addEventListener("click", e => {
+  const mk = e.target.closest("[data-meer-klem]");
+  if (mk) { const el = mk.previousElementSibling; const open = el.classList.toggle("open"); mk.textContent = open ? "minder" : "lees meer"; return; }
+  const ml = e.target.closest("[data-meer-lijst]");
+  if (ml) { const ul = ml.previousElementSibling; const open = ul.classList.toggle("open"); ml.textContent = open ? "minder" : `+ ${ul.querySelectorAll(".verborgen").length} meer`; return; }
+  const dk = e.target.closest("[data-dicht]");
+  if (dk) { dicht = dk.dataset.dicht; localStorage.setItem("achrona-dicht", dicht); zetDicht(); laatste && render(...laatste); return; }
   const z = e.target.closest(".zetel");
   if (z) { filter = filter === z.dataset.rol ? null : z.dataset.rol; laatste && render(...laatste); return; }
   if (e.target.closest("[data-wis]")) { filter = null; laatste && render(...laatste); return; }
@@ -515,6 +599,9 @@ $("thema").addEventListener("click", () => {
   const n = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
   document.documentElement.dataset.theme = n; localStorage.setItem("achrona-thema", n);
 });
+function zetDicht() { document.querySelectorAll("[data-dicht]").forEach(b => b.setAttribute("aria-pressed", b.dataset.dicht === dicht)); }
+zetDicht();
+window.addEventListener("resize", () => requestAnimationFrame(meerKnoppen));
 const start = location.hash.slice(1);
 if (["verdict", "geschillen", "controle"].includes(start)) kiesTab(start);
 
