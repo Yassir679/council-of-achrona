@@ -7,6 +7,7 @@ Beide backends geven hetzelfde terug (Antwoord), zodat council.py dezelfde trace
 Een Raadslid krijgt alleen de MCP-server van zijn eigen Rol; de Koning krijgt geen enkele tool.
 """
 import asyncio
+import dataclasses
 import json
 import os
 import re
@@ -25,8 +26,9 @@ LEGE_MAP = tempfile.mkdtemp(prefix="council_")
 @dataclass
 class Antwoord:
     tekst: str = ""
-    toolcalls: list = field(default_factory=list)  # [(tool, argumenten)] in volgorde
+    toolcalls: list = field(default_factory=list)  # [{"tool", "argumenten", "ids"}] in volgorde; ids = wat die call teruggaf
     toolresultaten: str = ""  # alle tekst die de tools teruggaven (voor de ID-controle)
+    sessie_id: str | None = None  # Claude-sessie van het Raadslid (om bij een volgende beurt te hervatten)
     usage: dict = field(default_factory=dict)  # {"invoer", "gecached", "uitvoer"}
     structured: object = None  # JSON-antwoord bij een schema
 
@@ -116,12 +118,14 @@ def _claude_opties(systeem, model, mcp_url=None, schema=None, effort=None, max_t
 async def _claude_run(prompt, opties):
     from claude_agent_sdk import (AssistantMessage, ResultMessage, TextBlock, ToolResultBlock, ToolUseBlock,
                                   UserMessage, query)
-    a, teksten, resultaat = Antwoord(), [], None
+    a, teksten, resultaat, per_id = Antwoord(), [], None, {}
     async for m in query(prompt=prompt, options=opties):
         if isinstance(m, AssistantMessage):
             for b in m.content:
                 if isinstance(b, ToolUseBlock):
-                    a.toolcalls.append((b.name.removeprefix(TOOL_PREFIX), b.input or {}))
+                    call = {"tool": b.name.removeprefix(TOOL_PREFIX), "argumenten": b.input or {}, "ids": []}
+                    a.toolcalls.append(call)
+                    per_id[b.id] = call
                 elif isinstance(b, TextBlock):
                     teksten.append(b.text)
         elif isinstance(m, UserMessage) and isinstance(m.content, list):
@@ -130,7 +134,10 @@ async def _claude_run(prompt, opties):
                     c = b.content
                     if isinstance(c, list):
                         c = "\n".join(x.get("text", "") for x in c if isinstance(x, dict))
-                    a.toolresultaten += _ontpak(c) + "\n"
+                    txt = _ontpak(c)
+                    a.toolresultaten += txt + "\n"
+                    if b.tool_use_id in per_id:
+                        per_id[b.tool_use_id]["ids"] = ids_in(txt)
         elif isinstance(m, ResultMessage):
             if m.is_error:
                 raise RuntimeError(f"Claude: {m.subtype}: {m.result}")
@@ -139,6 +146,7 @@ async def _claude_run(prompt, opties):
             a.usage = {"invoer": (u.get("input_tokens") or 0) + (u.get("cache_creation_input_tokens") or 0) + gecached,
                        "gecached": gecached, "uitvoer": u.get("output_tokens") or 0}
             a.structured = m.structured_output
+            a.sessie_id = m.session_id
             resultaat = m.result
     a.tekst = (resultaat or (teksten[-1] if teksten else "")).strip()
     return a
@@ -160,7 +168,7 @@ def _tel_openai(a, usage):
     a.usage["uitvoer"] = a.usage.get("uitvoer", 0) + (usage.completion_tokens or 0)
 
 
-async def _openai_raadslid(systeem, prompt, mcp_url, model):
+async def _openai_raadslid(systeem, prompt, mcp_url, model, sessie):
     from mcp import ClientSession
     from mcp.client.streamable_http import streamablehttp_client
     client, a = _openai_client(), Antwoord()
@@ -169,7 +177,7 @@ async def _openai_raadslid(systeem, prompt, mcp_url, model):
             await s.initialize()
             tools = [{"type": "function", "function": {"name": t.name, "description": t.description or "",
                                                        "parameters": t.inputSchema}} for t in (await s.list_tools()).tools]
-            msgs = [{"role": "system", "content": systeem}, {"role": "user", "content": prompt}]
+            msgs = list(sessie.get("msgs") or [{"role": "system", "content": systeem}]) + [{"role": "user", "content": prompt}]
             for stap in range(6):
                 extra = {"tool_choice": "required"} if stap == 0 else {}  # eerst de Kennisbron lezen
                 if stap == 5:
@@ -179,13 +187,15 @@ async def _openai_raadslid(systeem, prompt, mcp_url, model):
                 msg = r_.choices[0].message
                 if not msg.tool_calls:
                     a.tekst = (msg.content or "").strip()
+                    msgs.append({"role": "assistant", "content": a.tekst})
+                    sessie["msgs"] = msgs  # het Raadslid onthoudt zijn bron en eerdere beurten
                     break
                 msgs.append(msg.model_dump(exclude_none=True))
                 for tc in msg.tool_calls:
                     args = json.loads(tc.function.arguments or "{}")
-                    a.toolcalls.append((tc.function.name, args))
                     res = await s.call_tool(tc.function.name, args)
                     txt = "\n".join(getattr(c, "text", "") for c in res.content)
+                    a.toolcalls.append({"tool": tc.function.name, "argumenten": args, "ids": ids_in(txt)})
                     a.toolresultaten += txt + "\n"
                     msgs.append({"role": "tool", "tool_call_id": tc.id, "content": txt})
     return a
@@ -204,13 +214,21 @@ async def _openai_json(systeem, prompt, schema, model):
 
 # ----------------------------------------------------------------------------- publieke functies
 
-async def raadslid(systeem, prompt, mcp_url):
-    """Eén beurt van een Raadslid: leest via MCP alleen de eigen Kennisbron en antwoordt in tekst."""
+async def raadslid(systeem, prompt, mcp_url, sessie):
+    """Eén beurt van een Raadslid: leest via MCP alleen de eigen Kennisbron en antwoordt in tekst.
+
+    `sessie` is een dict per Rol: het Raadslid hervat zijn eigen gesprek (hij onthoudt zijn bron en eerdere
+    beurten), zodat hij bij een toetsvraag gericht records ophaalt in plaats van alles opnieuw te lezen.
+    """
     model = os.environ["MODEL_KLEIN"]
     if naam() == "claude":
         opties = _claude_opties(systeem, model, mcp_url=mcp_url, effort=os.getenv("EFFORT_KLEIN") or None)
-        return await met_retry(lambda: _claude_run(prompt, opties))
-    return await met_retry(lambda: _openai_raadslid(systeem, prompt, mcp_url, model))
+        if sessie.get("id"):
+            opties = dataclasses.replace(opties, resume=sessie["id"])
+        a = await met_retry(lambda: _claude_run(prompt, opties))
+        sessie["id"] = a.sessie_id or sessie.get("id")
+        return a
+    return await met_retry(lambda: _openai_raadslid(systeem, prompt, mcp_url, model, sessie))
 
 
 async def koning(systeem, prompt, schema):
