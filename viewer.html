@@ -245,6 +245,31 @@
   .stap small { font-size: 10px; text-transform: uppercase; letter-spacing: .04em; color: var(--zacht); max-width: 76px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .pijl { flex: none; color: var(--lijn); font-size: 14px; margin-bottom: 14px; }
   .stap.einde .avatar { border-style: dashed; }
+
+  /* ---------- rustige weergave: één leeskolom, alleen het belangrijkste ---------- */
+  .raad, .rail, .sneltoets, .schakel, .filterinfo { display: none !important; }
+  #tab-debat { max-width: 860px; margin: 0 auto; }
+  .debat-grid { display: block; }
+  .verloop { background: none; border: 0; box-shadow: none; padding: 0 0 6px; margin-bottom: 8px; justify-content: center; }
+  .verloop-label { display: none; }
+  .ronde-kop { margin: 30px 0 10px; font-size: 11px; }
+  .decreet .lijf { background: none; border: 0; padding: 2px 0 0; }
+  .decreet .regel1 { font-size: 13px; color: var(--zacht); }
+  .decreet .naar { font-weight: 600; }
+  .decreet .vraag { font-size: 15px; margin-top: 2px; color: var(--tekst); }
+  .decreet.stop .lijf { border: 0; }
+  .bericht { margin: 8px 0 6px; }
+  .bericht .kopregel { border-bottom: 0; padding: 10px 16px 0; background: none; }
+  .bericht .tekst { padding: 4px 16px 12px; }
+  .kern { font-size: 15.5px; }
+  .deel { margin-top: 8px; }
+  details.extra { margin-top: 8px; }
+  .bronnen { border-top: 0; background: none; padding: 6px 0 0; }
+  .vink { color: var(--ok); font-size: 12px; font-weight: 600; }
+  .vink.fout { color: var(--fout); }
+  .merk small { display: none; }
+  .tab .tel { display: none; }
+  .tab .tel.nieuw { display: inline; width: 8px; height: 8px; padding: 0; font-size: 0; border-radius: 50%; }
 </style>
 </head>
 <body>
@@ -308,7 +333,7 @@ const ref = n => `<a class="ref" href="#b${n}" data-ga="${n}">#${n}</a>`;
 const $ = id => document.getElementById(id);
 
 let vorige = "", filter = null, laatste = null, verdictGezien = false, tab = "debat";
-let dicht = localStorage.getItem("achrona-dicht") || "kort";
+let dicht = "kort";
 const kort = () => dicht === "kort";
 /* Lange tekst: in de Kort-weergave ingeklemd op n regels, met 'lees meer' (alleen als het echt overloopt). */
 const klem = (html, n = 3) => kort() ? `<div class="klem" style="--regels:${n}">${html}</div>` : `<div>${html}</div>`;
@@ -334,10 +359,10 @@ const idChips = lijst => (lijst || []).length ? `<div class="ids">${lijst.map(i 
 const ids = tekst => [...String(tekst ?? "").matchAll(ID_RE)].map(m => ({ id: `${m[1]}-${m[3]}`, raar: m[2] !== "-" }));
 
 /* Raadslid-antwoord in de vorm "Antwoord: / Bewijs: / Verwijzingen: / Onzeker:" netjes opdelen. */
-function structuur(tekst) {
+function structuur(tekst, details = "") {
   const t = String(tekst || "");
   const delen = [...t.matchAll(/^\s*\**(Antwoord|Bewijs|Verwijzingen|Onzeker)\**\s*:\s*/gim)];
-  if (delen.length < 2) return klem(opmaak(t), 8);
+  if (delen.length < 2) return klem(opmaak(t), 6) + (details ? `<details class="extra"><summary>Details</summary>${details}</details>` : "");
   const stukken = {};
   delen.forEach((m, i) => { stukken[m[1].toLowerCase()] = t.slice(m.index + m[0].length, i + 1 < delen.length ? delen[i + 1].index : undefined).trim(); });
   const voor = t.slice(0, delen[0].index).trim();
@@ -347,7 +372,7 @@ function structuur(tekst) {
   };
   const bewijsRijen = s => {
     const regels = s.split(/\n+/).map(x => x.replace(/^\s*[-*•]\s*/, "").trim()).filter(Boolean);
-    const max = kort() ? 4 : 99;
+    const max = 3;
     const rijen = regels.map((r, i) => {
       const m = r.match(/^\**\s*((?:dag\s*\d+(?:\s*[-–]\s*\d+)?)(?:[ ,]+(?:om\s+)?\d{1,2}[:.]\d{2}(?:\s*[-–]\s*\d{1,2}[:.]\d{2})?)?)\s*\**\s*[:,–-]\s*(.+)$/i);
       const cls = (m ? "" : "zonder-tijd") + (i >= max ? " verborgen" : "");
@@ -360,7 +385,7 @@ function structuur(tekst) {
   if (stukken.bewijs) h += `<div class="deel"><div class="deel-label">Bewijs</div>${bewijsRijen(stukken.bewijs)}</div>`;
   const verw = stukken.verwijzingen && !/^geen\.?$/i.test(stukken.verwijzingen) ? `<div class="deel"><div class="deel-label">Verwijzingen</div>${lijst(stukken.verwijzingen)}</div>` : "";
   const onz = stukken.onzeker ? `<div class="deel onzeker"><div class="deel-label">Onzeker</div>${lijst(stukken.onzeker)}</div>` : "";
-  if (verw || onz) h += kort() ? `<details class="extra"><summary>Verwijzingen en twijfel</summary>${verw}${onz}</details>` : verw + onz;
+  h += `<details class="extra"><summary>Details</summary>${onz}${verw}${details}</details>`;
   return h;
 }
 
@@ -391,10 +416,10 @@ function render(trace, verdict) {
       const toetst = (b.toetst_beurten || []).length ? `<span class="chip">toetst ${b.toetst_beurten.map(ref).join(" ")}</span>` : "";
       const doel = b.doel ? `<span class="chip doel">${esc(b.doel)}</span>` : "";
       const open = (b.open_vragen || []).length ? `<div style="margin-top:8px"><b>Open vragen</b><ol class="open-lijst">${b.open_vragen.map(v => `<li>${opmaak(v)}</li>`).join("")}</ol></div>` : "";
-      const waarom = `<details class="waarom"${b.aan ? "" : " open"}><summary>Waarom</summary><div class="inhoud">${beurtLinks(opmaak(b.reden))}${open}</div></details>`;
+      const waarom = `<details class="waarom"${b.aan ? "" : " open"}><summary>Waarom</summary><div class="inhoud">${beurtLinks(opmaak(b.reden))}${toetst ? `<div style="margin-top:6px">${toetst}</div>` : ""}${open}</div></details>`;
       html += b.aan
-        ? `<div class="ronde-kop">Beurt ${esc(b.ronde)}</div><div class="decreet" id="b${b.nr}">${av("koning")}<div class="lijf"><div class="regel1"><span class="naar">Koning → <span style="color:${kleur(b.aan)}">${AVATAR[b.aan] || ""} ${esc(naam(b.aan))}</span></span>${doel}${toetst}${vlag}<a class="ref" href="#b${b.nr}" style="margin-left:auto">#${b.nr}</a></div><div class="vraag">${klem(beurtLinks(opmaak(b.vraag)), 2)}</div>${waarom}</div></div>`
-        : `<div class="ronde-kop">Einde debat</div><div class="decreet stop" id="b${b.nr}">${av("koning")}<div class="lijf"><div class="regel1"><span class="naar">De Koning sluit het debat</span>${doel}${vlag}<a class="ref" href="#b${b.nr}" style="margin-left:auto">#${b.nr}</a></div>${waarom}</div></div>`;
+        ? `<div class="ronde-kop">Beurt ${esc(b.ronde)}</div><div class="decreet" id="b${b.nr}">${av("koning")}<div class="lijf"><div class="regel1"><span class="naar">Koning vraagt <span style="color:${kleur(b.aan)}">${esc(naam(b.aan))}</span></span>${doel}${vlag}</div><div class="vraag">${klem(beurtLinks(opmaak(b.vraag)), 2)}</div>${waarom}</div></div>`
+        : `<div class="ronde-kop">Einde debat</div><div class="decreet stop" id="b${b.nr}">${av("koning")}<div class="lijf"><div class="regel1"><span class="naar">De Koning sluit het debat</span>${vlag}</div>${waarom}</div></div>`;
       continue;
     }
     if (b.soort === "bericht" && NAMEN[b.spreker] && !["koning", "mens"].includes(b.spreker)) {
@@ -410,11 +435,13 @@ function render(trace, verdict) {
       if (!zichtbaar) continue;
       const c = b.id_controle;
       const badge = c ? `<span class="chip ${c.ongeldig?.length ? "fout" : "ok"}" title="ID-controle: alleen ID's die dit Raadslid in de eigen Kennisbron las tellen${c.ongeldig?.length ? ". Ongeldig: " + esc(c.ongeldig.join(", ")) : ""}">${c.ongeldig?.length ? "✗" : "✓"} ${(c.geldig || []).length} ID's geverifieerd${c.ongeldig?.length ? " · " + c.ongeldig.length + " ongeldig" : ""}</span>` : "";
-      const meta = `<span class="meta">${b.duur_s ? `<span>${b.duur_s}s</span>` : ""}${b.tijd ? `<span>${esc(b.tijd.slice(11, 19))}</span>` : ""}<a class="ref" href="#b${b.nr}">#${b.nr}</a></span>`;
+      const meta = "";
+      const vink = c ? `<span class="vink${c.ongeldig?.length ? " fout" : ""}" title="${(c.geldig || []).length} ID's geverifieerd in de eigen Kennisbron${c.ongeldig?.length ? "; ongeldig: " + esc(c.ongeldig.join(", ")) : ""}">${c.ongeldig?.length ? "✗ ongeldige ID's" : "✓ bron gelezen"}</span>` : "";
+      const details = `${bronnen.length ? `<div class="bronnen">${bronnen.join("")}</div>` : (b.spreker === "koning" ? "" : `<div class="bronnen"><span class="chip let">geen toolcall: Kennisbron niet gelezen</span></div>`)}<div style="font-size:12px;color:var(--zacht);margin-top:4px">${(c?.geldig || []).length} ID's geverifieerd${b.duur_s ? " · " + b.duur_s + "s" : ""}${b.tijd ? " · " + esc(b.tijd.slice(11, 19)) : ""} · beurt ${b.nr}</div>`;
       const isKoning = b.spreker === "koning";
-      const bronRegel = bronnen.length ? `<div class="bronnen">${bronnen.join("")}</div>` : (isKoning ? "" : `<div class="bronnen"><span class="chip let">geen toolcall: Kennisbron niet gelezen</span></div>`);
+      const bronRegel = "";
       if (isKoning) html += `<div class="ronde-kop">Verdict van de Koning</div>`;
-      html += `<div class="bericht${isKoning ? " koning" : ""}" id="b${b.nr}" style="--kleur:${kleur(b.spreker)}">${av(b.spreker, "groot")}<div class="lijf"><div class="kopregel"><span class="wie">${esc(naam(b.spreker))}</span>${badge}${meta}</div><div class="tekst">${isKoning ? klem(opmaak(b.tekst), 6) : structuur(b.tekst)}</div>${bronRegel}</div></div>`;
+      html += `<div class="bericht${isKoning ? " koning" : ""}" id="b${b.nr}" style="--kleur:${kleur(b.spreker)}">${av(b.spreker, "groot")}<div class="lijf"><div class="kopregel"><span class="wie">${esc(naam(b.spreker))}</span>${isKoning ? "" : vink}</div><div class="tekst">${isKoning ? klem(opmaak(b.tekst), 6) : structuur(b.tekst, details)}</div></div></div>`;
     } else {
       t.tools++;
       let vlag = "";
@@ -507,6 +534,8 @@ function render(trace, verdict) {
     : '<span class="leeg">—</span>';
   const vc = trace.verdict_controle;
   $("controle").innerHTML = `<div class="kaart"><h2>Spelregels</h2><div class="kaart-body">${checkHtml}</div></div>`
+    + `<div class="kaart"><h2>Werkgeheugen van de Koning</h2><div class="kaart-body">${$("stand").innerHTML}</div></div>`
+    + `<div class="kaart"><h2>Run</h2><div class="kaart-body" style="font-size:13px">${esc(trace.run_id || "")}<br>Koning: ${esc(o.model_koning || "?")} · Raadsleden: ${esc(o.model_raadsleden || "?")}</div></div>`
     + `<div class="kaart"><h2>Isolatie per Rol</h2><div class="kaart-body">${opzet}</div></div>`
     + `<div class="kaart"><h2>Verbruik</h2><div class="kaart-body">${verbruik}</div></div>`
     + (vc ? `<div class="kaart"><h2>ID-controle van het Verdict</h2><div class="kaart-body"><p style="margin-top:0;font-size:13px">${(vc.geldige_ids || []).length} ID's mochten in het Verdict: door Raadsleden genoemd én in hun eigen Kennisbron gelezen.</p>${(vc.verwijderd || []).length ? `<b style="font-size:13px">Verwijderd door de controle</b><ul style="font-size:13px;margin:4px 0 0">${vc.verwijderd.map(x => `<li>${esc(x)}</li>`).join("")}</ul>` : '<div class="check ok">Niets verwijderd</div>'}</div></div>` : "");
