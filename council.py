@@ -122,7 +122,7 @@ async def kies_volgende(leden, debat, gesproken, stand, open_vragen, tel):
     return {**keuze, "stand": stand, "open_vragen": open_vragen}
 
 
-def zuiver_verdict(ruw, geldig, rollen, bericht_nrs):
+def zuiver_verdict(ruw, geldig, rollen, bericht_nrs, gesproken_rollen):
     """Houdt alleen geverifieerde ID's over en maakt het Verdict schema-proof. Geeft (verdict, geschillen, verwijderd)."""
     verwijderd = []
 
@@ -175,8 +175,13 @@ def zuiver_verdict(ruw, geldig, rollen, bericht_nrs):
 
     geschillen = []
     for g in ruw.get("geschillen") or []:
-        standpunten = {s["rol"]: tekst(s["standpunt"]) for s in g.get("standpunten") or []
-                       if s.get("rol") in rollen and s.get("standpunt")}
+        standpunten = {}
+        for s in g.get("standpunten") or []:
+            if s.get("rol") in rollen and s.get("standpunt"):
+                if s["rol"] in gesproken_rollen:
+                    standpunten[s["rol"]] = tekst(s["standpunt"])
+                else:  # een Rol die niet sprak heeft geen standpunt in dit debat
+                    verwijderd.append(f"standpunt van {s['rol']} in geschil '{g.get('onderwerp')}' (sprak niet)")
         if not (g.get("onderwerp") and standpunten):
             continue
         b = filter_ids(g.get("bewijs"), "geschil")
@@ -294,7 +299,7 @@ async def run():
                              koning.VERDICT_SCHEMA)
     tel("groot", a.usage)
     verdict, geschillen, verwijderd = zuiver_verdict(a.structured or {}, geldig_genoemd, [l.ROL for l in leden],
-                                                     {d["nr"] for d in debat})
+                                                     {d["nr"] for d in debat}, {r for r, x in gesproken.items() if x})
     verdict = {"run_id": run_id, **verdict}
     trace["geschillen"] = geschillen
     trace["verdict_controle"] = {"geldige_ids": sorted(geldig_genoemd), "verwijderd": verwijderd}

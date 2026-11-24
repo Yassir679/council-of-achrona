@@ -210,5 +210,5 @@ def verdict_prompt(leden, debat_tekst, stand, open_vragen, geldige_ids):
             "Je laatste stand:\n" + "\n".join(f"- {k}: {v}" for k, v in (stand or {}).items())
             + "\nOpen vragen:\n" + ("\n".join(f"- {v}" for v in open_vragen) or "- geen")
             + f"\n\nGeldige ID's (door Raadsleden genoemd én in hun eigen Kennisbron gevonden): {', '.join(sorted(geldige_ids)) or 'geen'}\n\n"
-            "Stel het Verdict en de geschillen op. Rollen in `standpunten` schrijf je als: "
+            "Stel het Verdict en de geschillen op. Geef in `standpunten` alleen Rollen die zelf in het debat spraken. Rollen schrijf je als: "
             + ", ".join(l.ROL for l in leden) + ".")
