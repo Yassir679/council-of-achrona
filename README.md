@@ -4,6 +4,71 @@ Starter kit voor challenge 113 van Hack The Future 2026, aangeboden door Roboest
 
 De Desync heeft de herinneringen en systemen van Achrona versnipperd. Jullie bouwen een **Council**: een zwerm van samenwerkende AI-agenten (Raadsleden) die elk één Rol vertolken, debatteren, verspreide kennis analyseren en samen tot een **Council Verdict** komen: wat is de oorzaak, wat is het herstelplan, welke risico's zijn er.
 
+> **Onze oplossing staat in de sectie [Onze Council](#onze-council) hieronder.** De rest van deze README is de originele uitleg van de kit.
+
+## Onze Council
+
+### Zo draai je hem
+1. `claude` CLI geïnstalleerd en ingelogd (`claude auth status`): de Council draait op een Claude-abonnement via de Claude Agent SDK, zonder API-key.
+2. `copy .env.example .env` (blok 0 staat al goed: `BACKEND=claude`, `MODEL_KLEIN=sonnet`, `MODEL_GROOT=opus`, de zes MCP-paden).
+3. `uv sync`, dan `uv run viewer` in een tweede terminal en `uv run council`. Controle: `uv run validate`.
+
+Liever het Roboest-endpoint? Zet blok 1 van `.env.example` aan (`BACKEND=openai`): dezelfde Council, dezelfde trace.
+
+### Hoe het werkt
+```
+              ┌──────────── council.py ────────────┐
+ Rolkaarten ─►│  Koning (opus, geen tools)          │
+ (publiek)    │   1. leest het debat + ID-controle  │
+              │   2. werkt stand + open vragen bij  │──► routering {aan, vraag, reden, open_vragen, stand}
+              │   3. kiest wie spreekt of stopt     │
+              │        │                            │
+              │        ▼                            │
+              │  Raadslid (sonnet) ── alleen eigen MCP-pad ──► https://mcp.findingsolutions.be/<rol>/mcp
+              │   leest eerst zijn Kennisbron, antwoordt met ID's, verwijzingen en twijfels
+              │        │                            │
+              │        ▼                            │
+              │  Code: ID-controle (ID telt alleen als dit Raadslid het in zijn eigen toolresultaat las)
+              │        │  ... herhaal tot de Koning stopt of het Beurtenbudget op is
+              │        ▼                            │
+              │  Koning stelt Verdict + geschillen op; code houdt alleen geverifieerde ID's over
+              └─────────────────────────────────────┘──► trace.json + verdict.json ──► viewer
+```
+
+| Bestand | Rol |
+|---|---|
+| `council.py` | Het debat: `kies_volgende()` (Koning-agent + spelregels in code), ID-controle, Verdict-zuivering, trace. |
+| `koning.py` | Instructies en JSON-schema's van de Koning (routering en Verdict) en van de Raadsleden. Geen inhoud uit de Kennisbronnen. |
+| `backend.py` | LLM-laag: Claude Agent SDK (abonnement) of OpenAI-compatibel endpoint. Raadslid krijgt alleen zijn eigen MCP-server, de Koning geen enkele tool. |
+| `raadsleden/` | Alle zes Rollen; perspectief en publiek Belang komen van de publieke Rolkaarten. |
+| `viewer.html` | Live debat met avatars, het werkgeheugen van de Koning (stand + open vragen), ID-controle per bericht, zekerheid en voorspelling. |
+
+### De Koning
+- **Agent, geen vaste volgorde.** Vóór elke beurt leest de Koning het hele debat met de ID-controle erbij en antwoordt in een vast JSON-schema (structured output): `stand` (wat de Council per deel van de oorzaak weet, met ID's), `open_vragen`, en de keuze `rol`, `vraag`, `reden`.
+- **Gerichte vragen.** Hij laat een Rol een concrete bewering, dag of ID toetsen, volgt verwijzingen naar andere Rollen en houdt rekening met het Belang van elke Rol.
+- **Stopt zelf** (`aan: null`) zodra ingreep, mechanisme en verloop gedragen zijn en geen open vraag nog met een Kennisbron te beslechten is.
+- **Vangnet in code**: kiest de agent een ongeldige Rol, wil hij stoppen vóór 3 Rollen spraken, of faalt de call, dan kiest een regel (de eerste Rol die nog niet sprak) en staat dat zo in de `reden`.
+
+### Spelregels: waar ze afgedwongen worden
+| Spelregel | Hoe |
+|---|---|
+| Eén Raadslid per Rol, alleen de eigen Kennisbron | Elk Raadslid krijgt één MCP-server (zijn eigen pad), geen ingebouwde tools, geen claude.ai-connectors (`strict-mcp-config`), een lege werkmap. Elke toolcall staat met `pad` in de trace. |
+| De Koning leest geen Kennisbron | De Koning-call heeft geen enkele tool en geen MCP-server. |
+| Max. 10 Raadslid-beurten, routering vóór elke beurt | Afgedwongen in de lus van `council.py`; `uv run validate` controleert het. |
+| Geen inhoud uit de Kennisbronnen in prompts of code | Prompts bevatten alleen de publieke Rolkaarten en de werkwijze. Alles wat de Council weet komt uit toolcalls in de trace. |
+| Geen verzonnen bewijs | ID-controle: een ID telt alleen als het Raadslid het in zijn eigen toolresultaat las. Ongeldige ID's staan in de trace (`id_controle`) en worden uit het Verdict gefilterd (`verdict_controle`). Een bewering zonder geldig bewijs wordt `null`. |
+| Geen menselijke tussenkomst | Er is geen `mens` in de trace; `trace.json` is de ongewijzigde uitvoer van de run. |
+
+### Extra uitdagingen
+- **Verdict**: `zekerheid` per deel van de oorzaak en een `voorspelling` (dag + bewijs).
+- **Council**: de Koning stopt zelf vóór het budget op is, en houdt `open_vragen` bij in elke routering.
+- **Presentatie**: live run, en een rijkere viewer met avatars en het werkgeheugen van de Koning.
+
+### Waarom een Council beter werkt dan één agent
+- **Elke Rol ziet maar een stuk.** Eén agent met alle bronnen in één prompt neemt de stellige conclusie uit een bron sneller over. Hier moet elke bewering langs een andere Rol, met haar eigen records.
+- **Belangen botsen zichtbaar.** Elk Raadslid verdedigt zijn Belang; de Koning laat tegenspraak toetsen en de `geschillen` tonen hoe ze beslecht werden.
+- **Controleerbaar.** Elke stap (wie, welke vraag, waarom, welke bron, welke ID's geldig) staat in de trace. Een fout ID valt meteen op.
+
 Deze kit geeft jullie binnen het eerste halfuur een draaiende mini-Council die je live in je browser ziet debatteren. Het echte werk is aan jullie: de **Koning** het debat laten leiden. Hij beslist welk Raadslid spreekt, met welke vraag en waarom. (In AI-termen heet dat deel een orchestrator.)
 
 ## Wat je krijgt op de dag
