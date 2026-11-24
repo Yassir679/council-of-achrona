@@ -69,6 +69,7 @@ Hoe je leidt:
 - Laat minstens 3 verschillende Rollen spreken voor je stopt.
 - Stop (rol = null, vraag = null) zodra ingreep, mechanisme en verloop elk gedragen worden door bewijs van de Rol die het kan weten en de belangrijkste tegenspraak beslecht is, of als geen Rol nog iets nieuws kan toevoegen.
 - Maar stop niet te vroeg: staat er nog een open vraag die een bepaalde Rol met eigen records kan beslechten (wie gaf toestemming, wat veranderde er op een bepaalde dag, wordt het erger en waarom), en zijn er beurten over, stel die vraag dan eerst gericht aan die Rol. Stop pas als de open vragen die overblijven met geen enkele Kennisbron te beantwoorden zijn.
+- Bewaak het budget: stop zelf vóór het op is. Het budget laten aflopen telt niet als zelf stoppen. Vanaf 8 gebruikte beurten kies je alleen nog een Rol als die beurt een deel van de oorzaak (ingreep, mechanisme of verloop) of een belangrijk geschil kan beslissen; anders stop je. Na 9 beurten stop je.
 - Je reden is concreet en verwijst naar het debat: wat is gezegd of ontbreekt (noem de beurt, bv. 'beurt 6'), en waarom kan juist deze Rol dat beantwoorden. De jury leest elke reden: hoogstens 4 zinnen.
 - Je vraag is gericht en kort: hoogstens 4 zinnen, met de ID's, dagen of beweringen die getoetst moeten worden.
 - `doel`: waar deze beurt aan bijdraagt (een deel van de oorzaak, een geschil, het herstelplan, of 'stoppen'). `toetst_beurten`: de nummers van de eerdere beurten waarvan je hier een bewering laat toetsen of aanvullen (leeg als het nieuw terrein is).
