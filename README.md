@@ -41,7 +41,7 @@ Liever het Roboest-endpoint? Zet blok 1 van `.env.example` aan (`BACKEND=openai`
 | `koning.py` | Instructies en JSON-schema's van de Koning (routering en Verdict) en van de Raadsleden. Geen inhoud uit de Kennisbronnen. |
 | `backend.py` | LLM-laag: Claude Agent SDK (abonnement) of OpenAI-compatibel endpoint. Raadslid krijgt alleen zijn eigen MCP-server, de Koning geen enkele tool. |
 | `raadsleden/` | Alle zes Rollen; perspectief en publiek Belang komen van de publieke Rolkaarten. |
-| `viewer.html` | Debatviewer met vier tabs (Debat, Verdict, Geschillen, Controle). Live tijdlijn: elk besluit van de Koning met doel en (uitklapbaar) waarom, elk Raadslid-antwoord opgedeeld in kern, bewijs, verwijzingen en twijfel, met de gelezen bronnen eronder. Beurtenbudget als balk in de kleur van de sprekers, de Raad als zetels (klik om te filteren), werkgeheugen van de Koning, spelregels, verbruik, licht/donker. Sneltoetsen `1`–`4`. |
+| `viewer.html` | Rustige debatviewer met vier tabs. **Debat**: één leeskolom met per beurt de vraag van de Koning (waarom uitklapbaar) en het kernantwoord van het Raadslid met de 3 belangrijkste bewijsregels; bronnen, tijden en twijfel onder *Details*. Bovenaan het verloop (wie sprak, met welk doel) en het Beurtenbudget. **Verdict**: samenvatting, oorzaak met zekerheid, herstelplan, voorspelling en risico's. **Geschillen** en **Controle** (spelregels, werkgeheugen van de Koning, isolatie, verbruik). Licht/donker, sneltoetsen `1`–`4`. |
 
 ### De Koning
 - **Agent, geen vaste volgorde.** Vóór elke beurt leest de Koning het hele debat met de ID-controle erbij en antwoordt in een vast JSON-schema (structured output): `stand` (wat de Council per deel van de oorzaak weet, met ID's), `open_vragen`, en de keuze `rol`, `vraag`, `reden`.
