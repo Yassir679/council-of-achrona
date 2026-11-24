@@ -37,11 +37,28 @@ def naam():
     return os.getenv("BACKEND", "claude").strip().lower()
 
 
+class Gebruikslimiet(RuntimeError):
+    """Het abonnement of budget is op (bv. 'You've hit your 5-hour limit'). Opnieuw proberen helpt niet: de run
+    moet stoppen, anders vult de trace zich met beurten zonder Kennisbron en routeringen door het vangnet."""
+
+
+LIMIET_TEKST = ("hit your", "usage limit", "limit · resets", "rate_limit_error", "insufficient_quota", "budget")
+
+
+def is_limiet(tekst):
+    t = str(tekst or "").lower()
+    return any(s in t for s in LIMIET_TEKST)
+
+
 async def met_retry(fn, pogingen=3):
     for i in range(pogingen):
         try:
             return await fn()
-        except Exception as e:  # rate limit of netwerkfout: even wachten en opnieuw
+        except Gebruikslimiet:
+            raise
+        except Exception as e:  # tijdelijke netwerk- of serverfout: even wachten en opnieuw
+            if is_limiet(e):
+                raise Gebruikslimiet(str(e)) from e
             if i == pogingen - 1:
                 raise
             wacht = 10 * (i + 1)
@@ -140,8 +157,9 @@ async def _claude_run(prompt, opties):
                     if b.tool_use_id in per_id:
                         per_id[b.tool_use_id]["ids"] = ids_in(txt)
         elif isinstance(m, ResultMessage):
-            if m.is_error:
-                raise RuntimeError(f"Claude: {m.subtype}: {m.result}")
+            if m.is_error:  # alleen foutmeldingen toetsen: een gewoon antwoord mag het woord 'budget' bevatten
+                fout = f"Claude: {m.subtype}: {m.result}"
+                raise Gebruikslimiet(fout) if is_limiet(m.result) else RuntimeError(fout)
             u = m.usage or {}
             gecached = u.get("cache_read_input_tokens") or 0
             a.usage = {"invoer": (u.get("input_tokens") or 0) + (u.get("cache_creation_input_tokens") or 0) + gecached,
