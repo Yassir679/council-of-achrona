@@ -11,13 +11,35 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
+import os
+
 from agent_framework import Agent
 from agent_framework.devui import serve
+from agent_framework.openai import OpenAIChatCompletionClient
 from agent_framework.orchestrations import GroupChatBuilder
 from dotenv import load_dotenv
+from openai import AsyncOpenAI
 
 import raadsleden
-from council import ROOT, client, instructies, kennisbron_bestanden
+
+ROOT = Path(__file__).parent.parent
+KENNISBRONNEN = ROOT / "kennisbronnen"
+
+
+def client(model_env):  # alleen OpenAI-compatibele endpoints (blok 1-3 van .env.example)
+    return OpenAIChatCompletionClient(model=os.environ[model_env], async_client=AsyncOpenAI(
+        base_url=os.environ["OPENAI_BASE_URL"], api_key=os.environ["OPENAI_API_KEY"], max_retries=8))
+
+
+def kennisbron_bestanden(rol):
+    map_ = KENNISBRONNEN / rol
+    return sorted(p for p in map_.glob("*") if p.suffix in (".md", ".csv")) if map_.is_dir() else []
+
+
+def instructies(lid, bestanden, _mcp=None):
+    return (f"Je bent de {lid.NAAM}, een Raadslid in de Council of Achrona. {lid.PERSPECTIEF}\n"
+            "Baseer je alleen op je eigen Kennisbron en noem bij elke bewering de record-ID's. Verzin nooit een ID.\n\n"
+            "Je Kennisbron:\n\n" + "\n\n".join(f"## {p.name}\n\n{p.read_text(encoding='utf-8')}" for p in bestanden))
 
 
 def main():
