@@ -74,6 +74,22 @@ def json_uit_tekst(tekst):
 
 # ----------------------------------------------------------------------------- Claude (abonnement)
 
+def _ontpak(c):
+    """MCP-resultaten komen soms als JSON-tekst ({"result": "...\\n..."}). Zonder ontpakken plakt de letter n
+    van een ge-escapete newline aan het volgende ID (\\nENG-097) en mist de ID-controle dat record."""
+    if not c:
+        return ""
+    if isinstance(c, str):
+        try:
+            d = json.loads(c)
+        except json.JSONDecodeError:
+            return c.replace("\\n", "\n")
+        if isinstance(d, dict):
+            return "\n".join(str(v) for v in d.values())
+        return str(d)
+    return str(c)
+
+
 def _claude_opties(systeem, model, mcp_url=None, schema=None, effort=None, max_turns=8):
     from claude_agent_sdk import ClaudeAgentOptions
     kw = dict(
@@ -114,7 +130,7 @@ async def _claude_run(prompt, opties):
                     c = b.content
                     if isinstance(c, list):
                         c = "\n".join(x.get("text", "") for x in c if isinstance(x, dict))
-                    a.toolresultaten += (c or "") + "\n"
+                    a.toolresultaten += _ontpak(c) + "\n"
         elif isinstance(m, ResultMessage):
             if m.is_error:
                 raise RuntimeError(f"Claude: {m.subtype}: {m.result}")
