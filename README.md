@@ -41,7 +41,7 @@ Liever het Roboest-endpoint? Zet blok 1 van `.env.example` aan (`BACKEND=openai`
 | `koning.py` | Instructies en JSON-schema's van de Koning (routering en Verdict) en van de Raadsleden. Geen inhoud uit de Kennisbronnen. |
 | `backend.py` | LLM-laag: Claude Agent SDK (abonnement) of OpenAI-compatibel endpoint. Raadslid krijgt alleen zijn eigen MCP-server, de Koning geen enkele tool. |
 | `raadsleden/` | Alle zes Rollen; perspectief en publiek Belang komen van de publieke Rolkaarten. |
-| `viewer.html` | Live debat met avatars, het werkgeheugen van de Koning (stand + open vragen), ID-controle per bericht, zekerheid en voorspelling. |
+| `viewer.html` | Debatviewer met vier tabs (Debat, Verdict, Geschillen, Controle). Live tijdlijn: elk besluit van de Koning met doel en (uitklapbaar) waarom, elk Raadslid-antwoord opgedeeld in kern, bewijs, verwijzingen en twijfel, met de gelezen bronnen eronder. Beurtenbudget als balk in de kleur van de sprekers, de Raad als zetels (klik om te filteren), werkgeheugen van de Koning, spelregels, verbruik, licht/donker. Sneltoetsen `1`–`4`. |
 
 ### De Koning
 - **Agent, geen vaste volgorde.** Vóór elke beurt leest de Koning het hele debat met de ID-controle erbij en antwoordt in een vast JSON-schema (structured output): `stand` (wat de Council per deel van de oorzaak weet, met ID's), `open_vragen`, en de keuze `rol`, `vraag`, `reden`.
