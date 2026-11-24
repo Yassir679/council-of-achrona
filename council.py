@@ -20,6 +20,7 @@ De trace is het verslag voor de jury. Naast de verplichte velden staat er per be
 import asyncio
 import json
 import os
+import re
 import sys
 import time
 import uuid
@@ -29,6 +30,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 import backend
+import controleer_trace
 import koning
 import raadsleden
 
@@ -107,9 +109,12 @@ async def kies_volgende(leden, debat, gesproken, stand, open_vragen, tel):
                  "doel": k.get("doel") or ("stoppen" if k.get("rol") is None else "ingreep"),
                  "toetst_beurten": sorted({n for n in k.get("toetst_beurten") or [] if n in bericht_nrs}),
                  "beslist_door": "koning-agent"}
+    except backend.Gebruikslimiet:
+        raise  # limiet op: de run stopt (zie main); geen routeringen door het vangnet die op een Koning lijken
     except Exception as e:
         print(f"  Koning-agent faalde: {type(e).__name__}: {e}")
-        return {**regel_keuze(leden, gesproken, "De Koning-agent gaf geen antwoord."), "stand": stand, "open_vragen": open_vragen}
+        return {**regel_keuze(leden, gesproken, f"De Koning-agent gaf geen bruikbaar antwoord ({type(e).__name__})."),
+                "stand": stand, "open_vragen": open_vragen}
 
     if keuze["rol"] is not None and keuze["rol"] not in rollen:
         keuze = regel_keuze(leden, gesproken, f"De Koning koos {keuze['rol']!r}, geen Raadslid.")
@@ -136,7 +141,21 @@ def zuiver_verdict(ruw, geldig, rollen, bericht_nrs, gesproken_rollen):
         return uit
 
     def tekst(s):
-        return backend.ID.sub(lambda m: f"{m.group(1)}-{m.group(2)}", s) if isinstance(s, str) else s
+        """Gewoon koppelteken; een niet-geverifieerd ID in vrije tekst gaat eruit (en staat in `verwijderd`)."""
+        if not isinstance(s, str):
+            return s
+
+        def vervang(m):
+            i = f"{m.group(1)}-{m.group(2)}"
+            if i in geldig:
+                return i
+            verwijderd.append(f"{i} (in tekst)")
+            return ""
+        s = backend.ID.sub(vervang, s)
+        s = re.sub(r"\(\s*[,;/ ]*\s*\)", "", s)  # lege haakjes na het weghalen
+        s = re.sub(r"\(\s*[,;/]\s*", "(", s)
+        s = re.sub(r"\s*[,;/]\s*\)", ")", s)
+        return re.sub(r"\s{2,}", " ", s).replace(" .", ".").replace(" ,", ",").strip()
 
     oorzaak = {}
     for slot in ("ingreep", "mechanisme", "verloop"):
@@ -262,12 +281,11 @@ async def run():
         trace["aan_het_woord"] = rol
         bewaar("trace.json", trace)
         t0 = time.monotonic()
-        try:
-            a = await backend.raadslid(koning.raadslid_instructies(lid),
-                                       koning.raadslid_prompt(lid, debat_als_tekst(nieuw), k["vraag"], eerste),
-                                       mcp_url, sessies[rol])
-        except Exception as e:
-            a = backend.Antwoord(tekst=f"(Geen antwoord: technische fout {type(e).__name__}: {str(e)[:200]})")
+        # Faalt een Raadslid (ook na de retries), dan stopt de run: een 'bericht' zonder Kennisbron zou in de
+        # trace als een echte beurt tellen. main() zet de trace dan op status 'afgebroken' met de reden.
+        a = await backend.raadslid(koning.raadslid_instructies(lid),
+                                   koning.raadslid_prompt(lid, debat_als_tekst(nieuw), k["vraag"], eerste),
+                                   mcp_url, sessies[rol])
         duur = round(time.monotonic() - t0, 1)
         tel("klein", a.usage)
         for c in a.toolcalls:
@@ -309,8 +327,12 @@ async def run():
               f"- {k_}: {o[k_]['bewering'] or 'onbekend'} ({', '.join(o[k_]['bewijs']) or 'geen bewijs'})" for k_ in o))
     trace["status"], trace["aan_het_woord"] = "klaar", None
     trace["opzet"]["klaar"] = nu()
+    # Zelfcontrole: dezelfde strenge controle als `uv run controleer`, op de trace zoals ze nu is.
+    fouten, let_op, samenvatting = controleer_trace.controleer(trace, verdict)
+    trace["zelfcontrole"] = {"fouten": fouten, "let_op": let_op, "samenvatting": samenvatting}
     bewaar("trace.json", trace)
     bewaar("verdict.json", verdict)
+    print(f"\nZelfcontrole van de trace: {'GROEN' if not fouten else 'ROOD: ' + '; '.join(fouten)}")
 
     print(f"\n{json.dumps(verdict, indent=2, ensure_ascii=False)}")
     if verwijderd:
@@ -320,9 +342,30 @@ async def run():
         print(f"Verbruik {model}: {v['beurten']} beurten, {v['invoer']} tokens in ({v['gecached']} gecached), {v['uitvoer']} tokens uit")
 
 
+def markeer_afgebroken(e):
+    """Stopt de run door een fout, dan zegt de trace dat eerlijk: status 'afgebroken', de reden, en geen Verdict."""
+    pad = ROOT / "trace.json"
+    try:
+        trace = json.loads(pad.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return
+    if trace.get("status") != "bezig":
+        return
+    trace["status"], trace["aan_het_woord"] = "afgebroken", None
+    trace["fout"] = {"soort": "gebruikslimiet" if isinstance(e, backend.Gebruikslimiet) else type(e).__name__,
+                     "melding": str(e)[:500], "tijd": nu()}
+    pad.write_text(json.dumps(trace, indent=2, ensure_ascii=False), encoding="utf-8")
+    (ROOT / "verdict.json").unlink(missing_ok=True)
+
+
 def main():
     sys.stdout.reconfigure(encoding="utf-8")
-    asyncio.run(run())
+    try:
+        asyncio.run(run())
+    except (Exception, KeyboardInterrupt) as e:
+        markeer_afgebroken(e)
+        soort = "Gebruikslimiet bereikt" if isinstance(e, backend.Gebruikslimiet) else f"{type(e).__name__}"
+        sys.exit(f"\nRun afgebroken ({soort}): {str(e)[:300]}\ntrace.json staat op status 'afgebroken'; er is geen verdict.json.")
 
 
 if __name__ == "__main__":
