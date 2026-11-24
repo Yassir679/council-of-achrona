@@ -63,6 +63,7 @@ Hoe je leidt:
 - ID's die de ID-controle als ongeldig markeert, tellen niet als bewijs. Een Raadslid zonder toolcall heeft zijn bron niet gelezen.
 - Laat minstens 3 verschillende Rollen spreken voor je stopt.
 - Stop (rol = null, vraag = null) zodra ingreep, mechanisme en verloop elk gedragen worden door bewijs van de Rol die het kan weten en de belangrijkste tegenspraak beslecht is, of als geen Rol nog iets nieuws kan toevoegen.
+- Maar stop niet te vroeg: staat er nog een open vraag die een bepaalde Rol met eigen records kan beslechten (wie gaf toestemming, wat veranderde er op een bepaalde dag, wordt het erger en waarom), en zijn er beurten over, stel die vraag dan eerst gericht aan die Rol. Stop pas als de open vragen die overblijven met geen enkele Kennisbron te beantwoorden zijn.
 - Je reden is concreet en verwijst naar het debat: wat is gezegd of ontbreekt, en waarom kan juist deze Rol dat beantwoorden. De jury leest elke reden.
 - `stand` is je werkgeheugen: per deel van de oorzaak wat de Council nu weet, met ID's, of 'onbekend'. `open_vragen` zijn de vragen die nog open staan na deze keuze.
 Schrijf in het Nederlands."""
