@@ -74,6 +74,34 @@
   .kaart > h2 { padding: 14px 16px 10px; }
   .kaart-body { padding: 0 16px 14px; }
 
+  /* ---------- bewijsdossier ---------- */
+  .bw-top { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 16px; margin-bottom: 18px; }
+  @media (max-width: 1000px) { .bw-top { grid-template-columns: 1fr; } }
+  .bw-cijfers { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; padding: 0 16px 14px; }
+  .bw-cijfer { background: var(--paneel-2); border: 1px solid var(--lijn); border-radius: 10px; padding: 10px 12px; }
+  .bw-cijfer b { display: block; font: 600 24px/1.1 var(--serif); }
+  .bw-cijfer span { font-size: 12px; color: var(--zacht); }
+  .bw-uitleg { font-size: 13px; color: var(--zacht); padding: 0 16px 14px; margin: 0; }
+  .bw-stab { font-size: 13px; }
+  .bw-stab .rij { display: grid; grid-template-columns: 92px 1fr; gap: 8px; align-items: start; margin: 6px 0; }
+  .bw-feit { display: inline-flex; align-items: center; gap: 5px; margin: 0 8px 4px 0; font-variant-numeric: tabular-nums; }
+  .bw-feit i { width: 34px; height: 6px; border-radius: 3px; background: var(--lijn); position: relative; overflow: hidden; display: inline-block; }
+  .bw-feit i::after { content: ""; position: absolute; inset: 0 auto 0 0; width: var(--p); background: var(--ok); }
+  .bw-dag { font: 600 30px/1 var(--serif); color: var(--goud); }
+  .bw-bewering { padding: 16px 18px; margin: 0 0 16px; }
+  .bw-bewering h3 { margin: 0 0 4px; font: 600 17px var(--serif); display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+  .bw-bewering .stelling { margin: 8px 0 12px; padding: 8px 12px; border-left: 3px solid var(--goud); background: var(--goud-zacht); border-radius: 0 8px 8px 0; }
+  .bw-rollen { display: inline-flex; gap: 3px; margin-left: auto; align-items: center; font-size: 12px; color: var(--zacht); }
+  .bw-rollen .avatar { width: 26px; height: 26px; font-size: 13px; }
+  .bw-rec { display: grid; grid-template-columns: 30px 1fr; gap: 10px; padding: 9px 0; border-top: 1px solid var(--lijn); }
+  .bw-rec .avatar { width: 28px; height: 28px; font-size: 14px; }
+  .bw-rec .bron { font-size: 12px; color: var(--zacht); display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: center; }
+  .bw-rec blockquote { margin: 4px 0 0; font: 14px/1.5 var(--serif); white-space: pre-wrap; overflow-wrap: anywhere; }
+  .bw-rec blockquote.ingeklapt { max-height: 4.6em; overflow: hidden; -webkit-mask-image: linear-gradient(#000 60%, transparent); mask-image: linear-gradient(#000 60%, transparent); cursor: pointer; }
+  .bw-filter { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 14px; }
+  .bw-filter button { border: 1px solid var(--lijn); background: var(--paneel); border-radius: 999px; padding: 3px 12px; cursor: pointer; font-size: 13px; }
+  .bw-filter button[aria-pressed="true"] { border-color: var(--goud); background: var(--goud-zacht); }
+
   /* ---------- de Raad ---------- */
   .raad { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; margin-bottom: 20px; }
   .zetel { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 12px; background: var(--paneel); border: 1px solid var(--lijn);
@@ -294,7 +322,8 @@
     <button class="tab" role="tab" data-tab="verdict" aria-selected="false">Verdict <span class="tel" id="tel-verdict">—</span></button>
     <button class="tab" role="tab" data-tab="geschillen" aria-selected="false">Geschillen <span class="tel" id="tel-geschillen">0</span></button>
     <button class="tab" role="tab" data-tab="controle" aria-selected="false">Controle <span class="tel" id="tel-controle">—</span></button>
-    <span class="sneltoets"><kbd>1</kbd>–<kbd>4</kbd> tabs · klik een Raadslid om te filteren · <kbd>Esc</kbd> wist filter</span>
+    <button class="tab" role="tab" data-tab="bewijs" aria-selected="false" title="Elke bewering van het Verdict met de letterlijke bronrecords (uv run bewijsdossier)">Bewijs <span class="tel" id="tel-bewijs">—</span></button>
+    <span class="sneltoets"><kbd>1</kbd>–<kbd>5</kbd> tabs · klik een Raadslid om te filteren · <kbd>Esc</kbd> wist filter</span>
   </nav>
 </header>
 
@@ -314,6 +343,7 @@
   <section class="paneel-tab" id="tab-verdict" hidden><div id="verdict"></div></section>
   <section class="paneel-tab" id="tab-geschillen" hidden><div id="geschillen"></div></section>
   <section class="paneel-tab" id="tab-controle" hidden><div class="controle-grid" id="controle"></div></section>
+  <section class="paneel-tab" id="tab-bewijs" hidden><div id="bewijs"><p class="melding"><span class="groot">🔎</span>Nog geen <code>bewijsdossier.json</code>. Maak het na de run met <code>uv run bewijsdossier</code>.</p></div></section>
 </main>
 
 <script>
@@ -602,7 +632,7 @@ function kiesTab(naamTab) {
 document.querySelectorAll(".tab").forEach(b => b.addEventListener("click", () => kiesTab(b.dataset.tab)));
 document.addEventListener("keydown", e => {
   if (e.target.closest("input, textarea") || e.ctrlKey || e.metaKey || e.altKey) return;
-  const t = { 1: "debat", 2: "verdict", 3: "geschillen", 4: "controle" }[e.key];
+  const t = { 1: "debat", 2: "verdict", 3: "geschillen", 4: "controle", 5: "bewijs" }[e.key];
   if (t) kiesTab(t);
   if (e.key === "Escape" && filter) { filter = null; laatste && render(...laatste); }
 });
@@ -632,16 +662,75 @@ function zetDicht() { document.querySelectorAll("[data-dicht]").forEach(b => b.s
 zetDicht();
 window.addEventListener("resize", () => requestAnimationFrame(meerKnoppen));
 const start = location.hash.slice(1);
-if (["verdict", "geschillen", "controle"].includes(start)) kiesTab(start);
+if (["verdict", "geschillen", "controle", "bewijs"].includes(start)) kiesTab(start);
+
+
+/* ---------- Bewijs: het dossier van uv run bewijsdossier ---------- */
+let bwFilter = "alles", dossier = null;
+function renderBewijs(d, trace) {
+  dossier = d;
+  const el = $("bewijs");
+  if (!d) return;
+  if (trace && d.run_id !== trace.run_id) {
+    $("tel-bewijs").textContent = "!";
+    el.innerHTML = `<p class="melding"><span class="groot">⏳</span>Het dossier hoort bij run <code>${esc(d.run_id)}</code>, niet bij deze trace. Draai <code>uv run bewijsdossier</code> opnieuw.</p>`;
+    return;
+  }
+  const t = d.totaal || {}, s = d.stabiliteit;
+  $("tel-bewijs").textContent = `${t.met_recordtekst}/${t.bewijs_ids}`;
+  const cijfer = (n, l) => `<div class="bw-cijfer"><b>${esc(n)}</b><span>${l}</span></div>`;
+  const top = `<div class="kaart"><h2>Bewijsdossier</h2>
+      <div class="bw-cijfers">${cijfer(t.beweringen, "beweringen in het Verdict")}${cijfer(t.bewijs_ids, "bewijs-ID's")}${cijfer(`${t.met_recordtekst}/${t.bewijs_ids}`, "met letterlijke brontekst")}${cijfer(`${t.uit_eigen_bron}/${t.bewijs_ids}`, "gelezen door de eigen Rol")}</div>
+      <p class="bw-uitleg">${opmaak(d.uitleg)} Elk record hieronder is het echte bronrecord achter een ID in het Verdict, met de beurt waarin het Raadslid het las en waarin het genoemd werd. Zo controleer je het Verdict zonder de Kennisbronnen open te doen.</p></div>`;
+  let stab = "";
+  if (s) {
+    const vp = s.voorspelling || {};
+    const rij = (slot) => {
+      const info = s.slots[slot] || {}, kf = Object.entries(info.kernfeiten || {}), alsIds = info.soort === "ids";
+      return `<div class="rij"><b>${esc(SLOTS[slot]?.[0] || slot)}</b><div>${alsIds ? '<div style="font-size:12px;color:var(--zacht)">geen dagen of tijden in de bewering; bewijs-ID\'s van dit deel:</div>' : ""}${kf.length ? kf.map(([f, n]) => `<span class="bw-feit" title="${n} van ${s.aantal_runs} runs ${alsIds ? "gebruiken" : "noemen"} ${esc(f)}">${alsIds ? opmaak(f) : `<code>${esc(f)}</code>`}<i style="--p:${Math.round(n / s.aantal_runs * 100)}%"></i>${n}/${s.aantal_runs}</span>`).join("") : '<span class="leeg">geen dagen of tijden in deze bewering</span>'}</div></div>`;
+    };
+    stab = `<div class="kaart"><h2>Stabiliteit over ${s.aantal_runs} runs</h2><div class="kaart-body bw-stab">
+      <div class="rij"><b>Voorspelling</b><div><span class="bw-dag">dag ${esc(vp.dag)}</span> &nbsp;in <b>${vp.eens} van ${vp.van}</b> volledige runs</div></div>
+      ${Object.keys(SLOTS).map(rij).join("")}
+      <p class="bw-uitleg" style="padding:6px 0 0">Kernfeiten = de dagen, tijden en percentages uit de bewering van deze run (of, zonder die, haar bewijs-ID's); de balk toont in hoeveel runs uit <code>archief/</code> ze terugkomen (deze run meegeteld; de eerdere runs draaiden op eerdere versies van de code). Een Council die bij elke run op hetzelfde uitkomt, gokt niet.</p></div></div>`;
+  }
+  const soorten = [["alles", "Alles"], ["oorzaak", "Oorzaak"], ["actie", "Herstelplan"], ["voorspelling", "Voorspelling"]];
+  const filt = `<div class="bw-filter">${soorten.map(([k, l]) => `<button data-bw="${k}" aria-pressed="${bwFilter === k}">${l}</button>`).join("")}</div>`;
+  const kaarten = (d.beweringen || []).filter(b => bwFilter === "alles" || b.soort === bwFilter).map(b => {
+    const z = typeof b.zekerheid === "number" ? `<span class="chip">zekerheid ${Math.round(b.zekerheid * 100)}%</span>` : "";
+    const nRol = b.aantal_rollen || 0;
+    const tri = `<span class="chip ${nRol >= 3 ? "ok" : nRol === 2 ? "" : "let"}" title="Aantal verschillende Kennisbronnen dat deze bewering draagt">${nRol} ${nRol === 1 ? "Rol" : "Rollen"}</span>`;
+    const recs = (b.bewijs || []).map(x => {
+      const r = x.record || {};
+      const tekst = [r.kop, r.tekst].filter(Boolean).join("\n");
+      const herk = [
+        x.gelezen_in?.length ? `gelezen in ${x.gelezen_in.map(g => ref(g.beurt)).join(" ")}` : `<span class="chip fout">niet in eigen toolresultaat</span>`,
+        x.genoemd_in?.length ? `genoemd in ${x.genoemd_in.map(g => `${ref(g.beurt)}${g.rol !== x.rol ? ` <small>(${esc(naam(g.rol))})</small>` : ""}`).join(" ")}` : "",
+      ].filter(Boolean).join(" · ");
+      return `<div class="bw-rec">${av(x.rol)}<div><div class="bron">${opmaak(x.id)}<span>${esc(naam(x.rol))}</span><code>${esc(r.bestand || "?")}</code><span>${herk}</span></div>
+        ${tekst ? `<blockquote class="${tekst.length > 260 ? "ingeklapt" : ""}" title="${tekst.length > 260 ? "klik om alles te lezen" : ""}">${esc(tekst)}</blockquote>` : '<span class="chip fout">geen recordtekst opgehaald</span>'}</div></div>`;
+    }).join("");
+    return `<div class="kaart bw-bewering"><h3>${esc(b.titel)} ${z} ${tri}<span class="bw-rollen">${(b.rollen || []).map(r => av(r)).join("")}</span></h3>
+      <div class="stelling">${opmaak(b.bewering || "onbekend (null)")}</div>${b.reden ? `<div style="font-size:13px;color:var(--zacht);margin:-4px 0 8px">${opmaak(b.reden)}</div>` : ""}${recs}</div>`;
+  }).join("");
+  el.innerHTML = `<div class="bw-top">${top}${stab}</div>${filt}${kaarten}`;
+}
+document.addEventListener("click", e => {
+  const f = e.target.closest("[data-bw]");
+  if (f) { bwFilter = f.dataset.bw; renderBewijs(dossier, laatste?.[0]); return; }
+  const q = e.target.closest(".bw-rec blockquote.ingeklapt");
+  if (q) q.classList.remove("ingeklapt");
+});
 
 async function haal(pad) {
   try { const r = await fetch(pad, { cache: "no-store" }); return r.ok ? await r.text() : null; } catch { return null; }
 }
 async function lus() {
-  const [t, v] = await Promise.all([haal("trace.json"), haal("verdict.json")]);
-  if (t && t + (v || "") !== vorige) {
-    vorige = t + (v || "");
+  const [t, v, bd] = await Promise.all([haal("trace.json"), haal("verdict.json"), haal("bewijsdossier.json")]);
+  if (t && t + (v || "") + (bd || "") !== vorige) {
+    vorige = t + (v || "") + (bd || "");
     try { render(JSON.parse(t), v ? JSON.parse(v) : null); } catch (e) { console.warn(e); /* bestand half geschreven: volgende ronde opnieuw */ }
+    try { if (bd) renderBewijs(JSON.parse(bd), JSON.parse(t)); } catch (e) { console.warn(e); }
   }
   setTimeout(lus, 1500);
 }
