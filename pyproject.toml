@@ -20,11 +20,12 @@ council = "council:main"
 validate = "validate:main"
 controleer = "controleer_trace:main"
 viewer = "viewer:main"
+bewijsdossier = "bewijsdossier:main"
 
 [build-system]
 requires = ["setuptools>=69"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
-py-modules = ["council", "backend", "koning", "validate", "controleer_trace", "viewer"]
+py-modules = ["council", "backend", "koning", "validate", "controleer_trace", "viewer", "bewijsdossier"]
 packages = ["raadsleden"]
