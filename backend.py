@@ -47,6 +47,7 @@ async def met_retry(fn, pogingen=3):
             wacht = 10 * (i + 1)
             print(f"  (fout: {type(e).__name__}: {str(e)[:200]}; opnieuw over {wacht}s)")
             await asyncio.sleep(wacht)
+    raise RuntimeError("met_retry: geen pogingen")  # onbereikbaar; houdt het returntype niet-None
 
 
 def json_uit_tekst(tekst):

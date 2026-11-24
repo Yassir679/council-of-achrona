@@ -18,6 +18,7 @@ devui = ["agent-framework-devui>=1.0.0b261008", "agent-framework-orchestrations>
 [project.scripts]
 council = "council:main"
 validate = "validate:main"
+controleer = "controleer_trace:main"
 viewer = "viewer:main"
 
 [build-system]
@@ -25,5 +26,5 @@ requires = ["setuptools>=69"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
-py-modules = ["council", "backend", "koning", "validate", "viewer"]
+py-modules = ["council", "backend", "koning", "validate", "controleer_trace", "viewer"]
 packages = ["raadsleden"]
