@@ -1,5 +1,5 @@
 version = 1
-revision = 3
+revision = 2
 requires-python = ">=3.12"
 resolution-markers = [
     "python_full_version >= '3.14' and sys_platform == 'win32'",
@@ -202,6 +202,25 @@ wheels = [
 ]
 
 [[package]]
+name = "claude-agent-sdk"
+version = "0.2.188"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "anyio" },
+    { name = "jsonschema" },
+    { name = "mcp" },
+    { name = "sniffio" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/6d/39/f63f07bd2abc2ff9e2ebd3e894f16fb47343a6c58f580cb7880ee94d2fa6/claude_agent_sdk-0.2.188.tar.gz", hash = "sha256:0937793651dcde582f83adf81f0e89a7209bcf2684b8a193326903fd1c743ffc", size = 409297, upload-time = "2026-11-23T22:26:11.789Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/01/6e/4764f419b670b08115ed15174b07f5455832e16d821316d4d5490883b094/claude_agent_sdk-0.2.188-py3-none-macosx_11_0_arm64.whl", hash = "sha256:065ad1fca7275cea50b628f35ce4ebd96cf5d237c1b6a8db2fdc8796757da31e", size = 164667678, upload-time = "2026-11-23T22:26:23.356Z" },
+    { url = "https://files.pythonhosted.org/packages/27/65/2e2d7a63370bede7f98b0b2f5738cf28a96ab7f3c4ddc578d0f086f8d0f5/claude_agent_sdk-0.2.188-py3-none-macosx_11_0_x86_64.whl", hash = "sha256:eda2e0229705831ace802800d54614cf4db234843c4a5274e90cc4e94e93ba34", size = 172659036, upload-time = "2026-11-23T22:26:33.505Z" },
+    { url = "https://files.pythonhosted.org/packages/2b/7d/0054b1bb0bd58613694ee4f0bd286ee5580fe80e7d3b6c9473ac40175afd/claude_agent_sdk-0.2.188-py3-none-manylinux_2_17_aarch64.whl", hash = "sha256:8e21bb2f7d3c1cd08a019df2899bbb39be6c986e25d3c951023d0540e37a7820", size = 175754927, upload-time = "2026-11-23T22:26:45.47Z" },
+    { url = "https://files.pythonhosted.org/packages/a1/9c/362016e0b1ccd24193a6a41650c753e4d3db00a2903a1c7118eb622dde3f/claude_agent_sdk-0.2.188-py3-none-manylinux_2_17_x86_64.whl", hash = "sha256:00a6ee72f8d7eb3b027ba8883ecd32108106ecf46068cb632c4401be465c9364", size = 176385933, upload-time = "2026-11-23T22:26:58.591Z" },
+    { url = "https://files.pythonhosted.org/packages/a8/bf/f33819d6e0b4b9e9626b88e75a7ac20615b1afc8378f5dace4723e6e5ed8/claude_agent_sdk-0.2.188-py3-none-win_amd64.whl", hash = "sha256:48de5deefa6b45f6e81c122db9adf221715f691419ead530b0dce87d78c78c9b", size = 179083465, upload-time = "2026-11-23T22:27:12.305Z" },
+]
+
+[[package]]
 name = "click"
 version = "8.5.0"
 source = { registry = "https://pypi.org/simple" }
@@ -217,6 +236,7 @@ source = { editable = "." }
 dependencies = [
     { name = "agent-framework-core" },
     { name = "agent-framework-openai" },
+    { name = "claude-agent-sdk" },
     { name = "jsonschema" },
     { name = "mcp" },
     { name = "python-dotenv" },
@@ -234,6 +254,7 @@ requires-dist = [
     { name = "agent-framework-devui", marker = "extra == 'devui'", specifier = ">=1.0.0b261008" },
     { name = "agent-framework-openai", specifier = ">=1.16" },
     { name = "agent-framework-orchestrations", marker = "extra == 'devui'", specifier = ">=1.3" },
+    { name = "claude-agent-sdk", specifier = ">=0.2.188" },
     { name = "jsonschema", specifier = ">=4.23" },
     { name = "mcp", specifier = ">=1.30,<2" },
     { name = "python-dotenv", specifier = ">=1.0" },
