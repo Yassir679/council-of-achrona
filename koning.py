@@ -24,7 +24,8 @@ def raadslid_instructies(lid):
 De Council zoekt de oorzaak van de Desync. De Koning leidt het debat en stelt jou een vraag.
 
 Regels:
-- Lees vóór je antwoordt je Kennisbron met je tools: lees_kennisbron (alles), zoek (op woord), zoek_betekenis (op betekenis), toon (records op ID). Je weet niets buiten je Kennisbron en het debat.
+- Gebruik vóór je antwoordt je tools: lees_kennisbron (alles), zoek (op woord), zoek_betekenis (op betekenis), toon (records op ID). Je weet niets buiten je Kennisbron en het debat.
+- Bij je eerste beurt lees je je hele Kennisbron. Bij een volgende beurt ken je hem al: haal dan gericht de records op die de vraag raakt (toon met de ID's, of zoek/zoek_betekenis op het onderwerp), zodat in het verslag te zien is wat je controleerde.
 - Noem bij elke bewering de record-ID's precies zoals ze in je Kennisbron staan, met een gewoon koppelteken (vorm {p}-123). Jouw bewijs zijn alleen ID's die met {p}- beginnen; ID's van anderen gebruik je niet als jouw bewijs. Verzin nooit een ID.
 - Maak onderscheid tussen wat een record vastlegt (meting, log, waarneming, datum) en wat iemand ervan concludeert. Een conclusie in je Kennisbron kan fout zijn, ook een van jezelf, en je Belang kan je kleuren. Zeg het als je eigen gegevens een conclusie niet steunen.
 - Vraagt de Koning een bewering van een ander Raadslid te toetsen? Zeg duidelijk of jouw records ze bevestigen, tegenspreken of er niets over zeggen, met ID's.
@@ -40,9 +41,13 @@ Verwijzingen: <andere Rollen of open sporen, of 'geen'>
 Onzeker: <wat je niet weet, of waar je Belang meespeelt>"""
 
 
-def raadslid_prompt(lid, debat_tekst, vraag):
-    return (f"Debat tot nu toe:\n\n{debat_tekst or '(nog niets)'}\n\n"
-            f"De Koning vraagt jou, {lid.NAAM}: {vraag}\n\nLees eerst je Kennisbron met je tools en antwoord dan.")
+def raadslid_prompt(lid, debat_tekst, vraag, eerste):
+    if eerste:
+        return (f"Debat tot nu toe:\n\n{debat_tekst or '(nog niets)'}\n\n"
+                f"De Koning vraagt jou, {lid.NAAM}: {vraag}\n\nLees eerst je hele Kennisbron met lees_kennisbron en antwoord dan.")
+    return (f"Nieuw in het debat sinds jouw vorige beurt:\n\n{debat_tekst or '(niets nieuws)'}\n\n"
+            f"De Koning vraagt jou, {lid.NAAM}: {vraag}\n\n"
+            "Je kent je Kennisbron al. Haal eerst gericht de records op die deze vraag raken (toon of zoek) en antwoord dan.")
 
 
 # ----------------------------------------------------------------------------- Routering
@@ -64,13 +69,15 @@ Hoe je leidt:
 - Laat minstens 3 verschillende Rollen spreken voor je stopt.
 - Stop (rol = null, vraag = null) zodra ingreep, mechanisme en verloop elk gedragen worden door bewijs van de Rol die het kan weten en de belangrijkste tegenspraak beslecht is, of als geen Rol nog iets nieuws kan toevoegen.
 - Maar stop niet te vroeg: staat er nog een open vraag die een bepaalde Rol met eigen records kan beslechten (wie gaf toestemming, wat veranderde er op een bepaalde dag, wordt het erger en waarom), en zijn er beurten over, stel die vraag dan eerst gericht aan die Rol. Stop pas als de open vragen die overblijven met geen enkele Kennisbron te beantwoorden zijn.
-- Je reden is concreet en verwijst naar het debat: wat is gezegd of ontbreekt, en waarom kan juist deze Rol dat beantwoorden. De jury leest elke reden.
+- Je reden is concreet en verwijst naar het debat: wat is gezegd of ontbreekt (noem de beurt, bv. 'beurt 6'), en waarom kan juist deze Rol dat beantwoorden. De jury leest elke reden: hoogstens 4 zinnen.
+- Je vraag is gericht en kort: hoogstens 4 zinnen, met de ID's, dagen of beweringen die getoetst moeten worden.
+- `doel`: waar deze beurt aan bijdraagt (een deel van de oorzaak, een geschil, het herstelplan, of 'stoppen'). `toetst_beurten`: de nummers van de eerdere beurten waarvan je hier een bewering laat toetsen of aanvullen (leeg als het nieuw terrein is).
 - `stand` is je werkgeheugen: per deel van de oorzaak wat de Council nu weet, met ID's, of 'onbekend'. `open_vragen` zijn de vragen die nog open staan na deze keuze.
 Schrijf in het Nederlands."""
 
 KEUZE_SCHEMA_BASIS = {
     "type": "object",
-    "required": ["stand", "open_vragen", "rol", "vraag", "reden"],
+    "required": ["stand", "open_vragen", "rol", "vraag", "reden", "doel", "toetst_beurten"],
     "additionalProperties": False,
     "properties": {
         "stand": {
@@ -83,6 +90,8 @@ KEUZE_SCHEMA_BASIS = {
         "rol": {"type": ["string", "null"]},
         "vraag": {"type": ["string", "null"]},
         "reden": {"type": "string"},
+        "doel": {"type": "string", "enum": ["ingreep", "mechanisme", "verloop", "geschil", "herstelplan", "stoppen"]},
+        "toetst_beurten": {"type": "array", "items": {"type": "integer"}},
     },
 }
 
@@ -102,7 +111,8 @@ def keuze_prompt(leden, debat_tekst, gesproken, budget, stand, open_vragen):
         vorige = ("\n\nJe vorige stand:\n" + "\n".join(f"- {k}: {v}" for k, v in stand.items())
                   + "\nJe vorige open vragen:\n" + ("\n".join(f"- {v}" for v in open_vragen) or "- geen"))
     return (f"Raadsleden (publieke Rolkaarten):\n{rolkaarten(leden)}\n\n"
-            f"Beurten: {sum(gesproken.values())} gebruikt, {over} over. Per Rol: {per_rol}.{vorige}\n\n"
+            f"Raadslid-beurten: {sum(gesproken.values())} gebruikt, {over} over. Per Rol: {per_rol}.{vorige}\n\n"
+            "(De nummers [beurt N] in het debat zijn de beurtnummers in het verslag; gebruik ze in je reden en in toetst_beurten.)\n\n"
             f"Debat tot nu toe:\n\n{debat_tekst or '(nog niets: kies wie opent)'}\n\n"
             "Werk je stand en open vragen bij en kies de volgende stap.")
 
@@ -119,7 +129,7 @@ Regels:
 - acties: het herstelplan in uitvoeringsvolgorde (eerst de schade stoppen, dan de oorzaak wegnemen, dan herstellen, dan herhaling voorkomen), elk met reden en waar mogelijk bewijs.
 - risicos: minstens één, met mitigatie (bv. wat er misgaat als je het herstel verkeerd of te snel doet).
 - voorspelling: alleen als het patroon in het debat een concrete dag onderbouwt: op welke dag slaat de Desync opnieuw toe als niemand ingrijpt, en waarom. Anders laat je het veld weg.
-- geschillen: waar Raadsleden elkaar tegenspraken of een conclusie werd weerlegd. Per geschil: onderwerp, standpunt per Rol, uitkomst (hoe beslecht, of null als het open bleef) en bewijs.
+- geschillen: waar Raadsleden elkaar tegenspraken of een conclusie werd weerlegd. Per geschil: onderwerp, standpunt per Rol, uitkomst (hoe beslecht, of null als het open bleef), bewijs, en `beurten`: de nummers [beurt N] uit het debat waarin het geschil opkwam en beslecht werd.
 - samenvatting: 2-4 zinnen voor de jury.
 Schrijf in het Nederlands."""
 
@@ -176,7 +186,7 @@ VERDICT_SCHEMA = {
             "type": "array",
             "items": {
                 "type": "object",
-                "required": ["onderwerp", "standpunten", "uitkomst", "bewijs"],
+                "required": ["onderwerp", "standpunten", "uitkomst", "bewijs", "beurten"],
                 "additionalProperties": False,
                 "properties": {
                     "onderwerp": {"type": "string"},
@@ -185,6 +195,7 @@ VERDICT_SCHEMA = {
                         "properties": {"rol": {"type": "string"}, "standpunt": {"type": "string"}}}},
                     "uitkomst": {"type": ["string", "null"]},
                     "bewijs": {"type": "array", "items": {"type": "string"}},
+                    "beurten": {"type": "array", "items": {"type": "integer"}},
                 },
             },
         },
