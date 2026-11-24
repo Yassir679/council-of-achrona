@@ -11,7 +11,8 @@ De Desync heeft de herinneringen en systemen van Achrona versnipperd. Jullie bou
 ### Zo draai je hem
 1. `claude` CLI geïnstalleerd en ingelogd (`claude auth status`): de Council draait op een Claude-abonnement via de Claude Agent SDK, zonder API-key.
 2. `copy .env.example .env` (blok 0 staat al goed: `BACKEND=claude`, `MODEL_KLEIN=sonnet`, `MODEL_GROOT=opus`, de zes MCP-paden).
-3. `uv sync`, dan `uv run viewer` in een tweede terminal en `uv run council`. Controle: `uv run validate`.
+3. `uv sync`, dan `uv run viewer` in een tweede terminal en `uv run council`. Controle: `uv run validate` en `uv run controleer`.
+4. Na de run: `uv run bewijsdossier` (zie [Bewijsdossier](#bewijsdossier-elk-deel-van-het-verdict-tot-op-de-bronregel)). De viewer toont het in de tab **Bewijs**.
 
 Liever het Roboest-endpoint? Zet blok 1 van `.env.example` aan (`BACKEND=openai`): dezelfde Council, dezelfde trace.
 
@@ -41,7 +42,9 @@ Liever het Roboest-endpoint? Zet blok 1 van `.env.example` aan (`BACKEND=openai`
 | `koning.py` | Instructies en JSON-schema's van de Koning (routering en Verdict) en van de Raadsleden. Geen inhoud uit de Kennisbronnen. |
 | `backend.py` | LLM-laag: Claude Agent SDK (abonnement) of OpenAI-compatibel endpoint. Raadslid krijgt alleen zijn eigen MCP-server, de Koning geen enkele tool. |
 | `raadsleden/` | Alle zes Rollen; perspectief en publiek Belang komen van de publieke Rolkaarten. |
-| `viewer.html` | Rustige debatviewer met vier tabs. **Debat**: één leeskolom met per beurt de vraag van de Koning (waarom uitklapbaar) en het kernantwoord van het Raadslid met de 3 belangrijkste bewijsregels; bronnen, tijden en twijfel onder *Details*. Bovenaan het verloop (wie sprak, met welk doel) en het Beurtenbudget. **Verdict**: samenvatting, oorzaak met zekerheid, herstelplan, voorspelling en risico's. **Geschillen** en **Controle** (spelregels, werkgeheugen van de Koning, isolatie, verbruik). Licht/donker, sneltoetsen `1`–`4`. |
+| `viewer.html` | Rustige debatviewer met vier tabs. **Debat**: één leeskolom met per beurt de vraag van de Koning (waarom uitklapbaar) en het kernantwoord van het Raadslid met de 3 belangrijkste bewijsregels; bronnen, tijden en twijfel onder *Details*. Bovenaan het verloop (wie sprak, met welk doel) en het Beurtenbudget. **Verdict**: samenvatting, oorzaak met zekerheid, herstelplan, voorspelling en risico's. **Geschillen** en **Controle** (spelregels, werkgeheugen van de Koning, isolatie, verbruik). **Bewijs**: elke bewering van het Verdict met de letterlijke bronrecords en de stabiliteit over runs. Licht/donker, sneltoetsen `1`–`5`. |
+| `bewijsdossier.py` | `uv run bewijsdossier`: na de run, buiten de Council. Haalt voor elk bewijs-ID in het Verdict het echte record op (zie hieronder) en schrijft `bewijsdossier.json` + `bewijsdossier.md`. |
+| `archief/` | De volledige eerdere runs (`trace.json` + `verdict.json`), voor de stabiliteitscontrole. De ingeleverde run staat in de root (en als `run9`). |
 
 ### De Koning
 - **Agent, geen vaste volgorde.** Vóór elke beurt leest de Koning het hele debat met de ID-controle erbij en antwoordt in een vast JSON-schema (structured output): `stand` (wat de Council per deel van de oorzaak weet, met ID's), `open_vragen`, en de keuze `rol`, `vraag`, `reden`.
@@ -87,12 +90,33 @@ Liever het Roboest-endpoint? Zet blok 1 van `.env.example` aan (`BACKEND=openai`
 - geschillen bevatten alleen standpunten van Rollen die spraken;
 - verwijzingen naar beurten kloppen, tijd en nummering lopen op, `run_id` is in beide bestanden gelijk, en de status is `klaar`.
 
-**Tests:** `uv run python tests/test_trace.py` (of `uv run python -m unittest discover -s tests`) speelt een volledige run met een nep-backend (geen LLM, geen abonnement), een run waarin de limiet halverwege toeslaat, de stop-herinnering van de Koning en de normalisatie van koppeltekens in ID's, en toetst de trace.
+**Tests:** `uv run python -m unittest discover -s tests` (10 tests, geen netwerk, geen LLM). `tests/test_trace.py` speelt een volledige run met een nep-backend (geen LLM, geen abonnement), een run waarin de limiet halverwege toeslaat, de stop-herinnering van de Koning en de normalisatie van koppeltekens in ID's, en toetst de trace. `tests/test_bewijsdossier.py` toetst het uitlezen van records, de herkomst, de triangulatie en de stabiliteit.
 
 ### Extra uitdagingen
 - **Verdict**: `zekerheid` per deel van de oorzaak en een `voorspelling` (dag + bewijs).
 - **Council**: de Koning stopt zelf vóór het budget op is, en houdt `open_vragen` bij in elke routering.
 - **Presentatie**: live run, en een rijkere viewer met avatars en het werkgeheugen van de Koning.
+- **Eigen extra: het Bewijsdossier** (hieronder): het Verdict controleerbaar tot op de bronregel, met triangulatie per bewering en stabiliteit over 7 runs.
+
+### Bewijsdossier: elk deel van het Verdict tot op de bronregel
+Een Verdict met ID's is pas overtuigend als je die ID's kunt nalezen. `uv run bewijsdossier` doet dat na de run, voor de jury:
+
+- **Letterlijke bron.** Voor elk bewijs-ID in het Verdict haalt het script het echte record op met `toon`, op het MCP-pad van de Rol die het record bezit (dezelfde isolatie als in de run). Bij elk record staat het bestand, in welke toolcall het Raadslid het las en in welke beurt het genoemd werd (klikbaar in de viewer).
+- **Triangulatie.** Per bewering: hoeveel verschillende Rollen (Kennisbronnen) haar dragen. Een bewering die op één Rol steunt, steunt ook op het Belang van die Rol; het dossier maakt dat zichtbaar in plaats van het te verbergen.
+- **Stabiliteit over runs.** Het vergelijkt het Verdict met de volledige runs in `archief/`: komen dezelfde dagen, tijden en percentages (of, zonder die, dezelfde bewijs-ID's) terug, en dezelfde voorspelling?
+- **Buiten de Council.** De Koning en de Raadsleden zien het dossier nooit, `trace.json` en `verdict.json` blijven ongewijzigd, en het script bevat zelf geen inhoud uit de Kennisbronnen: alles komt uit de run-bestanden of de MCP-server.
+
+Resultaat voor de ingeleverde run (`bewijsdossier.md`, ook leesbaar op GitHub):
+
+| | |
+|---|---|
+| Bewijs-ID's in het Verdict | 35, alle 35 bestaan in de bron en werden gelezen door het Raadslid van de eigen Rol |
+| Rollen per deel van de oorzaak | ingreep 2 · mechanisme 3 · verloop 5 |
+| Voorspelling | **dag 46** in **7 van 7** volledige runs |
+| Ingreep | dag 10, 02:40 en de dagen 8 en 9 in 7/7 runs |
+| Verloop | 04:15, dag 10, dag 14 en dag 26 in 7/7 runs |
+
+Waarom dit telt voor de vraag *waarom een Council beter werkt dan één agent*: één agent geeft één antwoord. Hier kun je bij elke bewering zien welke onafhankelijke Kennisbronnen haar dragen, het record zelf lezen, en zien dat de Council bij elke run op hetzelfde uitkomt.
 
 ### Waarom een Council beter werkt dan één agent
 - **Elke Rol ziet maar een stuk.** Eén agent met alle bronnen in één prompt neemt de stellige conclusie uit een bron sneller over. Hier moet elke bewering langs een andere Rol, met haar eigen records.
