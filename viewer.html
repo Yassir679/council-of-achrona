@@ -67,6 +67,10 @@
   .zeker { display: inline-block; font-size: 11px; color: var(--zacht); margin-left: 4px; }
   .balk { height: 4px; border-radius: 2px; background: var(--lijn); margin-top: 3px; overflow: hidden; }
   .balk > i { display: block; height: 100%; background: var(--ok); }
+  .doel { font-size: 11px; text-transform: uppercase; letter-spacing: .05em; padding: 0 6px; border-radius: 4px; border: 1px solid var(--kleur); color: var(--kleur); }
+  a.ref { color: inherit; font-family: ui-monospace, monospace; font-size: 12px; }
+  .beurt:target { outline: 2px solid var(--kleur); }
+  .tijd { color: var(--zacht); font-size: 11px; font-weight: 400; margin-left: auto; }
 </style>
 </head>
 <body>
@@ -137,9 +141,10 @@ function render(trace, verdict) {
       const wie = `${AVATAR[b.spreker] || ""} <span style="color:${kleur(b.spreker)}">${esc(NAMEN[b.spreker] || b.spreker)}</span>`;
       if (b.stand) laatsteStand = { stand: b.stand, open: b.open_vragen || [], nr: b.nr };
       const open = (b.open_vragen || []).length ? `<br>Open vragen: ${b.open_vragen.map(v => opmaak(v)).join(" · ")}` : "";
+      const meta = `${b.doel ? `<span class="doel">${esc(b.doel)}</span> ` : ""}${(b.toetst_beurten || []).length ? `toetst ${b.toetst_beurten.map(n => `<a class="ref" href="#b${n}">#${n}</a>`).join(" ")} · ` : ""}${b.beslist_door && b.beslist_door !== "koning-agent" ? `<span class="vlag">${esc(b.beslist_door)}</span> · ` : ""}`;
       html += b.aan
-        ? `<div class="beurt klein" ${stijl}>${wie} → <b style="color:${kleur(b.aan)}">${esc(NAMEN[b.aan] || b.aan)}</b>: ${opmaak(b.vraag)}<br>Waarom: ${opmaak(b.reden)}${open}</div>`
-        : `<div class="beurt klein" ${stijl}>${wie} stopt het debat. Waarom: ${opmaak(b.reden)}${open}</div>`;
+        ? `<div class="beurt klein" id="b${b.nr}" ${stijl}>#${b.nr} ${meta}${wie} → <b style="color:${kleur(b.aan)}">${esc(NAMEN[b.aan] || b.aan)}</b>: ${opmaak(b.vraag)}<br>Waarom: ${opmaak(b.reden)}${open}</div>`
+        : `<div class="beurt klein" id="b${b.nr}" ${stijl}>#${b.nr} ${meta}${wie} stopt het debat. Waarom: ${opmaak(b.reden)}${open}</div>`;
       continue;
     }
     if (b.soort === "bericht" && NAMEN[b.spreker] && !["koning", "mens"].includes(b.spreker)) {
@@ -152,7 +157,8 @@ function render(trace, verdict) {
       for (const x of ids(b.tekst)) { t.ids.add(x.id); if (x.raar) vreemdeIds.push(x.id); }
       const c = b.id_controle;
       const badge = c ? `<span class="badge ${c.ongeldig?.length ? "fout" : "ok"}" title="ID-controle: alleen ID's die dit Raadslid in de eigen Kennisbron las tellen">${(c.geldig || []).length} ID's geverifieerd${c.ongeldig?.length ? " · " + c.ongeldig.length + " ongeldig: " + esc(c.ongeldig.join(", ")) : ""}</span>` : "";
-      html += `<div class="beurt" ${stijl}><div class="wie">${av(b.spreker)}${esc(NAMEN[b.spreker] || b.spreker)}<span class="nr">#${b.nr}${b.aan ? " → " + esc(NAMEN[b.aan] || b.aan) : ""}</span>${badge}</div><div class="tekst">${opmaak(b.tekst)}</div></div>`;
+      const tijd = b.tijd ? `<span class="tijd">${esc(b.tijd.slice(11, 19))}${b.duur_s ? " · " + b.duur_s + "s" : ""}</span>` : "";
+      html += `<div class="beurt" id="b${b.nr}" ${stijl}><div class="wie">${av(b.spreker)}${esc(NAMEN[b.spreker] || b.spreker)}<span class="nr">#${b.nr}${b.aan ? " → " + esc(NAMEN[b.aan] || b.aan) : ""}</span>${badge}${tijd}</div><div class="tekst">${opmaak(b.tekst)}</div></div>`;
     } else {
       t.tools++;
       let vlag = "";
@@ -162,7 +168,7 @@ function render(trace, verdict) {
       }
       if (b.soort === "bestand" && b.bestand && !b.bestand.startsWith(b.spreker + "/")) { padfouten.push(b.nr); vlag = ` <span class="vlag">bestand van een andere Rol</span>`; }
       const wat = b.soort === "toolcall"
-        ? `🔎 <code>${esc(b.tool)}(${esc(Object.entries(b.argumenten || {}).map(([k, v]) => `${k}=${JSON.stringify(v)}`).join(", "))})</code>`
+        ? `🔎 <code>${esc(b.tool)}(${esc(Object.entries(b.argumenten || {}).map(([k, v]) => `${k}=${JSON.stringify(v)}`).join(", "))})</code>${b.resultaat ? ` → ${b.resultaat.records} records` : ""} <span class="getal">${esc((b.pad || "").replace(/^https?:\/\//, ""))}</span>`
         : `📄 <code>${esc(b.bestand)}</code> in de prompt`;
       html += `<div class="beurt klein" ${stijl}><span style="color:${kleur(b.spreker)}">${esc(NAMEN[b.spreker] || b.spreker)}</span> · ${wat}${vlag}</div>`;
     }
@@ -171,7 +177,7 @@ function render(trace, verdict) {
     html += `<div class="beurt denkt" style="--kleur:${kleur(trace.aan_het_woord)}"><div class="wie">${esc(NAMEN[trace.aan_het_woord] || trace.aan_het_woord)}</div><div class="tekst leeg">denkt na…</div></div>`;
   }
   for (const g of trace.geschillen || []) {
-    html += `<div class="ronde">Geschil</div><div class="beurt" style="--kleur:var(--koning)"><div class="wie">${esc(g.onderwerp)}</div><div class="tekst">${Object.entries(g.standpunten || {}).map(([r, s]) => `<b style="color:${kleur(r)}">${esc(NAMEN[r] || r)}</b>: ${opmaak(s)}`).join("<br>")}<br><b>Uitkomst:</b> ${g.uitkomst ? opmaak(g.uitkomst) : '<span class="leeg">niet beslecht</span>'} ${(g.bewijs || []).map(i => opmaak(i)).join(" ")}</div></div>`;
+    html += `<div class="ronde">Geschil</div><div class="beurt" style="--kleur:var(--koning)"><div class="wie">${esc(g.onderwerp)}</div><div class="tekst">${Object.entries(g.standpunten || {}).map(([r, s]) => `<b style="color:${kleur(r)}">${esc(NAMEN[r] || r)}</b>: ${opmaak(s)}`).join("<br>")}<br><b>Uitkomst:</b> ${g.uitkomst ? opmaak(g.uitkomst) : '<span class="leeg">niet beslecht</span>'} ${(g.bewijs || []).map(i => opmaak(i)).join(" ")}${(g.beurten || []).length ? `<br><span class="getal">in beurt ${g.beurten.map(n => `<a class="ref" href="#b${n}">#${n}</a>`).join(" ")}</span>` : ""}</div></div>`;
   }
   const debat = document.getElementById("debat");
   const onderaan = window.innerHeight + window.scrollY >= document.body.scrollHeight - 80;
