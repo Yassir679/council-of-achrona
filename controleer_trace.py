@@ -66,7 +66,7 @@ def controleer(trace, verdict):
             for n in b.get("toetst_beurten") or []:
                 if n not in raadslid_berichten:
                     fout.append(f"beurt {b['nr']}: toetst_beurten verwijst naar {n}, geen eerder Raadslid-bericht")
-            if b.get("beslist_door", "koning-agent") != "koning-agent":
+            if not b.get("beslist_door", "koning-agent").startswith("koning-agent"):
                 let.append(f"beurt {b['nr']}: routering door {b['beslist_door']}, niet door de Koning-agent")
         elif soort in ("toolcall", "bestand"):
             if s == "koning":
@@ -132,7 +132,7 @@ def controleer(trace, verdict):
         "raadslid_beurten": len(raadslid_berichten), "rollen": sorted(gesproken),
         "toolcalls": sum(1 for b in beurten if b.get("soort") == "toolcall"),
         "gerichte_toolcalls": sum(1 for b in beurten if b.get("soort") == "toolcall" and b.get("tool") != "lees_kennisbron"),
-        "koning_stopte_zelf": bool(stop) and stop[-1].get("beslist_door", "koning-agent") == "koning-agent",
+        "koning_stopte_zelf": bool(stop) and stop[-1].get("beslist_door", "koning-agent").startswith("koning-agent"),
         "geschillen": len(trace.get("geschillen") or []),
         "routeringen_met_toetst_beurten": sum(1 for b in beurten if b.get("soort") == "routering" and b.get("toetst_beurten")),
     }

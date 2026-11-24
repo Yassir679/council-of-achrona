@@ -89,7 +89,26 @@ def regel_keuze(leden, gesproken, reden):
             "reden": f"{reden} Regel: alle Rollen spraken al; het debat stopt."}
 
 
-async def kies_volgende(leden, debat, gesproken, stand, open_vragen, tel):
+def stop_herinnering(leden, gesproken, doelen):
+    """Wil de Koning stoppen terwijl er nog werk ligt (Rol niet gehoord, geen herstelplan-beurt), dan krijgt hij
+    één keer een herinnering. Hij beslist zelf: hij mag daarna nog steeds stoppen, met een reden."""
+    over = BEURTENBUDGET - sum(gesproken.values())
+    if over < 1:
+        return None
+    punten = []
+    ongehoord = [l.NAAM for l in leden if not gesproken.get(l.ROL)]
+    if ongehoord:
+        punten.append(f"Nog niet gehoord: {', '.join(ongehoord)}. Hun Kennisbron kan een uniek stuk bevatten.")
+    if "herstelplan" not in doelen:
+        punten.append("Er was nog geen beurt met doel 'herstelplan': niemand is gevraagd hoe je de oorzaak veilig wegneemt "
+                      "(bediening, voorschriften of waarschuwingen over herstel in hun bron).")
+    if not punten:
+        return None
+    return ("\n\nJe wilde stoppen, maar let op (" + f"{over} beurten over" + "):\n- " + "\n- ".join(punten)
+            + "\nKies een Rol voor een van deze punten, of stop alleen als je in je reden concreet uitlegt waarom geen enkele Rol dit nog kan beantwoorden.")
+
+
+async def kies_volgende(leden, debat, gesproken, stand, open_vragen, tel, doelen=()):
     """De Koning leidt het debat: hij leest het debat en kiest wie spreekt (of stopt), met vraag, reden en doel.
 
     Geeft een dict {rol, vraag, reden, doel, toetst_beurten, beslist_door, stand, open_vragen}. De code bewaakt
@@ -97,18 +116,23 @@ async def kies_volgende(leden, debat, gesproken, stand, open_vragen, tel):
     """
     rollen = [l.ROL for l in leden]
     bericht_nrs = {d["nr"] for d in debat}
+    herinnerd = False
     try:
-        a = await backend.koning(koning.KONING_SYSTEEM,
-                                 koning.keuze_prompt(leden, debat_als_tekst(debat), gesproken, BEURTENBUDGET, stand, open_vragen),
-                                 koning.keuze_schema(rollen))
+        prompt = koning.keuze_prompt(leden, debat_als_tekst(debat), gesproken, BEURTENBUDGET, stand, open_vragen)
+        a = await backend.koning(koning.KONING_SYSTEEM, prompt, koning.keuze_schema(rollen))
         tel("groot", a.usage)
         k = a.structured
+        herinnering = stop_herinnering(leden, gesproken, doelen) if k and k.get("rol") is None else None
+        if herinnering:  # tweede kans; de Koning beslist zelf opnieuw
+            a = await backend.koning(koning.KONING_SYSTEEM, prompt + herinnering, koning.keuze_schema(rollen))
+            tel("groot", a.usage)
+            k, herinnerd = a.structured, True
         stand, open_vragen = k.get("stand") or stand, k.get("open_vragen") or []
         keuze = {"rol": k.get("rol"), "vraag": (k.get("vraag") or "").strip() or None,
                  "reden": (k.get("reden") or "").strip() or "(geen reden opgegeven)",
                  "doel": k.get("doel") or ("stoppen" if k.get("rol") is None else "ingreep"),
                  "toetst_beurten": sorted({n for n in k.get("toetst_beurten") or [] if n in bericht_nrs}),
-                 "beslist_door": "koning-agent"}
+                 "beslist_door": "koning-agent (na herinnering)" if herinnerd else "koning-agent"}
     except backend.Gebruikslimiet:
         raise  # limiet op: de run stopt (zie main); geen routeringen door het vangnet die op een Koning lijken
     except Exception as e:
@@ -255,6 +279,7 @@ async def run():
     gelezen = {l.ROL: set() for l in leden}  # ID's die elk Raadslid in zijn eigen toolresultaten zag
     geldig_genoemd = set()  # ID's die een Raadslid noemde én in zijn eigen Kennisbron las
     stand, open_vragen = None, []
+    doelen = []  # doel van elke routering tot nu toe (voor de stop-herinnering)
 
     while True:
         n = sum(gesproken.values())
@@ -265,8 +290,9 @@ async def run():
         else:
             trace["aan_het_woord"] = "koning"
             bewaar("trace.json", trace)
-            k = await kies_volgende(leden, debat, gesproken, stand, open_vragen, tel)
+            k = await kies_volgende(leden, debat, gesproken, stand, open_vragen, tel, doelen)
         stand, open_vragen, rol = k["stand"], k["open_vragen"], k["rol"]
+        doelen.append(k["doel"])
         beurt(ronde if rol else n, "koning", "routering", aan=rol, vraag=k["vraag"], reden=k["reden"],
               doel=k["doel"], toetst_beurten=k["toetst_beurten"], beslist_door=k["beslist_door"],
               open_vragen=open_vragen, stand=stand)

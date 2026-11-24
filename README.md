@@ -46,7 +46,11 @@ Liever het Roboest-endpoint? Zet blok 1 van `.env.example` aan (`BACKEND=openai`
 ### De Koning
 - **Agent, geen vaste volgorde.** Vóór elke beurt leest de Koning het hele debat met de ID-controle erbij en antwoordt in een vast JSON-schema (structured output): `stand` (wat de Council per deel van de oorzaak weet, met ID's), `open_vragen`, en de keuze `rol`, `vraag`, `reden`.
 - **Gerichte vragen.** Hij laat een Rol een concrete bewering, dag of ID toetsen, volgt verwijzingen naar andere Rollen en houdt rekening met het Belang van elke Rol.
-- **Stopt zelf** (`aan: null`) zodra ingreep, mechanisme en verloop gedragen zijn en geen open vraag nog met een Kennisbron te beslechten is.
+- **Vraagt een Rol alleen wat haar soort Kennisbron kan bevatten** (de Rolkaart staat in elk Raadslid-bestand als `KENNISBRON`): geen beurten verspillen aan "staat niet in mijn bron".
+- **Plant zijn beurten**: eerst elke Rol één keer, dan **kruisverhoor** (de Rol die vroeg sprak wordt geconfronteerd met wat latere beurten over zijn beweringen toonden), dan minstens één beurt met doel **herstelplan**: hoe neem je de oorzaak veilig weg, welke bediening, voorschriften of waarschuwingen over herstel staan in de bronnen.
+- **Volgt veranderingen in het patroon**: wordt het erger vanaf een dag, dan vraagt hij wie vlak daarvoor iets veranderde.
+- **Stopt zelf** (`aan: null`) zodra ingreep, mechanisme en verloop gedragen zijn en geen open vraag nog met een Kennisbron te beslechten is. Wil hij stoppen terwijl een Rol nog niet sprak of er nog geen herstelplan-beurt was, dan krijgt hij één keer een **herinnering** en beslist hij opnieuw zelf (`beslist_door: "koning-agent (na herinnering)"`).
+- **Verdict**: het herstelplan volgt de voorschriften en waarschuwingen uit het debat (nooit een actie waartegen een record waarschuwt), `zekerheid` is gekalibreerd (een geschreven regel of specificatie plus passende symptomen telt als sterk bewijs), en een verandering in ernst wordt expliciet gekoppeld aan de ingreep die eraan voorafging.
 - **Vangnet in code**: kiest de agent een ongeldige Rol, wil hij stoppen vóór 3 Rollen spraken, of faalt de call, dan kiest een regel (de eerste Rol die nog niet sprak) en staat dat zo in de `reden`.
 
 ### Spelregels: waar ze afgedwongen worden
@@ -83,7 +87,7 @@ Liever het Roboest-endpoint? Zet blok 1 van `.env.example` aan (`BACKEND=openai`
 - geschillen bevatten alleen standpunten van Rollen die spraken;
 - verwijzingen naar beurten kloppen, tijd en nummering lopen op, `run_id` is in beide bestanden gelijk, en de status is `klaar`.
 
-**Tests:** `uv run python tests/test_trace.py` speelt een volledige run met een nep-backend (geen LLM, geen abonnement) en een run waarin de limiet halverwege toeslaat, en toetst de trace van beide.
+**Tests:** `uv run python tests/test_trace.py` (of `uv run python -m unittest discover -s tests`) speelt een volledige run met een nep-backend (geen LLM, geen abonnement), een run waarin de limiet halverwege toeslaat, de stop-herinnering van de Koning en de normalisatie van koppeltekens in ID's, en toetst de trace.
 
 ### Extra uitdagingen
 - **Verdict**: `zekerheid` per deel van de oorzaak en een `voorspelling` (dag + bewijs).

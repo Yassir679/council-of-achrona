@@ -13,6 +13,7 @@ PREFIX = {"archmage": "ARC", "engineer": "ENG", "guardian_keeper": "GUA", "histo
 
 def rolkaarten(leden):
     return "\n".join(f"- {l.ROL} ({l.NAAM}, ID's {PREFIX[l.ROL]}-nnn): {l.PERSPECTIEF} Publiek Belang: {l.BELANG}."
+                     + (f" Soort Kennisbron: {l.KENNISBRON}." if getattr(l, "KENNISBRON", None) else "")
                      for l in leden)
 
 
@@ -65,11 +66,16 @@ Hoe je leidt:
 - Begin met de Rollen waarvan het perspectief het meest oplevert voor een deel dat nog open is. Volg daarna de sporen: verwijst iemand naar een andere Rol, een plek, een persoon, een tijdstip of een ingreep? Geef het woord aan de Rol die dat met eigen records kan controleren.
 - Elke Rol heeft een Belang en kan ernaast zitten. Neem een conclusie niet over omdat ze stellig klinkt: laat een andere Rol ze met eigen records bevestigen of weerleggen. Ruwe metingen, logs en datums wegen zwaarder dan iemands interpretatie.
 - Stel gerichte vragen: noem de bewering, de dag of de ID's die getoetst moeten worden en wat je precies wil weten. Vraag nooit om samen te vatten of te herhalen.
+- Vraag een Rol alleen wat zijn soort Kennisbron (op de Rolkaart) kan bevatten. Een vraag naar een meting, brief of record dat bij een andere Rol hoort, levert 'staat niet in mijn bron' op en is een verspilde beurt.
+- Hoor elke Rol minstens één keer: elke Kennisbron kan een uniek stuk bevatten. Een Rol overslaan mag alleen met een concrete reden.
+- Kruisverhoor: zijn alle Rollen gehoord, confronteer dan de Rol die vroeg sprak met wat latere beurten over zijn beweringen aan het licht brachten (noem de beurten), zodat hij bevestigt, intrekt of aanvult.
+- Verandert iets in het patroon (het wordt erger, sterker of anders vanaf een dag), vraag dan de Rol die ingrepen of wijzigingen bijhoudt wat er vlak daarvoor veranderde.
+- Herstelplan: stop niet voor er minstens één beurt met doel 'herstelplan' was. Vraag daarin de Rol die de ingreep deed of beheert, en de Rol die de regels, voorschriften of geschiedenis kent, hoe je de oorzaak veilig wegneemt: welke bediening of stappen bestaan er, welke voorschriften of waarschuwingen over herstel staan in hun bron, en wat gaat er mis als je te snel of in één keer herstelt.
 - ID's die de ID-controle als ongeldig markeert, tellen niet als bewijs. Een Raadslid zonder toolcall heeft zijn bron niet gelezen.
 - Laat minstens 3 verschillende Rollen spreken voor je stopt.
 - Stop (rol = null, vraag = null) zodra ingreep, mechanisme en verloop elk gedragen worden door bewijs van de Rol die het kan weten en de belangrijkste tegenspraak beslecht is, of als geen Rol nog iets nieuws kan toevoegen.
 - Maar stop niet te vroeg: staat er nog een open vraag die een bepaalde Rol met eigen records kan beslechten (wie gaf toestemming, wat veranderde er op een bepaalde dag, wordt het erger en waarom), en zijn er beurten over, stel die vraag dan eerst gericht aan die Rol. Stop pas als de open vragen die overblijven met geen enkele Kennisbron te beantwoorden zijn.
-- Bewaak het budget: stop zelf vóór het op is. Het budget laten aflopen telt niet als zelf stoppen. Vanaf 8 gebruikte beurten kies je alleen nog een Rol als die beurt een deel van de oorzaak (ingreep, mechanisme of verloop) of een belangrijk geschil kan beslissen; anders stop je. Na 9 beurten stop je.
+- Bewaak het budget: stop zelf vóór het op is. Plan je beurten: eerst elke Rol één keer, dan kruisverhoor en herstelplan. Het budget laten aflopen telt niet als zelf stoppen. Vanaf 8 gebruikte beurten kies je alleen nog een Rol als die beurt een deel van de oorzaak (ingreep, mechanisme of verloop) of een belangrijk geschil kan beslissen; anders stop je. Na 9 beurten stop je.
 - Je reden is concreet en verwijst naar het debat: wat is gezegd of ontbreekt (noem de beurt, bv. 'beurt 6'), en waarom kan juist deze Rol dat beantwoorden. De jury leest elke reden: hoogstens 4 zinnen.
 - Je vraag is gericht en kort: hoogstens 4 zinnen, met de ID's, dagen of beweringen die getoetst moeten worden.
 - `doel`: waar deze beurt aan bijdraagt (een deel van de oorzaak, een geschil, het herstelplan, of 'stoppen'). `toetst_beurten`: de nummers van de eerdere beurten waarvan je hier een bewering laat toetsen of aanvullen (leeg als het nieuw terrein is).
@@ -126,9 +132,10 @@ Regels:
 - Elke bewering steunt op record-ID's die Raadsleden in het debat noemden en die de ID-controle als geldig markeerde. Gebruik nooit een ID die niet in het debat staat.
 - Ingreep = wie deed wat, wanneer. Mechanisme = hoe dat tot de symptomen leidt. Verloop = het patroon in de tijd. Is een deel niet door bewijs gedragen, zet dan bewering op null en bewijs op [].
 - Weeg het bewijs: ruwe metingen en logs boven interpretaties; let op het Belang van elke Rol. Een conclusie die door een andere Rol weerlegd werd, neem je niet over.
-- zekerheid (0-1) per deel: eerlijk, gebaseerd op hoeveel onafhankelijke Rollen het bevestigen.
-- acties: het herstelplan in uitvoeringsvolgorde (eerst de schade stoppen, dan de oorzaak wegnemen, dan herstellen, dan herhaling voorkomen), elk met reden en waar mogelijk bewijs.
-- risicos: minstens één, met mitigatie (bv. wat er misgaat als je het herstel verkeerd of te snel doet).
+- zekerheid (0-1) per deel: eerlijk en gekalibreerd. Hoog als meerdere onafhankelijke Rollen het met ruwe records bevestigen. Een geschreven regel, specificatie of voorschrift in een record dat het mechanisme beschrijft, samen met waargenomen symptomen die er precies bij passen, is sterk bewijs: noem dat geen losse hypothese omdat er geen aparte meting is. Laag als het op één Rol of op een interpretatie steunt.
+- verloop: verandert de ernst of de vorm van het patroon vanaf een bepaalde dag, en noemt het debat een ingreep of wijziging vlak daarvoor, leg dat verband dan expliciet (met bewijs van beide kanten) en zeg of de frequentie gelijk bleef.
+- acties: het herstelplan in uitvoeringsvolgorde, elk met reden en bewijs. Volg de bediening, voorschriften en waarschuwingen over herstel die in het debat genoemd zijn, ook hun volgorde (bv. eerst iets veiligstellen, dan stapsgewijs bijsturen). Stel nooit een actie voor waartegen een record waarschuwt (bv. iets in één keer afzetten als een bron zegt dat dat schade geeft). Volgorde: eerst verergering stoppen en veiligstellen wat verloren kan gaan, dan de oorzaak wegnemen op de manier die de bronnen voorschrijven, dan de schade herstellen, dan herhaling voorkomen en controleren.
+- risicos: minstens één, met mitigatie. Denk aan: herstel dat te snel of in één keer gebeurt, handelen op een weerlegde oorzaak, de tussentijd tot het herstel klaar is, en het Belang van wie het herstel uitvoert.
 - voorspelling: alleen als het patroon in het debat een concrete dag onderbouwt: op welke dag slaat de Desync opnieuw toe als niemand ingrijpt, en waarom. Anders laat je het veld weg.
 - geschillen: waar Raadsleden elkaar tegenspraken of een conclusie werd weerlegd. Per geschil: onderwerp, standpunt per Rol, uitkomst (hoe beslecht, of null als het open bleef), bewijs, en `beurten`: de nummers [beurt N] uit het debat waarin het geschil opkwam en beslecht werd.
 - samenvatting: 2-4 zinnen voor de jury.

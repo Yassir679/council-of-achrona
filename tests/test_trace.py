@@ -25,9 +25,11 @@ PREFIX = {"engineer": "ENG", "historian": "HIS", "guardian_keeper": "GUA"}
 class NepBackend:
     """Koning kiest de Rollen om de beurt en stopt na 3; elk Raadslid 'leest' 3 records en noemt er 2."""
 
-    def __init__(self, limiet_bij=None):
+    def __init__(self, limiet_bij=None, doel="ingreep"):
         self.beurt = 0
         self.limiet_bij = limiet_bij
+        self.doel = doel  # doel van elke Raadslid-routering
+        self.herinneringen = 0  # hoe vaak de Koning een stop-herinnering kreeg
 
     async def raadslid(self, systeem, prompt, mcp_url, sessie):
         self.beurt += 1
@@ -46,10 +48,12 @@ class NepBackend:
         if "rol" in schema.get("properties", {}):  # routering
             n = len(re.findall(r"\[beurt \d+\]", prompt))  # echte beurten, niet de uitleg '[beurt N]'
             rol = ROLLEN[n] if n < len(ROLLEN) else None
+            if "Je wilde stoppen" in prompt:
+                self.herinneringen += 1
             return backend.Antwoord(usage=u, structured={
                 "stand": {"ingreep": "x", "mechanisme": "y", "verloop": "z"}, "open_vragen": ["q"],
                 "rol": rol, "vraag": None if rol is None else f"Toets beurt {n}", "reden": "test",
-                "doel": "stoppen" if rol is None else "ingreep", "toetst_beurten": []})
+                "doel": "stoppen" if rol is None else self.doel, "toetst_beurten": []})
         return backend.Antwoord(usage=u, structured={  # Verdict
             "samenvatting": "Test (ENG-001, ENG-777).",
             "oorzaak": {"ingreep": {"bewering": "a", "bewijs": ["ENG-001", "ENG-003"], "zekerheid": 0.9},
@@ -97,7 +101,8 @@ def test_volledige_run():
     assert soorten[:3] == [("koning", "routering"), ("engineer", "toolcall"), ("engineer", "bericht")], soorten
     assert [b["aan"] for b in trace["beurten"] if b["soort"] == "routering"] == [*ROLLEN, None]
     stop = [b for b in trace["beurten"] if b["soort"] == "routering" and b["aan"] is None]
-    assert len(stop) == 1 and stop[0]["beslist_door"] == "koning-agent"
+    # geen herstelplan-beurt: de Koning kreeg één herinnering en stopte daarna zelf, met reden
+    assert len(stop) == 1 and stop[0]["beslist_door"] == "koning-agent (na herinnering)", stop
     for b in trace["beurten"]:
         assert b.get("tijd"), f"beurt {b['nr']} zonder tijd"
         if b["soort"] == "toolcall":
@@ -133,7 +138,7 @@ def test_limiet_breekt_run_eerlijk_af():
 
 def test_limiet_herkenning():
     assert backend.is_limiet("You've hit your 5-hour limit · resets 12:20pm")
-    assert not backend.is_limiet("De engineer activeerde de hulpslag")
+    assert not backend.is_limiet("De engineer opende de toren om 04:00")
 
     async def faalt():
         faalt.n += 1
@@ -144,6 +149,38 @@ def test_limiet_herkenning():
     except backend.Gebruikslimiet:
         pass
     assert faalt.n == 1, "een limiet mag niet opnieuw geprobeerd worden"
+
+
+def test_geen_herinnering_als_alles_gedekt_is():
+    nep = NepBackend(doel="herstelplan")
+    trace, verdict, fout = draai(nep)
+    assert fout is None, fout
+    stop = [b for b in trace["beurten"] if b["soort"] == "routering" and b["aan"] is None]
+    assert nep.herinneringen == 0 and stop[0]["beslist_door"] == "koning-agent"
+
+
+def test_stop_herinnering():
+    import raadsleden
+    leden = [m for m in raadsleden.alle() if m.ROL in ROLLEN]
+    alle_gehoord = {r: 1 for r in ROLLEN}
+    assert council.stop_herinnering(leden, alle_gehoord, ["ingreep", "herstelplan"]) is None
+    h = council.stop_herinnering(leden, {"engineer": 1}, ["ingreep"])
+    assert "Historian" in h and "herstelplan" in h
+    assert council.stop_herinnering(leden, {"engineer": council.BEURTENBUDGET}, []) is None  # budget op
+
+
+def test_id_koppeltekens():
+    assert backend.ids_in("Zie ORA\u2011101, ENG\u2013004 en ARC-009; nog eens ORA-101.") == ["ORA-101", "ENG-004", "ARC-009"]
+
+
+class TestTrace(__import__("unittest").TestCase):
+    """Zodat ook `python -m unittest discover -s tests` en pytest deze tests vinden."""
+
+
+for _naam, _fn in list(globals().items()):
+    if _naam.startswith("test_") and callable(_fn):
+        setattr(TestTrace, _naam, (lambda f: lambda self: f())(_fn))
+del _naam, _fn  # anders ziet unittest de klasse twee keer (via de lusvariabele)
 
 
 if __name__ == "__main__":

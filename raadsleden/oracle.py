@@ -4,3 +4,4 @@ ROL = "oracle"  # moet een Rol uit het schema zijn: archmage, engineer, guardian
 NAAM = "Oracle"
 PERSPECTIEF = "Leest visioenen en tekenen; zoekt het patroon in wat komt."
 BELANG = "gezag van de profetieën"
+KENNISBRON = "visioenendagboek"  # soort bron, van de publieke Rolkaart
