@@ -26,6 +26,7 @@
   .pil { font-size: 13px; padding: 2px 10px; border-radius: 999px; border: 1px solid var(--lijn); background: var(--paneel); }
   .pil.bezig { border-color: var(--waarschuwing); color: var(--waarschuwing); }
   .pil.klaar { border-color: var(--ok); color: var(--ok); }
+  .pil.afgebroken { border-color: var(--fout); color: var(--fout); font-weight: 600; }
   .runid { color: var(--zacht); font-size: 12px; font-family: ui-monospace, monospace; word-break: break-all; }
   main { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 16px; padding: 16px; max-width: 1400px; margin: 0 auto; }
   @media (max-width: 900px) { main { grid-template-columns: minmax(0, 1fr); } aside { order: -1; } }
@@ -120,8 +121,10 @@ function ids(tekst) {
 function render(trace, verdict) {
   const status = document.getElementById("status");
   const bezig = trace.status === "bezig";
-  status.className = "pil " + (bezig ? "bezig" : "klaar");
-  status.textContent = bezig ? `bezig${trace.aan_het_woord ? " · " + (NAMEN[trace.aan_het_woord] || trace.aan_het_woord) + " is aan het woord" : ""}` : "klaar";
+  const afgebroken = trace.status === "afgebroken";
+  status.className = "pil " + (bezig ? "bezig" : afgebroken ? "afgebroken" : "klaar");
+  status.textContent = bezig ? `bezig${trace.aan_het_woord ? " · " + (NAMEN[trace.aan_het_woord] || trace.aan_het_woord) + " is aan het woord" : ""}`
+    : afgebroken ? `afgebroken · ${trace.fout?.soort || "fout"}: ${String(trace.fout?.melding || "").slice(0, 120)}` : "klaar";
   document.getElementById("runid").textContent = trace.run_id || "";
 
   // Debat per ronde
@@ -208,6 +211,14 @@ function render(trace, verdict) {
     [raadslidBeurten > BEURTENBUDGET ? "fout" : "ok", `${raadslidBeurten} van ${BEURTENBUDGET} Raadslid-beurten (Beurtenbudget)`],
     [zonderRoutering.length ? "fout" : "ok", zonderRoutering.length ? `Raadslid-beurt zonder Routering ervoor (beurt ${zonderRoutering.join(", ")})` : "Elke Raadslid-beurt had een Routering"],
   ];
+  // Zelfcontrole van de run (zelfde controle als `uv run controleer`), als de run ze in de trace schreef
+  const zc = trace.zelfcontrole;
+  if (zc) {
+    checks.push([zc.fouten.length ? "fout" : "ok", zc.fouten.length ? `Zelfcontrole: ${zc.fouten.length} fout(en)` : "Zelfcontrole van de run: groen"]);
+    for (const f of zc.fouten) checks.push(["fout", f]);
+    for (const l of zc.let_op) checks.push(["let", l]);
+  }
+  if (afgebroken) checks.unshift(["fout", `Run afgebroken (${trace.fout?.soort || "fout"}): geen Verdict`]);
   document.getElementById("checks").innerHTML = checks.map(([k, t]) => `<div class="check ${k}">${esc(t)}</div>`).join("");
 
   // Verbruik
